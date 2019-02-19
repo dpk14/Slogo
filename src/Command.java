@@ -3,7 +3,7 @@ import java.util.Stack;
 
 public class Command {
     String myCommandType;
-    String[] myArguments;
+    double[] myArguments;
     int myNumberOfArguments;
     Command(String commandType, int numberOfArguments){
         myCommandType=commandType;
@@ -14,7 +14,7 @@ public class Command {
         return myNumberOfArguments;
     }
 
-    public void setArguments(String[] arguments){
+    public void setArguments(double[] arguments){
         myArguments=arguments;
     }
 
