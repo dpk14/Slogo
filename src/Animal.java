@@ -43,8 +43,6 @@ public class Animal {
         direction_vector[1] = Math.sin(radian);
     }
 
-    
-
     public void setImage(String file){
 
         //node.setImage(file);
