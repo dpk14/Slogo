@@ -11,9 +11,9 @@ public class Parser {
     //to grab variables
 
     ArrayList<String> currentLineSection;
-    final double NO_QUERY_PRESENT=Math.random();
-    final int NO_BOOLEAN_PRESENT=-1;
+    final double NOT_DETECTED=Math.random();
 
+    /*
     public void evaluateInput(String currentLine) {
         String[] currentLineWithoutSpaces = currentLine.split(" ");
         currentLineSection = new ArrayList<String>(Arrays.asList(currentLineWithoutSpaces));
@@ -34,70 +34,73 @@ public class Parser {
         return;
     }
 
-    private void parseCurrentCommandAndAdvance(boolean isList){
-        String commandtype=currentLineSection.get(0);
-        //check if commandtype is fully alphabetic. If not, throw error
-        commandtype=commandtype.toLowerCase();
-        if (commandtype.equals("home")) {
-            currentCommand = new movementCommand(commandtype);
+*/
+    private double parseNext(){
+        HashMap<Boolean >
+        if (isImmediateOrVariable(current)) return value or variable
+        else if (isCommand(currentIndex)) return parseCommand(currentIndex);
+        else if (isQuery) return parseQuery();
+        else if (isBoolean) return parseBoolean();
+        else; //throw error
+        return 0;
+        }
+
+
+    private double parseCommand(){
+        String currentString=currentLineSection.get(0);
+        // if (currentString.equals(value or variable)) return value or variable
+        //check if currentString is fully alphabetic. If not, throw error
+        currentString=currentString.toLowerCase();
+        if (currentString.equals("home")) {
+            currentCommand = new movementCommand(currentString);
             advanceParser(1);
         }
-        else if (commandtype.equals("forward") || commandtype.equals("fd") || commandtype.equals("backward") || commandtype.equals("bd")){
-            String movementAmount=currentLineSection.get(1);
-            currentCommand=new movementCommand(commandtype, movementAmount);
+        else if (currentString.equals("forward") || currentString.equals("fd") || currentString.equals("backward") || currentString.equals("bd")){
+            String movementAmount=parseNext();
+            currentCommand=new movementCommand(currentString, movementAmount);
             advanceParser(2);
         }
-        else if (commandtype.equals("setxy") || commandtype.equals("goto")) {
-            String x=currentLineSection.get(1);
-            String y=currentLineSection.get(2);
-            currentCommand = new movementCommand(commandtype, x, y);
+        else if (currentString.equals("setxy") || currentString.equals("goto")) {
+            String x=parseNext();
+            String y=parseNext();
+            currentCommand = new movementCommand(currentString, x, y);
             advanceParser(3);
         }
-        else if (commandtype.equals("right") || commandtype.equals("rt") || commandtype.equals("left") || commandtype.equals("lt") || commandtype.equals("setheading") || commandtype.equals("seth")) {
-            String rotationAmount=currentLineSection.get(1);
-            currentCommand = new rotationCommand(commandtype, rotationAmount);
+        else if (currentString.equals("right") || currentString.equals("rt") || currentString.equals("left") || currentString.equals("lt") || currentString.equals("setheading") || currentString.equals("seth")) {
+            String rotationAmount=parseNext();
+            currentCommand = new rotationCommand(currentString, rotationAmount);
             advanceParser(2);
         }
-        else if (commandtype.equals("towards")) {
-            String rotatex=currentLineSection.get(1);
-            String rotatey=currentLineSection.get(2);
-            currentCommand = new rotationCommand(commandtype, rotatex, rotatey);
+        else if (currentString.equals("towards")) {
+            String rotatex=parseNext();
+            String rotatey=parseNext();
+            currentCommand = new rotationCommand(currentString, rotatex, rotatey);
             advanceParser(3);
         }
-        else if (commandtype.equals("penup") || commandtype.equals("pu") || commandtype.equals("pendown") || commandtype.equals("pd")) {
-            String penState=currentLineSection.get(1);
-            currentCommand = new drawCommand(commandtype, penState);
+        else if (currentString.equals("penup") || currentString.equals("pu") || currentString.equals("pendown") || currentString.equals("pd")) {
+            String penState=parseNext();
+            currentCommand = new drawCommand(currentString, penState);
             advanceParser(2);
         }
-        else if (commandtype.equals("showturtle") || commandtype.equals("st") || commandtype.equals("hideturtle") || commandtype.equals("ht")) {
-            String turtleState=currentLineSection.get(1);
-            currentCommand = new turtleStateCommand(commandtype, turtleState);
+        else if (currentString.equals("showturtle") || currentString.equals("st") || currentString.equals("hideturtle") || currentString.equals("ht")) {
+            String turtleState=parseNext();
+            currentCommand = new turtleStateCommand(currentString, turtleState);
             advanceParser(2);
         }
-        else if (commandtype.equals("make") || commandtype.equals("set")){
+        else if (currentString.equals("make") || currentString.equals("set")){
             String variable=currentLineSection.get(1);
             String expression=currentLineSection.get(2);
-            currentCommand = new setterCommand(commandtype, variable, expression);
+            currentCommand = new setterCommand(currentString, variable, expression);
             advanceParser(2);
         }
+        else return NOT_DETECTED; //indicates command is not found
+        return 0;
 
-        if(!isList && currentLineSection.size()!=0); //throw error. If it isn't a list, there shouldn't be multiple commands in one line
-        if(isList && currentLineSection.get(0).equals("]")) currentLineSection.remove(0);
-    }
-
-    private boolean checkAndParseIfControlTag(){
-        String ControlTag=currentLineSection.get(0);
-        if(ControlTag.equals("REPEAT")){
-            String expression=currentLineSection.get(1);
-
-            String commands=currentLineSection.get(2);
-
+       // if(!isList && currentLineSection.size()!=0); //throw error. If it isn't a list, there shouldn't be multiple commands in one line
+        //if(isList && currentLineSection.get(0).equals("]")) currentLineSection.remove(0);
 
         }
 
-            else return false;
-            return true;
-    }
 
     private double parseAndEvaluateAndAdvanceIfQuery(){
         String queryType=currentLineSection.get(0);
@@ -116,9 +119,9 @@ public class Parser {
         return returnValue;
     }
 
-    private int parseAndEvaluateAndAdvanceIfBoolean(){
+    private double parseAndEvaluateAndAdvanceIfBoolean(){
         String booleanType=currentLineSection.get(0);
-        int returnValue=NO_BOOLEAN_PRESENT;
+        double returnValue=NO_BOOLEAN_PRESENT;
         if (booleanType.indexOf("?")==booleanType.length()-1){
             booleanType=booleanType.substring(0, booleanType.length()-1);
             booleanType+="P";
