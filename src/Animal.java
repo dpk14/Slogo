@@ -1,16 +1,16 @@
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import java.lang.Math;
 
 public class Animal {
 
-    final private String FILE_NAME = "turtle.png";
     final private ImageView node;
-    final private int animal_number;
+    final private String animal_name;
     private double[] direction_vector;
     private double current_angle;
 
-    public Animal(int num){
-        animal_number = num;
+    public Animal(String name, int HEIGHT, int WIDTH){
+        animal_name = name;
 
         current_angle = 90;
         double radian = Math.toRadians(current_angle);
@@ -19,14 +19,20 @@ public class Animal {
         direction_vector[1] = Math.sin(radian);
 
         node = new ImageView();
-        //node.setImage(this.getClass().ClassLoader());
+        node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream("turtle.png")));
+        node.setX(WIDTH/2);
+        node.setY(HEIGHT/2);
     }
 
     public void changePosition(int delta){
-        int x_delta = (int) (delta * direction_vector[0]);
-        int y_delta = (int) (delta * direction_vector[1]);
-        node.setX(x_delta);
-        node.setY(y_delta);
+        double x_delta = delta * direction_vector[0];
+        double y_delta = delta * direction_vector[1];
+
+        double current_x = node.getX();
+        double current_y = node.getY();
+
+        node.setX(current_x + x_delta);
+        node.setY(current_y + y_delta);
     }
 
     public void adjustHeading(int angle){
@@ -34,6 +40,8 @@ public class Animal {
         double radian = Math.toRadians(current_angle);
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
+
+        node.setRotate(node.getRotate() + current_angle);
     }
 
     public void setHeading(int angle){
@@ -41,15 +49,17 @@ public class Animal {
         double radian = Math.toRadians(current_angle);
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
+
+        node.setRotate(current_angle);
     }
 
-    public void setImage(String file){
-
-        //node.setImage(file);
+    public void setImage(String fileName){
+        node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream(fileName)));
+        return;
     }
 
-    public int getAnimalNumber(){
-        return animal_number;
+    public String getAnimalName(){
+        return animal_name;
     }
 
     public ImageView getImageView(){
