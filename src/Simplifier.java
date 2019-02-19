@@ -27,7 +27,7 @@ public class Simplifier {
 
     public double checkExpressionTypeAndSimplify(ArrayList<String> currentLine, int currentIndex){
         String expressionType=currentLine.get(currentIndex);
-        Expression currentExpression;
+        Expression currentExpression=new Expression();
         if (expressionType.indexOf("?")==expressionType.length()-1){
             expressionType=expressionType.substring(0, expressionType.length()-1);
             expressionType+="P";
@@ -76,7 +76,8 @@ public class Simplifier {
             return simplifyExpression(currentLine, currentIndex+1, currentExpression);
         }
         else {
-            currentExpression.getArguments().add(checkExpressionTypeAndSimplify(currentLine, currentIndex));
+            String argument=Double.toString(checkExpressionTypeAndSimplify(currentLine, currentIndex));
+            currentExpression.getArguments().add(argument);
             return simplifyExpression(currentLine, largestIndexReached+1, currentExpression);
         }
         //^else, there must be another nested expression, so find the value of this expression and store it as the first argument of the current Expression
