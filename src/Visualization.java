@@ -26,6 +26,10 @@ public class Visualization extends Application {
 
         var main_pane = new BorderPane();
 
+        var console = new Console();
+
+        main_pane.setBottom(console.getTextArea());
+
         var center_screen = new Group();
         center_screen.prefHeight(HEIGHT_OF_TURTLE_SCREEN);
         center_screen.prefWidth(WIDTH_OF_TURTLE_SCREEN);
