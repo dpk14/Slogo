@@ -1,0 +1,22 @@
+##Part 1
+* What about your API/design is intended to be flexible? How is your API/design encapsulating your implementation decisions?
+
+Commands are flexible, you just have to design new subclasses with different expected arguments. Expressions are also very flexible, 
+because they are currently split well into four subclasses initially (boolean, conditional, arithmetic, and trigonometric) with expected arguments. 
+Due to this breadth, new subclasses can easily be produced if new kinds of commands are proposed in the extensions. Also, our Simplifier class
+makes it easy to extend argument simplification if new syntactical structures are introduced that would affect how simplification 
+operates (like parentheses).  
+        
+* What exceptions (error cases) might occur in your part and how will you handle them (or not, by throwing)?
+
+Whether the wrong amount of arguments occurs after a command or expression tag. Whether there are expected missing elements
+(like a missing closed bracket to an open bracket). Whether an input word is not recognized or whether it doesn't follow 
+syntactical patterns. We'll just throw errors to the front end for each of these cases, then have the front end display them. 
+
+* Why do you think your API/design is good (also define what your measure of good is)?
+
+As described in the first question, we have high flexibility because we have separate classes for commands and expressions with 
+an easily extensible collection of subclasses. We also have very limited interaction between the external
+and internal API (when the user runs the code, the external simply calls an evaluation method in the parser that inputs the block of text)
+and responds with proper converted functions. This limited interaction will allow for smoother transitions into the extensions because of 
+the lower amounts of dependencies.        
