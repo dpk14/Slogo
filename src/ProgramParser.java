@@ -15,7 +15,7 @@ public class ProgramParser {
     // note, it is a list because order matters (some patterns may be more generic)
     private List<Entry<String, Pattern>> mySymbols;
     private HashMap<String, Operation> myOperationsMap;
-
+    private HashMap<String, ControlStructure> myControlMap;
     /**
      * Create an empty parser.
      */
@@ -37,10 +37,17 @@ public class ProgramParser {
         }
     }
 
-    private void makeOperationsMap() {
+    public HashMap makeControlMap(){
+        return new HashMap<String, ControlStructure>();
+    }
+
+    public HashMap makeOperationsMap() {
         myOperationsMap.put("Forward", new movementCommand(FORWARD_DIRECTION, DEFAULT_MOVEMENT));
         myOperationsMap.put("Backward", new movementCommand(BACKWARD_DIRECTION, DEFAULT_MOVEMENT));
         // continue
+
+        return new HashMap<String, Operation>();
+    }
     /*
         if (currentString.equals("home")) {
             new movementCommand(currentString, 0);
@@ -99,7 +106,6 @@ public class ProgramParser {
     }
 
     */
-    }
 
     /**
      * Returns language's type associated with the given text if one exists 
@@ -117,6 +123,11 @@ public class ProgramParser {
 
     public HashMap<String, Operation> getOperationsMap() {
         return myOperationsMap;
+    }
+
+    public ControlStructure getControlStructure(String controlTag){
+        if (!myControlMap.containsKey(controlTag)) return new NoControlStructure();
+        else return (myControlMap.get(controlTag));
     }
 
     /**
