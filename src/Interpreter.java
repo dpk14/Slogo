@@ -2,7 +2,7 @@
 import java.util.Arrays;
 import java.util.List;
 
-public class Parser {
+public class Interpreter{
 
     ArrayList<String> currentLine;
     Simplifier simplifier=new Simplifier(); //must be reinitialized after every line, so must also reinitialize parser
@@ -10,6 +10,7 @@ public class Parser {
     public void evaluateInput(String currentLine) {
         String[] currentLineWithoutSpaces = currentLine.split(" ");
         currentLine = new ArrayList<String>(Arrays.asList(currentLineWithoutSpaces));
+
         int currentIndex=0;
         boolean isCommentOrBlank=currentLine.size()==0 || currentLine.get(currentIndex).equals("#");
         if (isCommentOrBlank) return;
@@ -37,9 +38,9 @@ public class Parser {
             currentString=currentString.toLowerCase();
         }
         if (currentString.equals("home")) {
-            currentCommand = new movementCommand(currentString, 0);
+                    new movementCommand(currentString, 0);
         }
-        else if (currentString.equals("forward") || currentString.equals("fd") || currentString.equals("backward") || currentString.equals("bd")){
+        else if (currentString.equals("Forward") || currentString.equals("Backward")){
             currentCommand=new movementCommand(currentString, 1);
         }
         else if (currentString.equals("setxy") || currentString.equals("goto")) {
