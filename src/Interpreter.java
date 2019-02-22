@@ -5,31 +5,36 @@ import java.util.Arrays;
  import java.util.regex.Pattern;
  import java.util.Stack;
 
+
+ //This class needs to be removed. Let's put evaluate input in main, and evaluateIndependentLine and parseCommand in their respective Control subclasses.
+
  public class Interpreter {
-    ProgramParser myParser;
-    OperationBuilder myBuilder;
+     ProgramParser myParser;
+     OperationBuilder myBuilder;
+     ArrayList<String> myCurrentLine;
      private List<Map.Entry<String, Pattern>> mySymbols;
 
-    public Interpreter(ProgramParser parser) {
-    myParser=parser;
-    }
+     public Interpreter(ProgramParser parser) {
+         myParser = parser;
+     }
 
-  //must be reinitialized after every line, so must also reinitialize parser
+     //must be reinitialized after every line, so must also reinitialize parser
 
-    public void evaluateInput(String currentLine) {
-        myBuilder=new OperationBuilder(myParser);
-        String[] currentLineWithoutSpaces = currentLine.split(" ");
-        currentLine = new ArrayList<String>(Arrays.asList(currentLineWithoutSpaces));
+     public void evaluateInput(ArrayList<String> textBlock) {
+         for(int currentLineNumber=0; currentLineNumber<textBlock.size(); currentLineNumber++) {
+             String[] currentLineWithoutSpaces = textBlock.get(currentLineNumber).split(" ");
+             myCurrentLine = new ArrayList<String>(Arrays.asList(currentLineWithoutSpaces));
+             int currentIndex = 0;
+             // else check for a control tag. Call Control.execute, and evaluateIndependentLine will be called accordingly
+             //I'm thinking that if no control tag, create base control, which simply calls evaluateIndependentLine until textBlock runs out
+             //if List, call parseOperationAndUpdate Index until close bracket is d etected
+         }
+     }
 
-        int currentIndex=0;
-        boolean isCommentOrBlank=currentLine.size()==0 || currentLine.get(currentIndex).equals("#");
-        if (isCommentOrBlank) return;
-        //checkControlTags (like for, ifelse, etc). If they exist, initialize the type and make a queue
-        //if no controlTags:
-        evaluateIndependentLine(currentIndex);
-        }
-
-    private void evaluateIndependentLine(){
+     private void evaluateIndependentLine() {
+         String firstEntry=myCurrentLine.get(currentIndex);
+         if(firstEntry.getSymbol().equals("Comment") || myCurrentLine.size()==0) return;
+         else parseOperationAndUpdateIndex(currentIndex);
         /*
         boolean isList=currentLine.get(currentIndex).equals("[");
         if(isList) currentIndex++; //skips over bracket
@@ -41,20 +46,22 @@ import java.util.Arrays;
             commandCount++;
         }
         */
-    }
+     }
 
-    private int parseOperationAndUpdateIndex(int currentIndex) {
-        String operationTag = myCurrentLine.get(currentIndex);
-        operationTag=mySymbols.get(operationTag);
-        Operation defaultOperation = myOperationsMap.get(operationTag); //will automatically throw error if doesn't work
-        Stack<OperationBuilder> builderStack=new Stack<OperationBuilder>();
-        OperationBuilder builder=new OperationBuilder(defaultOperation, myCurrentLine, currentIndex, operationTag);
-        stack.push(builder);
-        while (builderStack.size() != 0) {
-            builder = builderStack.peek();
-            if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
-                builder.performOperationAndSimplifyLine(builderStack, currentIndex);
-            } else currentIndex=builder.continueBuildingOperation(builderStack);
-        }
-        return currentIndex;
-    }
+     private int parseOperationAndUpdateIndex(int currentIndex) {
+         String operationTag = myCurrentLine.get(currentIndex);
+         operationTag = mySymbols.get(operationTag);
+         Operation defaultOperation = myOperationsMap.get(operationTag); //will automatically throw error if doesn't work
+         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
+         OperationBuilder builder = new OperationBuilder(defaultOperation, myCurrentLine, currentIndex, operationTag);
+         builderStack.push(builder);
+         while (builderStack.size() != 0) {
+             builder = builderStack.peek();
+             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
+                 currentIndex=builder.performOperationAndSimplifyLine(builderStack, currentIndex);
+             } else builder.continueBuildingOperation(builderStack);
+         }
+         return currentIndex;
+     }
+
+ }

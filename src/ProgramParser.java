@@ -14,7 +14,7 @@ public class ProgramParser {
     // "types" and the regular expression patterns that recognize those types
     // note, it is a list because order matters (some patterns may be more generic)
     private List<Entry<String, Pattern>> mySymbols;
-    private HashMap<String, Operation> myOperations;
+    private HashMap<String, Operation> myOperationsMap;
 
     /**
      * Create an empty parser.
@@ -38,8 +38,8 @@ public class ProgramParser {
     }
 
     private void makeOperationsMap() {
-        myOperations.put("Forward", new movementCommand(FORWARD_DIRECTION, DEFAULT_MOVEMENT));
-        myOperations.put("Backward", new movementCommand(BACKWARD_DIRECTION, DEFAULT_MOVEMENT));
+        myOperationsMap.put("Forward", new movementCommand(FORWARD_DIRECTION, DEFAULT_MOVEMENT));
+        myOperationsMap.put("Backward", new movementCommand(BACKWARD_DIRECTION, DEFAULT_MOVEMENT));
         // continue
     /*
         if (currentString.equals("home")) {
@@ -113,6 +113,10 @@ public class ProgramParser {
         }
         // FIXME: perhaps throw an exception instead
         return ERROR;
+    }
+
+    public HashMap<String, Operation> getOperationsMap() {
+        return myOperationsMap;
     }
 
     /**
