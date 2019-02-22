@@ -1,10 +1,14 @@
  import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+ import java.util.List;
+ import java.util.Map;
+ import java.util.regex.Pattern;
+ import java.util.Stack;
 
-public class Interpreter {
+ public class Interpreter {
     ProgramParser myParser;
-    Builder myBuilder;
+    OperationBuilder myBuilder;
+     private List<Map.Entry<String, Pattern>> mySymbols;
 
     public Interpreter(ProgramParser parser) {
     myParser=parser;
@@ -13,7 +17,7 @@ public class Interpreter {
   //must be reinitialized after every line, so must also reinitialize parser
 
     public void evaluateInput(String currentLine) {
-        myBuilder=new Builder(myParser);
+        myBuilder=new OperationBuilder(myParser);
         String[] currentLineWithoutSpaces = currentLine.split(" ");
         currentLine = new ArrayList<String>(Arrays.asList(currentLineWithoutSpaces));
 
@@ -39,26 +43,18 @@ public class Interpreter {
         */
     }
 
-    private double parseOperation(){
-        String currentWord=myCurrentLine.get(myCurrentIndex);
-        String currentSymbol=myParser.getSymbol(currentWord); //will automatically throw error if doesn't work
-        if(currentSymbol.equals("Variable")) {
-            return parseVariable(currentWord);
+    private int parseOperationAndUpdateIndex(int currentIndex) {
+        String operationTag = myCurrentLine.get(currentIndex);
+        operationTag=mySymbols.get(operationTag);
+        Operation defaultOperation = myOperationsMap.get(operationTag); //will automatically throw error if doesn't work
+        Stack<OperationBuilder> builderStack=new Stack<OperationBuilder>();
+        OperationBuilder builder=new OperationBuilder(defaultOperation, myCurrentLine, currentIndex, operationTag);
+        stack.push(builder);
+        while (builderStack.size() != 0) {
+            builder = builderStack.peek();
+            if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
+                builder.performOperationAndSimplifyLine(builderStack, currentIndex);
+            } else currentIndex=builder.continueBuildingOperation(builderStack);
         }
-        if(currentSymbol.equals("Constant")){
-            return Double.parseDouble(currentWord);
-        }
-        Operation defaultOperation=myOperationsMap.get(operationTag); //will automatically throw error if doesn't work
-        Operation operation=myBuilder.build(defaultOperation, myCurrentLine, myCurrentIndex);
-        double returnValue=operation.execute();
-        if(operation instanceof Command) myPastCommands.add(operation);
-        return returnValue;
-    }
-
-
-        double[] simplifedArguments=simplifier.simplifyCommandArguments(currentLine, currentIndex, currentCommand.getArgumentNumber());
-
-        currentIndex=simplifier.getLargestIndexReached();
-        currentIndex++; //go to next unvisited piece of code
         return currentIndex;
     }
