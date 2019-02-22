@@ -1,8 +1,41 @@
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Stack;
 
-public class Simplifier {
+public class Builder {
+    ProgramParser myParser;
+    ArrayList<String> myCurrentLine;
+    int myCurrentIndex;
 
-        private int largestIndexReached=0;
+
+    public Builder(ProgramParser parser){
+        myParser=parser;
+    }
+
+        // private int largestIndexReached=0;
+
+    public Operation build(Operation defaultOperation, ArrayList<String> currentLine, int currentIndex){
+        Operation operation=defaultOperation.copy();
+        ArrayList<String> arguments=createArguments(operation.getNumOfArgs(), currentLine, currentIndex); // make operation class throw error if num of args doesnt match
+        operation.setArguments(arguments);
+        return operation;
+    }
+
+    private ArrayList<String> createArguments(int numOfArgs, ArrayList<String> currentLine, int currentIndex){
+        Stack<String> stack=new Stack<String>();
+        stack.push(currentLine.get(currentIndex+1));
+        while(stack.size()!=0){
+            String current=stack.pop();
+            parseWord()
+        }
+
+    }
+
+
+
+
+
+
 
     public double[] simplifyCommandArguments(ArrayList<String> currentLine, int currentIndex, int numberOfArguments){
         double[] commandArguments=new double[numberOfArguments];

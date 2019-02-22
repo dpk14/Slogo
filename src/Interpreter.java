@@ -2,12 +2,18 @@
 import java.util.Arrays;
 import java.util.List;
 
-public class Interpreter{
+public class Interpreter {
+    ProgramParser myParser;
+    Builder myBuilder;
 
-    ArrayList<String> currentLine;
-    Simplifier simplifier=new Simplifier(); //must be reinitialized after every line, so must also reinitialize parser
+    public Interpreter(ProgramParser parser) {
+    myParser=parser;
+    }
+
+  //must be reinitialized after every line, so must also reinitialize parser
 
     public void evaluateInput(String currentLine) {
+        myBuilder=new Builder(myParser);
         String[] currentLineWithoutSpaces = currentLine.split(" ");
         currentLine = new ArrayList<String>(Arrays.asList(currentLineWithoutSpaces));
 
@@ -19,7 +25,8 @@ public class Interpreter{
         evaluateIndependentLine(currentIndex);
         }
 
-    private void evaluateIndependentLine(int currentIndex){
+    private void evaluateIndependentLine(){
+        /*
         boolean isList=currentLine.get(currentIndex).equals("[");
         if(isList) currentIndex++; //skips over bracket
         if (!currentLine.contains("]")); //throw error
@@ -29,42 +36,28 @@ public class Interpreter{
             currentIndex=parseCommand(currentIndex);
             commandCount++;
         }
+        */
     }
 
-    private int parseCommand(int currentIndex){
-        Command currentCommand;
-        String currentString=currentLine.get(currentIndex);
-        if (IsAlphabetic(currentString)) {
-            currentString=currentString.toLowerCase();
+    private double parseOperation(){
+        String currentWord=myCurrentLine.get(myCurrentIndex);
+        String currentSymbol=myParser.getSymbol(currentWord); //will automatically throw error if doesn't work
+        if(currentSymbol.equals("Variable")) {
+            return parseVariable(currentWord);
         }
-        if (currentString.equals("home")) {
-                    new movementCommand(currentString, 0);
+        if(currentSymbol.equals("Constant")){
+            return Double.parseDouble(currentWord);
         }
-        else if (currentString.equals("Forward") || currentString.equals("Backward")){
-            currentCommand=new movementCommand(currentString, 1);
-        }
-        else if (currentString.equals("setxy") || currentString.equals("goto")) {
-            currentCommand = new movementCommand(currentString, 2);
-        }
-        else if (currentString.equals("right") || currentString.equals("rt") || currentString.equals("left") || currentString.equals("lt") || currentString.equals("setheading") || currentString.equals("seth")) {
-            currentCommand = new rotationCommand(currentString, 1);
-        }
-        else if (currentString.equals("towards")) {
-            currentCommand = new rotationCommand(currentString, 2);
-        }
-        else if (currentString.equals("penup") || currentString.equals("pu") || currentString.equals("pendown") || currentString.equals("pd")) {
-            currentCommand = new drawCommand(currentString, 1);
-        }
-        else if (currentString.equals("showturtle") || currentString.equals("st") || currentString.equals("hideturtle") || currentString.equals("ht")) {
-            currentCommand = new turtleStateCommand(currentString, 1);
-        }
-        else if (currentString.equals("make") || currentString.equals("set")){
-            currentCommand = new setterCommand(currentString, 2);
-        }
-        else return currentIndex;
+        Operation defaultOperation=myOperationsMap.get(operationTag); //will automatically throw error if doesn't work
+        Operation operation=myBuilder.build(defaultOperation, myCurrentLine, myCurrentIndex);
+        double returnValue=operation.execute();
+        if(operation instanceof Command) myPastCommands.add(operation);
+        return returnValue;
+    }
+
+
         double[] simplifedArguments=simplifier.simplifyCommandArguments(currentLine, currentIndex, currentCommand.getArgumentNumber());
-        currentCommand.setArguments(simplifedArguments);
-        currentCommand.execute();
+
         currentIndex=simplifier.getLargestIndexReached();
         currentIndex++; //go to next unvisited piece of code
         return currentIndex;
