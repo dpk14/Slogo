@@ -1,4 +1,6 @@
-import java.lang.reflect.Array;
+import Operations.Command;
+import Operations.Operation;
+
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -17,7 +19,7 @@ public class OperationBuilder {
         myCurrentLine=currentLine;
         myOperation=defaultOperation.copy();
         myOperationMarker=operationMarker;
-        myNumOfArgsNeeded=myOperation.getNumOfArgs();
+        myNumOfArgsNeeded=myOperation.getNumArgs();
         myOperationArguments=new String[myNumOfArgsNeeded];
         myOperationsMap=operations;
         mySymbols=symbols;
@@ -46,7 +48,7 @@ public class OperationBuilder {
         double returnVal=myOperation.execute();
         if(builderStack.size()==1) currentIndex+=myNumOfArgsFilled;
         else{
-            for (int k = 1; k < myOperation.getNumOfArgs(); k++) {
+            for (int k = 1; k < myOperation.getNumArgs(); k++) {
                 myCurrentLine.remove(currentIndex);
             }
         }

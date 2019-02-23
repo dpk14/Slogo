@@ -1,22 +1,35 @@
+package Operations;
+
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class Command {
+/**
+ * @author Irene Qiao isq
+ */
+abstract public class Command extends Operation{
     String myCommandType;
     double[] myArguments;
-    int myNumberOfArguments;
-    Command(String commandType, int numberOfArguments){
+    int myNumArgs;
+    Command(String commandType, int numArgs){
         myCommandType=commandType;
-        myNumberOfArguments=numberOfArguments;
+        myNumArgs=numArgs;
     }
 
-    public int getArgumentNumber(){
-        return myNumberOfArguments;
+    @Override
+    public int getNumArgs(){
+        return myNumArgs;
     }
 
-    public void setArguments(double[] arguments){
+    @Override
+    public Operation copy(){
+        return this;
+    }
+
+    @Override
+    abstract public double execute();
+
+    public void setArgs(double[] arguments){
         myArguments=arguments;
     }
-
 
 }

@@ -5,8 +5,8 @@ When does parsing need to take place and what does it need to start properly?
 - This input is taken from the UI class and handed to the Parser class
 
 What is the result of parsing and who receives it?
-- If the input is valid, then the parser creates a Command object that is executed by the Execution class
-- The Command object is also stored in the Execution
+- If the input is valid, then the parser creates a Operations.Command object that is executed by the Execution class
+- The Operations.Command object is also stored in the Execution
 
 When are errors detected and how are they reported?
 Errors are detected in the parser?

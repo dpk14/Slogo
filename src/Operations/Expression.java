@@ -1,8 +1,10 @@
+package Operations;
+
 import java.util.ArrayList;
 
-public class Expression {
+public class Expression extends Operation{
     String myExpressionType;
-    ArrayList<String> myArguments=new ArrayList<String>();
+    ArrayList<Double> myArguments= new ArrayList<>();
     int myNumberOfArguments;
     
     Expression(String commandType, int numberOfArguments){
@@ -14,8 +16,22 @@ public class Expression {
         return myNumberOfArguments;
     }
 
-    public ArrayList<String> getArguments(){
+    public ArrayList<Double> getArguments(){
         return myArguments;
     }
 
+    @Override
+    public double execute() {
+        return 0;
+    }
+
+    @Override
+    public int getNumArgs() {
+        return 0;
+    }
+
+    @Override
+    public Operation copy() {
+        return null;
+    }
 }

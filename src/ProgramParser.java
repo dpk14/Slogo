@@ -1,3 +1,5 @@
+import Operations.Operation;
+
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
@@ -42,8 +44,8 @@ public class ProgramParser {
     }
 
     public HashMap makeOperationsMap() {
-        myOperationsMap.put("Forward", new movementCommand(FORWARD_DIRECTION, DEFAULT_MOVEMENT));
-        myOperationsMap.put("Backward", new movementCommand(BACKWARD_DIRECTION, DEFAULT_MOVEMENT));
+        myOperationsMap.put("Forward", new MovementCommand(FORWARD_DIRECTION, DEFAULT_MOVEMENT));
+        myOperationsMap.put("Backward", new MovementCommand(BACKWARD_DIRECTION, DEFAULT_MOVEMENT));
         // continue
 
         return new HashMap<String, Operation>();
@@ -70,7 +72,7 @@ public class ProgramParser {
 
 
                 String expressionType=currentLine.get(currentIndex);
-        Expression currentExpression=new Expression();
+        Operations.Expression currentExpression=new Operations.Expression();
         if (expressionType.indexOf("?")==expressionType.length()-1){
             expressionType=expressionType.substring(0, expressionType.length()-1);
             expressionType+="P";
