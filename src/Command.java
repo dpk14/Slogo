@@ -1,12 +1,7 @@
-package Operations;
-
-import java.util.ArrayList;
-import java.util.Stack;
-
 /**
  * @author Irene Qiao isq
  */
-abstract public class Command extends Operation{
+abstract public class Command extends Operation {
     String myCommandType;
     double[] myArguments;
     int myNumArgs;
