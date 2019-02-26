@@ -29,4 +29,4 @@ abstract public class Operation {
             return 0; //TODO: catch NullPointerException
         }
     }
-}
+

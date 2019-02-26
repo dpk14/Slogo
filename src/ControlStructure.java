@@ -1,8 +1,10 @@
 import java.util.Stack;
 
 public class ControlStructure {
+    // Amanda ToDo:
+    /** make constructor, make basic CntrlStruct commands, think about logic*/
 
-    private void evaluateIndependentLine() {
+    private void evaluateIndependentLine(int startingIndex) {
         String firstEntry=myCurrentLine.get(currentIndex);
         if(firstEntry.getSymbol().equals("Comment") || myCurrentLine.size()==0) return;
         else parseOperationAndUpdateIndex(currentIndex);
@@ -35,7 +37,7 @@ public class ControlStructure {
         return currentIndex;
     }
 
-    public void executeCode(Stack<ControlStructure> controlStructureStack){
+    public void executeCode(Stack<ControlStructure> controlStructureStack, ArrayList<ArrayList<String>> textBlock, int currentLineNumber, int currentIndex){
         //check next index. If it is a control structure, push it on stack
 
         //Each Control subclass inherits the above "push to stack conditional" through super.
