@@ -35,6 +35,10 @@ public class SystemStorage {
         }
     }
 
+    public List<Command> getCustomCommand(String commandName){
+        return myCustomCommands.get(commandName);
+    }
+
     public void setVariableValue(String variableName, double value){
         userVariables.putIfAbsent(variableName, value);
         if (userVariables.keySet().contains(variableName)){

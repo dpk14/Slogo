@@ -1,30 +1,21 @@
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Irene Qiao isq
  */
 abstract public class Command extends Operation {
-    String myCommandType;
-    double[] myArguments;
-    int myNumArgs;
-    Command(String commandType, int numArgs){
-        myCommandType=commandType;
-        myNumArgs=numArgs;
-    }
+    Animal myTurtle;
 
-    @Override
-    public int getNumArgs(){
-        return myNumArgs;
-    }
-
-    @Override
-    public Operation copy(){
-        return this;
+    public Command(String commandType, List<String> arguments, SystemStorage storage, Animal turtle){
+        super(commandType, arguments, storage);
+        myTurtle = turtle;
     }
 
     @Override
     abstract public double execute();
 
-    public void setArgs(double[] arguments){
-        myArguments=arguments;
-    }
+    @Override
+    abstract public Operation copy();
 
 }
