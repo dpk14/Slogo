@@ -1,5 +1,3 @@
-import Operations.Operation;
-
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
@@ -72,7 +70,7 @@ public class ProgramParser {
 
 
                 String expressionType=currentLine.get(currentIndex);
-        Operations.Expression currentExpression=new Operations.Expression();
+        Expression currentExpression=new Expression();
         if (expressionType.indexOf("?")==expressionType.length()-1){
             expressionType=expressionType.substring(0, expressionType.length()-1);
             expressionType+="P";
