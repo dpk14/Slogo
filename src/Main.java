@@ -64,9 +64,10 @@ public class  Main extends Application {
     }
 
 
-    public void evaluateInput(ArrayList<String> textBlock) {
-        ArrayList<String> currentLine;
-        ArrayList<ArrayList<String>> textBlockNoSpaces=new ArrayList<ArrayList<String>>();
+    //gets the contents of the textbox as a string without newline characters
+    public void evaluateInput(String inputString) {
+        ;
+        ArrayList<ArrayLis<String>> textBlockNoSpaces=new ArrayList<ArrayList<String>>();
         for(int currentLineNumber=0; currentLineNumber<textBlock.size(); currentLineNumber++) {
             String[] currentLineWithoutSpaces = textBlock.get(currentLineNumber).split(WHITESPACE);
             ArrayList<String> currentLineWithoutSpaces_AsList = new ArrayList<>(Arrays.asList(currentLineWithoutSpaces));
@@ -75,12 +76,13 @@ public class  Main extends Application {
             int currentLineNumber=0;
             int currentIndex=0;
             String firstEntry=textBlockNoSpaces.get(currentLineNumber).get(currentIndex);
-            ControlStructure outerControlStructure=myParser.getControlStructure(firstEntry);
+            ControlStructure firstControlStructure=myParser.getControlStructure(firstEntry);
+            firstControlStructure.initializeStructure(currentIndex, currentLineNumber, textBlockNoSpaces);
             Stack<ControlStructure> controlStructureStack=new Stack<ControlStructure>();
-            controlStructureStack.push(outerControlStructure);
+            controlStructureStack.push(firstControlStructure);
             while(controlStructureStack.size()!=0) {
                 ControlStructure currentStructure= controlStructureStack.peek();
-                currentStructure.executeCode(controlStructureStack, textBlockNoSpaces, currentLineNumber, currentIndex);
+                currentStructure.executeCode(controlStructureStack, textBlockNoSpaces);
             }
             // else check for a control tag. Call Control.execute, and evaluateIndependentLine will be called accordingly
             //I'm thinking that if no control tag, create base control, which simply calls evaluateIndependentLine until textBlock runs out

@@ -21,7 +21,9 @@ public class Console {
     }
 
     public ArrayList<String> getText(){
-        ArrayList<String> textBlock = (ArrayList<String>) Arrays.asList(userInput.getText().split("\n"));
+        String[] splitByLine=userInput.getText().split("\n");
+        String newLineCharacterRemoved=String.join(" ", splitByLine);
+        ArrayList<String> textBlock = (ArrayList<String>) Arrays.asList(newLineCharacterRemoved);
         return textBlock;
     }
 

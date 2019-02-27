@@ -41,18 +41,25 @@ public class OperationBuilder {
 
     //retain the most simplified version of the operation, which will exist when there is only one operationBuilder left in the stack. Then advance the current index to the end of the command
     //if the stack is bigger than 1, it can still be simplified further, so simplify the currentLine by removing the current expression from the list and replacing it with a simplified value.
-    public int performOperationAndSimplifyLine(Stack<OperationBuilder> builderStack, int currentIndex) {
+    public double performOperationAndSimplifyLine(Stack<OperationBuilder> builderStack, int currentIndex) {
         double returnVal=myOperation.execute();
+
+        for (int k = 1; k < myOperation.getNumArgs(); k++) {
+            myCurrentLine.remove(currentIndex);
+        }
+        /*
         if(builderStack.size()==1) currentIndex+=myNumOfArgsFilled;
         else{
             for (int k = 1; k < myOperation.getNumArgs(); k++) {
                 myCurrentLine.remove(currentIndex);
             }
         }
+        */
+
         myCurrentLine.add(currentIndex, returnVal.toString());
         if (myOperation instanceof Command) myCommandLog.add(myOperation);
         builderStack.pop();
-        return currentIndex;
+        return returnVal;
     }
 
     public int getMyNumOfArgsFilled() {
