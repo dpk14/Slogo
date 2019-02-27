@@ -68,7 +68,7 @@ public class  Main extends Application {
         myConsole = new Console();
         Button myRun = myConsole.getButton();
         myRun.setOnAction(e->sendText());
-        Scene scene=createScene();
+        Scene scene = createScene();
         stage.setScene(scene);
         stage.show();
     }
