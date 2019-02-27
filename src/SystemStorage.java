@@ -22,6 +22,19 @@ public class SystemStorage {
         return names;
     }
 
+    public Map<String, Double> getVariableMap(){
+        return userVariables;
+    }
+
+    public Set<String> getVariableNames(){
+        HashSet<String> names = new HashSet<>();
+        for (String name: userVariables.keySet()){
+            names.add(name);
+        }
+        return names;
+    }
+
+
     public void storeAnimal (String animalName, Animal object){
         habitat.put(animalName, object);
     }
