@@ -4,6 +4,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 
 import java.lang.Math;
+import java.util.ArrayList;
 
 public class Animal {
 
@@ -13,11 +14,13 @@ public class Animal {
     private double current_angle;
     private boolean myPen;
     private Pane myPane;
+    private ArrayList<Line> trail;
 
     public Animal(String name, int HEIGHT, int WIDTH, Pane pane){
         animal_name = name;
         myPane = pane;
         current_angle = 90;
+        trail = new ArrayList<>();
         double radian = Math.toRadians(current_angle);
         direction_vector = new double[2];
         direction_vector[0] = Math.cos(radian);
@@ -36,9 +39,30 @@ public class Animal {
         myPen = false;
     }
 
-    public void setPosition(double x, double y){
+    public boolean getPenStatus(){
+        return myPen;
+    }
+
+    public double getHeading(){
+        return current_angle;
+    }
+
+
+    public double[] getCoordinates(){
+        double[] coords = new double[2];
+        coords[0] = node.getX();
+        coords[1] = node.getY();
+        return coords;
+    }
+
+    public double setPosition(double x, double y){
+        double current_x = node.getX();
+        double current_y = node.getY();
         node.setX(x);
         node.setY(y);
+        return Math.sqrt(Math.pow(current_x-x,2) + Math.pow(current_y-y, 2));
+
+
     }
 
     public void changePosition(double delta){
@@ -61,7 +85,14 @@ public class Animal {
             path.setStartY(current_y);
             path.setEndX(next_x);
             path.setEndY(next_y);
+            trail.add(path);
             myPane.getChildren().add(path);
+        }
+    }
+
+    public void clearTrails(){
+        for(Line path : trail){
+            myPane.getChildren().remove(path);
         }
     }
 
@@ -70,7 +101,6 @@ public class Animal {
         double radian = Math.toRadians(current_angle);
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
-
         node.setRotate(node.getRotate() + current_angle);
     }
 

@@ -32,7 +32,7 @@ public class  Main extends Application {
     }
 
     private void askForLanguages(Stage stage){
-        MenuBar language = new MenuBar();
+        MenuBar languageBar = new MenuBar();
         Menu languages = new Menu("Choose Language");
         MenuItem english  = makeMenuItem("English", stage);
         MenuItem german = makeMenuItem("German", stage);
@@ -43,8 +43,9 @@ public class  Main extends Application {
         MenuItem portuguese = makeMenuItem("Portuguese", stage);
         MenuItem spanish = makeMenuItem("Spanish", stage);
         HBox root = new HBox();
-        language.getMenus().add(languages);
-        root.getChildren().add(language);
+        languages.getItems().addAll(english, german, italian, russian, chinese, french, portuguese, spanish);
+        languageBar.getMenus().add(languages);
+        root.getChildren().add(languageBar);
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
