@@ -6,10 +6,6 @@ public class SetPen extends Command {
         super(movementType, arguments, storage, turtle);
     }
 
-    public SetPen (SystemStorage storage, Animal turtle){
-        super("up", new ArrayList<>(), storage, turtle);
-    }
-
     @Override
     public double execute() {
         double ret = -1;
