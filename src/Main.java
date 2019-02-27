@@ -35,7 +35,7 @@ public class Main extends Application {
     }
 
     private void handleMouseInput(KeyCode code) {
-        //if Run button clicked:
+        //if Run button click ed:
         evaluateInput(texBlock);
 
     }
@@ -46,7 +46,7 @@ public class Main extends Application {
         for(int currentLineNumber=0; currentLineNumber<textBlock.size(); currentLineNumber++) {
             String[] currentLineWithoutSpaces = textBlock.get(currentLineNumber).split(WHITESPACE);
             ArrayList<String> currentLineWithoutSpaces_AsList = new ArrayList<String>(Arrays.asList(currentLineWithoutSpaces));
-            textBlockNoSpaces.add(currentLineWithoutSpaces_AsList);
+            textBlockNoSpaces.add(currentLineWithoutSpaces_AsList); //control structures need access to textBlockNoSpaces
         }
             int currentLineNumber=0;
             int currentIndex=0;
@@ -56,7 +56,7 @@ public class Main extends Application {
             controlStructureStack.push(outerControlStructure);
             while(controlStructureStack.size()!=0) {
                 ControlStructure currentStructure= controlStructureStack.peek();
-                currentStructure.executeCode(controlStructureStack);
+                currentStructure.executeCode(controlStructureStack, textBlockNoSpaces, currentLineNumber, currentIndex);
             }
             // else check for a control tag. Call Control.execute, and evaluateIndependentLine will be called accordingly
             //I'm thinking that if no control tag, create base control, which simply calls evaluateIndependentLine until textBlock runs out
