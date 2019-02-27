@@ -9,10 +9,6 @@ public class HomeCommand extends Command {
         super(movementType, arguments, storage, turtle);
     }
 
-    public HomeCommand (SystemStorage storage, Animal turtle){
-        super("home", new ArrayList<>(), storage, turtle);
-    }
-
     @Override
     public double execute() {
         double ret = -1;
@@ -28,6 +24,7 @@ public class HomeCommand extends Command {
 
     @Override
     public Operation copy() {
-        return null;
+        Operation copy = new HomeCommand(myType, myArgs, mySystemStorage, myTurtle);
+        return copy;
     }
 }

@@ -8,11 +8,6 @@ public class RotateCommand extends Command{
         super(movementType, arguments, storage, turtle);
     }
 
-    public RotateCommand(SystemStorage storage, Animal turtle){
-        super("forward", new ArrayList<String>(), storage, turtle);
-        super.getMyArgs().add("0");
-    }
-
     @Override
     public double execute() {
         double angle = parseString(myArgs.get(0));
