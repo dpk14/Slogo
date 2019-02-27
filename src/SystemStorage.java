@@ -31,6 +31,10 @@ public class SystemStorage {
         return habitat.get(animalName);
     }
 
+    public Set<String> getAnimalNames(){
+        return habitat.keySet();
+    }
+
     public double getVariableValue (String variable){
         if (userVariables.keySet().contains(variable)){
             return userVariables.get(variable);
