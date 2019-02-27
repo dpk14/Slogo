@@ -2,50 +2,51 @@ import java.util.ArrayList;
 import java.util.Stack;
 
 public class ControlStructure {
+    ProgramParser myParser;
     int myStartingIndex;
-    int myStartingLine;
-    ArrayList<ArrayList<String>> myTextBlock=new ArrayList<ArrayList<String>>();
+    ArrayList<String> myUserInput;
+    int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
     // Amanda ToDo:
     /** make constructor, make basic CntrlStruct commands, think about logic*/
 
+    public ControlStructure(ProgramParser parser, int numOfListArguments){
+        myParser=parser;
+        myNumOfListArguments=numOfListArguments;
+    }
+
     //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
-    public void initializeStructure(int startingIndex, int startingLine,  ArrayList<ArrayList<String>> textBlock){
+    public void initializeStructure(int startingIndex, ArrayList<String> userInput){
         myStartingIndex=startingIndex;
-        myStartingLine=startingLine;
-        myTextBlock=textBlock;
+        myUserInput=userInput;
     }
 
-    private void evaluateLineSection(int startingIndex, ArrayList<String> currentLine) {
-        ArrayList<String> simplifiedLineSection=new ArrayList<String>(currentLine);
-        String firstEntry=currentLine.get(startingIndex);
-        if(firstEntry.getSymbol().equals("Comment") || simplifiedLineSection.size()==0) return;
-        if(firstEntry.equals("[")){
-            int currentIndex=startingIndex;
-            while(!currentLine.get(currentIndex).equals("]"))
+    protected ArrayList<String> evaluateLineSection(int startingIndex, ArrayList<String> lineSection) {
+        ArrayList<String> simplifiedLineSection = new ArrayList<String>(lineSection);
+        String firstEntry = simplifiedLineSection.get(startingIndex);
+        firstEntry=myParser.getSymbol(firstEntry);
+        if (firstEntry.equals("[")) {
+            int currentIndex = startingIndex;
+            while (!simplifiedLineSection.get(currentIndex + 1).equals("]")) {
+                String nextEntry=simplifiedLineSection.get(currentIndex+1);
+                nextEntry=myParser.getSymbol(nextEntry);
+                if(myParser.isControl(nextEntry)) parseNestedControl(nextEntry, currentIndex+1, simplifiedLineSection);
+                else if (myParser.isOperation(nextEntry)) parseOperation(nextEntry, currentIndex+1, simplifiedLineSection);
+                else; //error
+                currentIndex++;
+            }
+        } else if(!(firstEntry.equals("Variable")|| firstEntry.equals("Constant"))){
+            parseOperation(firstEntry, startingIndex, simplifiedLineSection);
         }
-        else parseOperation(currentIndex, simplifiedLineSection);
-
-        /*
-        boolean isList=currentLine.get(currentIndex).equals("[");
-        if(isList) currentIndex++; //skips over bracket
-        if (!currentLine.contains("]")); //throw error
-        int commandCount=0;
-        while(!currentLine.get(currentIndex).equals("]")) {
-            if(!isList && commandCount==1); //throw error, bc if it isn't a list, shouldn't be more than one command
-            currentIndex=parseCommand(currentIndex);
-            commandCount++;
-        }
-        */
+        return simplifiedLineSection;
     }
+
 
     //replaces any operation tag with the return value of that operation, simplifying the line section
-    private double parseOperation(int currentIndex, ArrayList<String> simplifiedLineSection) {
+    protected double parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiedLineSection) {
         double operationReturnValue=0;
-        String operationTag = simplifiedLineSection.get(currentIndex);
-        operationTag = mySymbols.get(operationTag);
-        Operation defaultOperation = myOperationsMap.get(operationTag); //will automatically throw error if doesn't work
+        Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
-        OperationBuilder builder = new OperationBuilder(defaultOperation, myCurrentLine, currentIndex, operationTag);
+        OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiedLineSection, currentIndex, operationType);
         builderStack.push(builder);
         while (builderStack.size() != 0) {
             builder = builderStack.peek();
@@ -56,12 +57,29 @@ public class ControlStructure {
         return operationReturnValue;
     }
 
-    public void executeCode(Stack<ControlStructure> controlStructureStack, ArrayList<ArrayList<String>> textBlock){
+    protected void parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiedLineSection) {
+        ControlStructure nestedControlStructure = myParser.getControl(controlType); //will automatically throw error if doesn't work
+        nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
+        nestedControlStructure.executeCode();
+        nestedControlStructure.removeAndAdvance(currentIndex, simplifiedLineSection);
+        }
+
+    protected void removeAndAdvance(int currentIndex, ArrayList<String> simplifiedLineSection){
+        for(int k=0; k<myNumOfListArguments; k++) {
+            while (!simplifiedLineSection.get(currentIndex).equals("]")) {
+                simplifiedLineSection.remove(currentIndex);
+            }
+        }
+        simplifiedLineSection.add(currentIndex, "SIMPLIFIED_CONTROL");
+    }
+
+
+    public void executeCode(){};
 
         //check next index. If it is a control structure, push it on stack
 
         //Each Control subclass inherits the above "push to stack conditional" through super.
         // Then this method is extended for the specific base case and expected structure of each ControlStructure
         // ** for instance, if some "base case" is met, the control structure executes its operations and is popped from the stack
-    }
+
 }

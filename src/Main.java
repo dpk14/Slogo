@@ -34,16 +34,16 @@ public class  Main extends Application {
         myParser.addPatterns("regex/resources/languages/Syntax");
         myParser.makeOperationsMap();
         myParser.makeControlMap();
-        mySystemStorage=new SystemStorage();
+        mySystemStorage = new SystemStorage();
         myConsole = new Console();
         Button myRun = myConsole.getButton();
-        myRun.setOnAction(e->sendText());
-        Scene scene=createScene();
+        myRun.setOnAction(e -> sendText());
+        Scene scene = createScene();
         stage.setScene(scene);
         stage.show();
     }
 
-    private void sendText(){
+    private void sendText() {
         evaluateInput(myConsole.getText());
     }
 
@@ -65,29 +65,15 @@ public class  Main extends Application {
 
 
     //gets the contents of the textbox as a string without newline characters
-    public void evaluateInput(String inputString) {
-        ;
-        ArrayList<ArrayLis<String>> textBlockNoSpaces=new ArrayList<ArrayList<String>>();
-        for(int currentLineNumber=0; currentLineNumber<textBlock.size(); currentLineNumber++) {
-            String[] currentLineWithoutSpaces = textBlock.get(currentLineNumber).split(WHITESPACE);
-            ArrayList<String> currentLineWithoutSpaces_AsList = new ArrayList<>(Arrays.asList(currentLineWithoutSpaces));
-            textBlockNoSpaces.add(currentLineWithoutSpaces_AsList); //control structures need access to textBlockNoSpaces
-        }
-            int currentLineNumber=0;
-            int currentIndex=0;
-            String firstEntry=textBlockNoSpaces.get(currentLineNumber).get(currentIndex);
-            ControlStructure firstControlStructure=myParser.getControlStructure(firstEntry);
-            firstControlStructure.initializeStructure(currentIndex, currentLineNumber, textBlockNoSpaces);
-            Stack<ControlStructure> controlStructureStack=new Stack<ControlStructure>();
-            controlStructureStack.push(firstControlStructure);
-            while(controlStructureStack.size()!=0) {
-                ControlStructure currentStructure= controlStructureStack.peek();
-                currentStructure.executeCode(controlStructureStack, textBlockNoSpaces);
-            }
-            // else check for a control tag. Call Control.execute, and evaluateIndependentLine will be called accordingly
-            //I'm thinking that if no control tag, create base control, which simply calls evaluateIndependentLine until textBlock runs out
-            //if List, call parseOperationAndUpdate Index until close bracket is d etected
-        }
+    private void evaluateInput(String inputString) {
+        ArrayList<String> userInputNoSpaces = new ArrayList<String>(Arrays.asList(inputString.split(" ")));
+        int startingIndex = 0;
+        String firstEntry = userInputNoSpaces.get(startingIndex);
+        ControlStructure firstControlStructure = myParser.getControlStructure(firstEntry);
+        firstControlStructure.initializeStructure(startingIndex, userInputNoSpaces);
+        firstControlStructure.executeCode();
+    }
+
 
     public static void main (String[] args) {}
 }
