@@ -15,16 +15,20 @@ public class SystemStorage {
         myHistoricalCommands = new ArrayList<>();
     }
 
+    public Set<String> getAnimalNames(){
+        HashSet<String> names = new HashSet<>();
+        for (String name: habitat.keySet()){
+            names.add(name);
+        }
+        return names;
+    }
+
     public void storeAnimal (String animalName, Animal object){
         habitat.put(animalName, object);
     }
 
     public Animal getAnimal(String animalName){
         return habitat.get(animalName);
-    }
-
-    public Set<String> getAnimalNames(){
-        return habitat.keySet();
     }
 
     public double getVariableValue (String variable){
