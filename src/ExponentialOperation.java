@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExponentialOperation extends Expression {
+public class ExponentialOperation extends Operation {
     public ExponentialOperation (String myType, List<String> args, SystemStorage storage){
         super(myType, args, storage);
     }

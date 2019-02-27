@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrigonometricOperation extends Expression {
+public class TrigonometricOperation extends Operation {
     public TrigonometricOperation (String myType, List<String> args, SystemStorage storage){
         super(myType, args, storage);
     }

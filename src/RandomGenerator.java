@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class RandomGenerator extends Expression {
+public class RandomGenerator extends Operation {
     public RandomGenerator (String myType, List<String> args, SystemStorage storage){
         super(myType, args, storage);
     }

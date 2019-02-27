@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class BasicMathOperation extends Expression {
+public class BasicMathOperation extends Operation {
     private final int MINUS_MULTIPLIER = -1;
 
     public BasicMathOperation(String myType, List<String> args, SystemStorage storage){
