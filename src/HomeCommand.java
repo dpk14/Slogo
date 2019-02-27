@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.ArrayList;
 
 public class HomeCommand extends Command {
     private final double HOME_X = 0;
@@ -17,7 +16,7 @@ public class HomeCommand extends Command {
         }
         else if (myType.equals("clear")){
             ret = myTurtle.setPosition(HOME_X, HOME_Y);
-            //TODO: erase trails
+            myTurtle.clearTrails();
         }
         return ret;
     }
