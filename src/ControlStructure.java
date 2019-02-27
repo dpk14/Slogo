@@ -9,7 +9,9 @@ public class ControlStructure {
     private void evaluateIndependentLine(int startingIndex) {
         String firstEntry=myCurrentLine.get(currentIndex);
         if(firstEntry.getSymbol().equals("Comment") || myCurrentLine.size()==0) return;
+        if()
         else parseOperationAndUpdateIndex(currentIndex);
+
         /*
         boolean isList=currentLine.get(currentIndex).equals("[");
         if(isList) currentIndex++; //skips over bracket
