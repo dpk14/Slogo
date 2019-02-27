@@ -7,11 +7,6 @@ public class VisibilityCommand extends Command{
         super(movementType, arguments, storage, turtle);
     }
 
-    public VisibilityCommand(SystemStorage storage, Animal turtle){
-        super("forward", new ArrayList<String>(), storage, turtle);
-        super.getMyArgs().add("0");
-    }
-
     @Override
     public double execute() {
         double ret = -1;
@@ -26,7 +21,7 @@ public class VisibilityCommand extends Command{
 
     @Override
     public Operation copy() {
-        Operation copy = new RotateCommand(myType, myArgs, mySystemStorage, myTurtle);
+        Operation copy = new VisibilityCommand(myType, myArgs, mySystemStorage, myTurtle);
         return copy;
     }
 }

@@ -6,22 +6,17 @@ public class SetAbsoluteCommand extends Command {
         super(movementType, arguments, storage, turtle);
     }
 
-    public SetAbsoluteCommand (SystemStorage storage, Animal turtle){
-        super("heading", new ArrayList<String>(), storage, turtle);
-        super.getMyArgs().add("0");
-    }
-
     @Override
     public double execute() {
         double ret = -1;
         if (myType.equals("heading")){
-            double angle = Double.parseDouble(myArgs.get(0));
+            double angle = parseString(myArgs.get(0));
             myTurtle.setHeading(angle);
             ret = angle;
         }
         else if (myType.equals("position")){
-            double x = Double.parseDouble(myArgs.get(0));
-            double y = Double.parseDouble(myArgs.get(1));
+            double x = parseString(myArgs.get(0));
+            double y = parseString(myArgs.get(1));
             ret = myTurtle.setPosition(x, y);
         }
         else if (myType.equals("towards")){
