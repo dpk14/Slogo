@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.lang.NullPointerException;
 
 public class SystemStorage {
@@ -24,6 +21,10 @@ public class SystemStorage {
 
     public Animal getAnimal(String animalName){
         return habitat.get(animalName);
+    }
+
+    public Set<String> getAnimalNames(){
+        return habitat.keySet();
     }
 
     public double getVariableValue (String variable){
