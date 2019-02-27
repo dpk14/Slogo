@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -11,8 +12,16 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Stack;
 
-public class Main extends Application {
+public class  Main extends Application {
 
+
+    final private int HEIGHT_OF_SCENE = 800;
+    final private int WIDTH_OF_SCENE = 1000;
+
+    final private int HEIGHT_OF_ANIMAL_SCREEN = 600;
+    final private int WIDTH_OF_ANIMAL_SCREEN = 1000;
+
+    private Console myConsole;
     public ProgramParser myParser;
     public SystemStorage mySystemStorage;
 
@@ -25,27 +34,42 @@ public class Main extends Application {
         myParser.addPatterns("regex/resources/languages/Syntax");
         myParser.makeOperationsMap();
         myParser.makeControlMap();
-
         mySystemStorage=new SystemStorage();
-        Visualization myVisualization=new Visualization(mySystemStorage, WIDTH_OF_SCENE, HEIGHT_OF_SCENE);
-        Scene scene=myVisualization.initializeScene();
-        scene.setOnMouseClicked(e -> handleMouseInput(e.getX(), e.getY()));
+        myConsole = new Console();
+        Button myRun = myConsole.getButton();
+        myRun.setOnAction(e->sendText());
+        Scene scene=createScene();
         stage.setScene(scene);
         stage.show();
     }
 
-    private void handleMouseInput(KeyCode code) {
-        //if Run button click ed:
-        evaluateInput(texBlock);
-
+    private void sendText(){
+        evaluateInput(myConsole.getText());
     }
+
+    private Scene createScene() {
+        var main_pane = new BorderPane();
+
+        var animal_screen = new AnimalScreen(mySystemStorage, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
+        var options = new ScreenOptions(animal_screen.getAnimalPane(), mySystemStorage);
+
+
+        main_pane.setCenter(animal_screen.getAnimalPane());
+        main_pane.setTop(options.getOptions());
+        main_pane.setBottom(myConsole.getConsoleArea());
+
+        var scene = new Scene(main_pane, WIDTH_OF_SCENE, HEIGHT_OF_SCENE);
+
+        return scene;
+    }
+
 
     public void evaluateInput(ArrayList<String> textBlock) {
         ArrayList<String> currentLine;
         ArrayList<ArrayList<String>> textBlockNoSpaces=new ArrayList<ArrayList<String>>();
         for(int currentLineNumber=0; currentLineNumber<textBlock.size(); currentLineNumber++) {
             String[] currentLineWithoutSpaces = textBlock.get(currentLineNumber).split(WHITESPACE);
-            ArrayList<String> currentLineWithoutSpaces_AsList = new ArrayList<String>(Arrays.asList(currentLineWithoutSpaces));
+            ArrayList<String> currentLineWithoutSpaces_AsList = new ArrayList<>(Arrays.asList(currentLineWithoutSpaces));
             textBlockNoSpaces.add(currentLineWithoutSpaces_AsList); //control structures need access to textBlockNoSpaces
         }
             int currentLineNumber=0;
