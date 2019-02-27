@@ -62,7 +62,7 @@ public class ControlStructure {
         nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
         nestedControlStructure.executeCode();
         nestedControlStructure.removeAndAdvance(currentIndex, simplifiedLineSection);
-        }
+        } 
 
     protected void removeAndAdvance(int currentIndex, ArrayList<String> simplifiedLineSection){
         for(int k=0; k<myNumOfListArguments; k++) {
