@@ -48,15 +48,19 @@ public class Animal {
         double current_x = node.getX();
         double current_y = node.getY();
 
-        node.setX(current_x + x_delta);
-        node.setY(current_y + y_delta);
+        double next_x = current_x + x_delta;
+        double next_y = current_y + y_delta;
+
+
+        node.setX(next_x);
+        node.setY(next_y);
 
         if(myPen){
             Line path = new Line();
             path.setStartX(current_x);
             path.setStartY(current_y);
-            path.setEndX(current_x);
-            path.setEndY(current_y);
+            path.setEndX(next_x);
+            path.setEndY(next_y);
             myPane.getChildren().add(path);
         }
     }
