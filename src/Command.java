@@ -7,8 +7,8 @@ import java.util.List;
 abstract public class Command extends Operation {
     Animal myTurtle;
 
-    public Command(String commandType, List<String> arguments, SystemStorage storage, Animal turtle){
-        super(commandType, arguments, storage);
+    public Command(String commandType, int numArgs, SystemStorage storage, Animal turtle){
+        super(commandType, numArgs, storage);
         myTurtle = turtle;
     }
 

@@ -11,9 +11,11 @@ public class VisibilityCommand extends Command{
     public double execute() {
         double ret = -1;
         if (myType.equals("show")){
+            myTurtle.setVisibility(true);
             ret = 1;
         }
         else if (myType.equals("hide")){
+            myTurtle.setVisibility(false);
             ret = 0;
         }
         return ret;

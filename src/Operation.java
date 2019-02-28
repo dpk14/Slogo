@@ -5,12 +5,14 @@ import java.util.List;
  */
 abstract public class Operation {
     protected String myType;
+    protected int myNumArgs;
     protected List<String> myArgs;
     protected SystemStorage mySystemStorage;
+    protected double ret;
 
-    public Operation(String operationType, List arugments, SystemStorage systemStorage) {
+    public Operation(String operationType, int numArgs, SystemStorage systemStorage) {
         myType = operationType;
-        myArgs = arugments;
+        myNumArgs = numArgs;
         mySystemStorage = systemStorage;
     }
 
@@ -20,8 +22,8 @@ abstract public class Operation {
         return myArgs.size();
     }
 
-    public List<String> getMyArgs(){
-        return myArgs;
+    public void setArgs(List<String> args){
+        myArgs = args;
     }
 
     abstract public Operation copy();

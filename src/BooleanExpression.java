@@ -1,34 +1,34 @@
-import java.util.List;
 
 public class BooleanExpression extends Operation{
-    public BooleanExpression(String myType, List<String> args, SystemStorage storage){
-        super(myType, args, storage);
+    public BooleanExpression(String myType, int numArgs, SystemStorage storage){
+        super(myType, numArgs, storage);
     }
 
     @Override
     public double execute() {
-        boolean ret = false;
+        boolean booleanRet = false;
+        ret = 0;
         if (myType.equals("less")){
-            ret = parseString(myArgs.get(0)) < parseString(myArgs.get(1));
+            booleanRet = parseString(myArgs.get(0)) < parseString(myArgs.get(1));
         }
         else if (myType.equals("greater")){
-            ret = parseString(myArgs.get(0)) > parseString(myArgs.get(1));
+            booleanRet = parseString(myArgs.get(0)) > parseString(myArgs.get(1));
         }
         else if (myType.equals("equal")){
-            ret = parseString(myArgs.get(0)) == parseString(myArgs.get(1));
+            booleanRet = parseString(myArgs.get(0)) == parseString(myArgs.get(1));
         }
         else if (myType.equals("notequal")){
-            ret = parseString(myArgs.get(0)) != parseString(myArgs.get(1));
+            booleanRet = parseString(myArgs.get(0)) != parseString(myArgs.get(1));
         }
-        if (ret == true){
-            return 1;
+        if (booleanRet == true){
+            ret = 1;
         }
-        return 0;
+        return ret;
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new BooleanExpression(myType, myArgs, mySystemStorage);
+        Operation copy = new BooleanExpression(myType, myNumArgs, mySystemStorage);
         return copy;
     }
 }

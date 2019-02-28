@@ -2,13 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TrigonometricOperation extends Operation {
-    public TrigonometricOperation (String myType, List<String> args, SystemStorage storage){
-        super(myType, args, storage);
+    public TrigonometricOperation (String myType, int numArgs, SystemStorage storage){
+        super(myType, numArgs, storage);
     }
 
     @Override
     public double execute() {
-        double ret = -1;
+        ret = -1;
         if (myType.equals("sin")){
             ret = Math.sin(parseString(myArgs.get(0)));
         }
@@ -29,7 +29,7 @@ public class TrigonometricOperation extends Operation {
 
     @Override
     public Operation copy() {
-        Operation copy = new TrigonometricOperation(myType, myArgs, mySystemStorage);
+        Operation copy = new TrigonometricOperation(myType, myNumArgs, mySystemStorage);
         return copy;
     }
 }

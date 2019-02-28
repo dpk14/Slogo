@@ -1,11 +1,9 @@
-import java.util.ArrayList;
-import java.util.List;
 
 public class MovementCommand extends Command {
     private final int BACKWARD_MULTIPLIER = -1;
 
-    public MovementCommand(String movementType, List<String> arguments, SystemStorage storage, Animal turtle){
-        super(movementType, arguments, storage, turtle);
+    public MovementCommand(String movementType, int numArgs, SystemStorage storage, Animal turtle){
+        super(movementType, numArgs, storage, turtle);
     }
 
     @Override
@@ -17,12 +15,13 @@ public class MovementCommand extends Command {
         else if (myType.equals("backward")){
             myTurtle.changePosition(stepSize * BACKWARD_MULTIPLIER);
         }
-        return stepSize;
+        ret = stepSize;
+        return ret;
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new MovementCommand(myType, myArgs, mySystemStorage, myTurtle);
+        Operation copy = new MovementCommand(myType, myNumArgs, mySystemStorage, myTurtle);
         return copy;
     }
 }
