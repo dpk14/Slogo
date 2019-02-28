@@ -66,14 +66,19 @@ public class  Main extends Application {
 
     //gets the contents of the textbox as a string without newline characters
     private void evaluateInput(String inputString) {
-        ArrayList<String> userInputNoSpaces = new ArrayList<String>(Arrays.asList(inputString.split(" ")));
-        int startingIndex = 0;
-        String firstEntry = userInputNoSpaces.get(startingIndex);
-        ControlStructure firstControlStructure = myParser.getControlStructure(firstEntry);
-        firstControlStructure.initializeStructure(startingIndex, userInputNoSpaces);
-        firstControlStructure.executeCode();
-    }
-
+        String[] splitByLine=inputString.split("\n");
+        String newLineCharacterRemoved=String.join(" ", splitByLine);
+        ArrayList<String> userInputList = new ArrayList<String>(Arrays.asList(newLineCharacterRemoved.split(" ")));
+        int currentIndex = 0;
+        while(currentIndex<userInputList.size()) {
+            String nextEntry = userInputList.get(currentIndex);
+            ControlStructure currentControlStructure = myParser.getControlStructure(nextEntry);
+            currentControlStructure.initializeStructure(currentIndex, userInputList);
+            currentControlStructure.executeCode();
+            currentControlStructure.removeAndAdvance(currentIndex, userInputList);
+            currentIndex++;
+        }
+        }
 
     public static void main (String[] args) {}
 }

@@ -1,19 +1,17 @@
 import java.util.ArrayList;
 import java.util.Stack;
 
-public class ControlStructure {
+public abstract class ControlStructure {
     ProgramParser myParser;
     SystemStorage myStorage;
     int myStartingIndex;
-    ArrayList<String> myUserInput;
+    ArrayList<String> myUserInput=new ArrayList<>();
     int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
-    // Amanda ToDo:
-    /** make constructor, make basic CntrlStruct commands, think about logic*/
 
-    public ControlStructure(ProgramParser parser, int numOfListArguments, SystemStorage storage){
+    public ControlStructure(int numOfListArguments, ProgramParser parser, SystemStorage storage){
+        myNumOfListArguments=numOfListArguments;
         myParser=parser;
         myStorage=storage;
-        myNumOfListArguments=numOfListArguments;
     }
 
     //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
@@ -66,26 +64,33 @@ public class ControlStructure {
         nestedControlStructure.removeAndAdvance(currentIndex, simplifiedLineSection);
         }
 
-    protected void removeAndAdvance(int currentIndex, ArrayList<String> simplifiedLineSection){
+    protected int removeAndAdvance(int currentIndex, ArrayList<String> simplifiedLineSection){
         for(int k=0; k<myNumOfListArguments; k++) {
             while (!simplifiedLineSection.get(currentIndex).equals("]")) {
                 simplifiedLineSection.remove(currentIndex);
             }
         }
         simplifiedLineSection.add(currentIndex, "SIMPLIFIED_CONTROL");
-    }
-
-    public String parseVariable(String variable){
-        variable=removeColon(variable);
-        return Double.toString(myStorage.getVariableValue(variable));
-    }
-
-    public String removeColon(String variable){
-        return variable.substring(1);
+        return currentIndex;
     }
 
 
-    public void executeCode(){};
+    protected int findIndexOfNextList(int startingIndex) {
+        int currentIndex = startingIndex;
+        String currentInput;
+        int openBracketCount=1;
+        int closedBracketCount=0;
+        while(openBracketCount!=closedBracketCount){
+            currentIndex++;
+            currentInput=myUserInput.get(currentIndex);
+            if(currentInput.equals("[")) openBracketCount++;
+            else if (currentInput.equals("]")) closedBracketCount++;
+            if(closedBracketCount+3==openBracketCount); //throw bracket imbalance error
+        }
+        return currentIndex++;
+    }
+
+    public abstract double executeCode();
 
         //check next index. If it is a control structure, push it on stack
 

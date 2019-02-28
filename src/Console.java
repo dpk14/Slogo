@@ -20,11 +20,8 @@ public class Console {
 
     }
 
-    public ArrayList<String> getText(){
-        String[] splitByLine=userInput.getText().split("\n");
-        String newLineCharacterRemoved=String.join(" ", splitByLine);
-        ArrayList<String> textBlock = (ArrayList<String>) Arrays.asList(newLineCharacterRemoved);
-        return textBlock;
+    public String getText(){
+        return userInput.getText();
     }
 
     public Button getButton(){

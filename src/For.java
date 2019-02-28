@@ -1,16 +1,21 @@
 import java.util.ArrayList;
+import java.util.List;
 
-public class DoTimes extends ControlStructure {
+public class For extends ControlStructure {
     private int myIndexOfList;
     private double myVariableValue;
     private String myVariableName;
     private double myEnd;
     private double myIncrement;
 
+    public For(int numOfListArguments, ProgramParser parser, SystemStorage storage){
+        super(numOfListArguments, parser, storage);
+    }
+
     @Override
     public double executeCode(){
         String variable=myUserInput.get(myStartingIndex+2);
-        myVariableName=removeColon(variable);
+        myVariableName=myParser.removeColon(variable);
         ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
         double startValue=Double.parseDouble(simplifiedLine.get(myStartingIndex+3));
         myVariableValue=startValue;
@@ -18,12 +23,17 @@ public class DoTimes extends ControlStructure {
         myIncrement=Double.parseDouble(simplifiedLine.get(myStartingIndex+5));
         myIndexOfList=myStartingIndex+6;
         if (!simplifiedLine.get( myIndexOfList).equals("[")); //throw error
+        List<Command> previousCommandLog=myStorage.getMyCommandLog();
         while(myVariableValue<myEnd) {
             evaluateLineSection(myIndexOfList, simplifiedLine);
             myVariableValue+=myIncrement;
             myStorage.setVariableValue(myVariableName, myVariableValue);
         }
-        //return last command result
+        List<Command> currentCommandLog=myStorage.getMyCommandLog();
+        if(previousCommandLog.size()!=currentCommandLog.size()){
+            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
+        }
+        return 0;
     }
 }
 

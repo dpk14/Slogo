@@ -9,13 +9,13 @@ public class SystemStorage {
     private Map<String, Animal> habitat;
     private Map<String, Double> userVariables;
     private Map<String, List<Command>> myCustomCommands;
-    private List<Command> myHistoricalCommands;
+    private List<Command> myCommandLog;
 
     public SystemStorage(){
         habitat = new HashMap<>();
         userVariables = new HashMap<>();
         myCustomCommands = new HashMap<>();
-        myHistoricalCommands = new ArrayList<>();
+        myCommandLog = new ArrayList<>();
     }
 
     public void storeAnimal (String animalName, Animal object){
@@ -52,6 +52,10 @@ public class SystemStorage {
     }
 
     public void addToHistory(Command command){
-        myHistoricalCommands.add(command);
+        myCommandLog.add(command);
+    }
+
+    public List<Command> getMyCommandLog() {
+        return myCommandLog;
     }
 }

@@ -4,6 +4,10 @@ public class Setter extends ControlStructure {
     private double myVariableValue;
     private String myVariableName;
 
+    public Setter(int numOfListArguments, ProgramParser parser, SystemStorage storage){
+        super(numOfListArguments, parser, storage);
+    }
+
     @Override
     public double executeCode(){
         String variable=myUserInput.get(myStartingIndex+1);
