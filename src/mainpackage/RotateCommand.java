@@ -10,10 +10,10 @@ public class RotateCommand extends Command{
     @Override
     public double execute() {
         double angle = parseString(myArgs.get(0));
-        if (myType.equals("left")){
+        if (myType.equals("right")){
             myTurtle.adjustHeading(angle);
         }
-        else if (myType.equals("right")){
+        else if (myType.equals("left")){
             myTurtle.adjustHeading(angle * RIGHT_HEADING_MULTIPLIER);
         }
         ret = angle;

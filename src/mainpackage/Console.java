@@ -29,7 +29,7 @@ public class Console {
 
     public String getText(){
         String input = userInput.getText();
-        addToHistory(input);
+        addToHistory("\n" + input);
         userInput.clear();
         return input;
     }

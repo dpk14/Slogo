@@ -18,16 +18,21 @@ public class Animal {
     private Pane myPane;
     private ArrayList<Line> trail;
     private boolean isVisible;
+    private int WIDTH_OF_TURTLE;
+    private int HEIGHT_OF_TURTLE;
 
     public Animal(String name, int HEIGHT, int WIDTH, Pane pane){
         animal_name = name;
         myPane = pane;
         current_angle = 90;
+        WIDTH_OF_TURTLE = 25;
+        HEIGHT_OF_TURTLE = 25;
         trail = new ArrayList<>();
         double radian = Math.toRadians(current_angle);
         direction_vector = new double[2];
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
+        System.out.println(direction_vector[1]);
         isVisible = true;
         node = new ImageView();
         node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream("turtle.png")));
@@ -86,14 +91,18 @@ public class Animal {
     }
 
     public void changePosition(double delta){
+        System.out.println(direction_vector[0]);
+
+
         double x_delta = delta * direction_vector[0];
         double y_delta = delta * direction_vector[1];
+
 
         double current_x = node.getX();
         double current_y = node.getY();
 
         double next_x = current_x + x_delta;
-        double next_y = current_y + y_delta;
+        double next_y = current_y - y_delta;
 
 
         node.setX(next_x);
@@ -101,10 +110,10 @@ public class Animal {
 
         if(myPen){
             Line path = new Line();
-            path.setStartX(current_x);
-            path.setStartY(current_y);
-            path.setEndX(next_x);
-            path.setEndY(next_y);
+            path.setStartX(current_x + WIDTH_OF_TURTLE);
+            path.setStartY(current_y + HEIGHT_OF_TURTLE);
+            path.setEndX(next_x + WIDTH_OF_TURTLE);
+            path.setEndY(next_y +  HEIGHT_OF_TURTLE);
             trail.add(path);
             myPane.getChildren().add(path);
         }
@@ -117,11 +126,17 @@ public class Animal {
     }
 
     public void adjustHeading(double angle){
-        current_angle += angle;
+
+        current_angle -= angle;
+
         double radian = Math.toRadians(current_angle);
+
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
-        node.setRotate(node.getRotate() + current_angle);
+
+
+        System.out.println(node.getRotate());
+        node.setRotate(node.getRotate() + angle);
     }
 
     public void setHeading(double angle){
