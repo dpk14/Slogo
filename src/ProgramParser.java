@@ -76,8 +76,15 @@ public class ProgramParser {
         myOperationsMap.put("ArcTangent", new TrigonometricOperation("atan", 1, null));
         myOperationsMap.put("NaturalLog", new ExponentialOperation("log", 1, null));
         myOperationsMap.put("Power", new ExponentialOperation("pow", 2, null));
+        myOperationsMap.put("Pi", new TrigonometricOperation("pi", 0, null));
 
-
+        myOperationsMap.put("LessThan", new BooleanExpression("less", 2, null));
+        myOperationsMap.put("GreaterThan",new BooleanExpression("greater", 2, null));
+        myOperationsMap.put("Equal", new BooleanExpression("equal", 2, null));
+        myOperationsMap.put("NotEqual", new BooleanExpression("notequal", 2, null));
+        myOperationsMap.put("And", new BooleanOperator("and", 2, null));
+        myOperationsMap.put("Or", new BooleanOperator("or", 2, null));
+        myOperationsMap.put("Not", new BooleanOperator("not", 1, null));
         // continue
 
         return new HashMap<String, Operation>();
