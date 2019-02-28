@@ -15,6 +15,7 @@ public class ShowVariables {
         variableDisplay = new TextArea();
         variableDisplay.setEditable(false);
         variableDisplay.setWrapText(true);
+        variableDisplay.appendText("VARIABLES:\n");
     }
 
     public void updateVariables(){
@@ -25,7 +26,7 @@ public class ShowVariables {
         }
     }
 
-    public Node getVDisplay(){
+    public TextArea getVDisplay(){
         return variableDisplay;
     }
 }

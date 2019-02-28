@@ -134,8 +134,6 @@ public class Animal {
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
 
-
-        System.out.println(node.getRotate());
         node.setRotate(node.getRotate() + angle);
     }
 

@@ -68,7 +68,7 @@ public class  Main extends Application {
         myParser.addPatterns("resources/languages/Syntax");
         myParser.makeOperationsMap();
         myParser.makeControlMap();
-        myConsole = new Console();
+        myConsole = new Console(mySystemStorage);
         Button myRun = myConsole.getButton();
         myRun.setOnAction(e->sendText());
         Scene scene = createScene();
@@ -78,7 +78,7 @@ public class  Main extends Application {
 
     private void sendText() {
         evaluateInput(myConsole.getText());
-        myVariableDisplay.updateVariables();
+        myConsole.updateVariables();
     }
 
     private Scene createScene() {
@@ -86,12 +86,10 @@ public class  Main extends Application {
 
         var animal_screen = new AnimalScreen(mySystemStorage, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         var options = new ScreenOptions(animal_screen.getAnimalPane(), mySystemStorage);
-        myVariableDisplay = new ShowVariables(mySystemStorage);
 
         main_pane.setCenter(animal_screen.getAnimalPane());
         main_pane.setTop(options.getOptions());
         main_pane.setBottom(myConsole.getConsoleArea());
-       // main_pane.setRight(myVariableDisplay.getVDisplay());
 
         var scene = new Scene(main_pane, WIDTH_OF_SCENE, HEIGHT_OF_SCENE);
 
