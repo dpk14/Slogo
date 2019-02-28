@@ -3,12 +3,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class RepeatStructure extends ControlStructure {
+public class Repeat extends ControlStructure {
     private double myTimesToRepeat;
     private int myIndexOfList;
 
-    public RepeatStructure(int numOfListArguments){
-        super(numOfListArguments);
+    public Repeat(int numOfListArguments, ProgramParser parser, SystemStorage storage){
+        super(numOfListArguments, parser, storage);
     }
 
     @Override

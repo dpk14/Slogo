@@ -46,7 +46,7 @@ public abstract class ControlStructure {
         double operationReturnValue=0;
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
-        OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiedLineSection, currentIndex, operationType);
+        OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiedLineSection, operationType, myParser);
         builderStack.push(builder);
         while (builderStack.size() != 0) {
             builder = builderStack.peek();

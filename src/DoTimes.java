@@ -16,7 +16,7 @@ public class DoTimes extends ControlStructure {
     @Override
     public double executeCode(){
         String variable=myUserInput.get(myStartingIndex+2);
-        myVariableName=removeColon(variable);
+        myVariableName=myParser.removeColon(variable);
         myVariableValue=0;
         ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
         myLimit=Double.parseDouble(simplifiedLine.get(myStartingIndex+3));

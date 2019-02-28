@@ -2,7 +2,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 public class OperationBuilder {
-    ArrayList<String> myCurrentLine;
+    ArrayList<String> myUserInput;
     Operation myOperation;
     String myOperationMarker;
     int myNumOfArgsNeeded;
@@ -12,8 +12,8 @@ public class OperationBuilder {
 
 
 
-    public OperationBuilder(Operation defaultOperation, ArrayList<String> currentLine, String operationMarker, ProgramParser parser){
-        myCurrentLine=currentLine;
+    public OperationBuilder(Operation defaultOperation, ArrayList<String> userInput, String operationMarker, ProgramParser parser){
+        myUserInput=userInput;
         myOperation=defaultOperation.copy();
         myOperationMarker=operationMarker;
         myNumOfArgsNeeded=myOperation.getNumArgs();
@@ -22,15 +22,15 @@ public class OperationBuilder {
     }
 
     public void continueBuildingOperation(Stack<OperationBuilder> builderStack) {
-        int builderIndex = myCurrentLine.indexOf(myOperationMarker);
+        int builderIndex = myUserInput.indexOf(myOperationMarker);
         for (int k = 0; k < myNumOfArgsNeeded; k++) {
-            String kthArgument = myCurrentLine.get(builderIndex + k);
+            String kthArgument = myUserInput.get(builderIndex + k);
             String kthArgumentSymbol = myParser.getSymbol(kthArgument);
             if (kthArgumentSymbol.equals("Variable")) myOperationArguments[k] = myParser.parseVariable(kthArgument);
             else if (kthArgumentSymbol.equals("Constant")) myOperationArguments[k] = kthArgument;
             else {
-                Operation defaultOperation = myOperationsMap.get(kthArgumentSymbol);
-                builderStack.push(new OperationBuilder(defaultOperation, myCurrentLine, kthArgument, mySymbols, myOperationsMap));
+                Operation defaultOperation = myParser.getOperation(kthArgumentSymbol);
+                builderStack.push(new OperationBuilder(defaultOperation, myUserInput, kthArgument, myParser));
                 break;
             }
         }
@@ -44,22 +44,23 @@ public class OperationBuilder {
         double returnVal=myOperation.execute();
 
         for (int k = 1; k < myOperation.getNumArgs(); k++) {
-            myCurrentLine.remove(currentIndex);
+            myUserInput.remove(currentIndex);
         }
-        /*
-        if(builderStack.size()==1) currentIndex+=myNumOfArgsFilled;
-        else{
-            for (int k = 1; k < myOperation.getNumArgs(); k++) {
-                myCurrentLine.remove(currentIndex);
-            }
-        }
-        */
 
-        myCurrentLine.add(currentIndex, Double.toString(returnVal));
-        if (myOperation instanceof Command) myCommandLog.add(myOperation);
+        myUserInput.add(currentIndex, Double.toString(returnVal));
+        if (myOperation instanceof Command) myOperation.Log();
         builderStack.pop();
         return returnVal;
     }
+
+    /*
+        if(builderStack.size()==1) currentIndex+=myNumOfArgsFilled;
+        else{
+            for (int k = 1; k < myOperation.getNumArgs(); k++) {
+                myUserInput.remove(currentIndex);
+            }
+        }
+        */
 
     public int getMyNumOfArgsFilled() {
         return myNumOfArgsFilled;

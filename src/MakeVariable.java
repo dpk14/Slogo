@@ -1,17 +1,17 @@
 import java.util.ArrayList;
 
-public class Setter extends ControlStructure {
+public class MakeVariable extends ControlStructure {
     private double myVariableValue;
     private String myVariableName;
 
-    public Setter(int numOfListArguments, ProgramParser parser, SystemStorage storage){
+    public MakeVariable(int numOfListArguments, ProgramParser parser, SystemStorage storage){
         super(numOfListArguments, parser, storage);
     }
 
     @Override
     public double executeCode(){
         String variable=myUserInput.get(myStartingIndex+1);
-        myVariableName=removeColon(variable);
+        myVariableName=myParser.removeColon(variable);
         ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+2, myUserInput);
         String simplifiedExpression=simplifiedLine.get(myStartingIndex+2);
         myVariableValue=Double.parseDouble(simplifiedExpression);
