@@ -3,8 +3,8 @@ import java.util.List;
 
 public class VisibilityCommand extends Command{
 
-    public VisibilityCommand(String movementType, List<String> arguments, SystemStorage storage, Animal turtle){
-        super(movementType, arguments, storage, turtle);
+    public VisibilityCommand(String movementType, int numArgs, SystemStorage storage, Animal turtle){
+        super(movementType, numArgs, storage, turtle);
     }
 
     @Override
@@ -23,7 +23,7 @@ public class VisibilityCommand extends Command{
 
     @Override
     public Operation copy() {
-        Operation copy = new VisibilityCommand(myType, myArgs, mySystemStorage, myTurtle);
+        Operation copy = new VisibilityCommand(myType, myNumArgs, mySystemStorage, myTurtle);
         return copy;
     }
 }
