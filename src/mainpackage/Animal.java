@@ -40,10 +40,10 @@ public class Animal {
     }
 
     public void penUp(){
-        myPen = true;
+        myPen = false;
     }
     public void penDown(){
-        myPen = false;
+        myPen = true;
     }
 
     public boolean getPenStatus(){
@@ -104,7 +104,7 @@ public class Animal {
         node.setX(next_x);
         node.setY(next_y);
 
-        if(!myPen){
+        if(myPen && delta != 0){
             Line path = new Line();
             path.setStartX(current_x + WIDTH_OF_TURTLE);
             path.setStartY(current_y + HEIGHT_OF_TURTLE);
