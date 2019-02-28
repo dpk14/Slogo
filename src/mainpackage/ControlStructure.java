@@ -1,5 +1,6 @@
 package mainpackage;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -48,13 +49,14 @@ public abstract class ControlStructure {
         double operationReturnValue=0;
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
-        OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiedLineSection, operationType, myParser);
+        OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiedLineSection, currentIndex, myParser, builderStack);
         builderStack.push(builder);
         while (builderStack.size() != 0) {
             builder = builderStack.peek();
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
-                operationReturnValue=builder.performOperationAndSimplifyLine(builderStack, currentIndex);
-            } else builder.continueBuildingOperation(builderStack);
+                operationReturnValue=builder.performOperationAndSimplifyLine(currentIndex);
+                builderStack.pop();
+            } else builder.continueBuildingOperation();
         }
         return operationReturnValue;
     }
@@ -63,17 +65,18 @@ public abstract class ControlStructure {
         ControlStructure nestedControlStructure = myParser.getControlStructure(controlType); //will automatically throw error if doesn't work
         nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
         nestedControlStructure.executeCode();
-        nestedControlStructure.removeAndAdvance(currentIndex, simplifiedLineSection);
+        nestedControlStructure.replaceCodeWithReturnValue(currentIndex, simplifiedLineSection);
         }
 
-    protected int removeAndAdvance(int currentIndex, ArrayList<String> simplifiedLineSection){
+    protected ArrayList<String> replaceCodeWithReturnValue(int currentIndex, ArrayList<String> simplifiedLineSection){
         for(int k=0; k<myNumOfListArguments; k++) {
             while (!simplifiedLineSection.get(currentIndex).equals("]")) {
                 simplifiedLineSection.remove(currentIndex);
             }
         }
+        simplifiedLineSection.remove(currentIndex);
         simplifiedLineSection.add(currentIndex, "SIMPLIFIED_CONTROL");
-        return currentIndex;
+        return simplifiedLineSection;
     }
 
 
@@ -90,6 +93,10 @@ public abstract class ControlStructure {
             if(closedBracketCount+3==openBracketCount); //throw bracket imbalance error
         }
         return currentIndex++;
+    }
+
+    public ArrayList<String> getMyUserInput(){
+        return myUserInput;
     }
 
     public abstract double executeCode();

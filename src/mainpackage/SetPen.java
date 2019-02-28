@@ -1,8 +1,8 @@
 package mainpackage;
 
 public class SetPen extends Command {
-    public SetPen (String movementType, int numArgs, SystemStorage storage, Animal turtle){
-        super(movementType, numArgs, storage, turtle);
+    public SetPen (String movementType, int numArgs, SystemStorage storage){
+        super(movementType, numArgs, storage);
     }
 
     @Override
@@ -21,7 +21,7 @@ public class SetPen extends Command {
 
     @Override
     public Operation copy() {
-        Operation copy = new SetPen(myType, myNumArgs, mySystemStorage, myTurtle);
+        Operation copy = new SetPen(myType, myNumArgs, mySystemStorage);
         return copy;
     }
 }

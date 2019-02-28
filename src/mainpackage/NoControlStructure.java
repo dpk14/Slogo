@@ -1,5 +1,7 @@
 package mainpackage;
 
+import java.util.ArrayList;
+
 public class NoControlStructure extends ControlStructure {
 
         public NoControlStructure(int numOfListArguments, ProgramParser parser, SystemStorage storage){
@@ -8,7 +10,8 @@ public class NoControlStructure extends ControlStructure {
 
         @Override
         public double executeCode(){
-            evaluateLineSection(myStartingIndex+1, myUserInput);
+            ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex, myUserInput);
+            myUserInput=simplifiedLine;
             return 0;
         }
     }

@@ -6,9 +6,9 @@ package mainpackage;
 abstract public class Command extends Operation {
     Animal myTurtle;
 
-    public Command(String commandType, int numArgs, SystemStorage storage, Animal turtle){
+    public Command(String commandType, int numArgs, SystemStorage storage){
         super(commandType, numArgs, storage);
-        myTurtle = turtle;
+        myTurtle=mySystemStorage.getAnimal("first");
     }
 
     @Override
