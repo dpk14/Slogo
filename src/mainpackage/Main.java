@@ -122,7 +122,6 @@ public class  Main extends Application {
             if (!(currentControlStructure instanceof NoControlStructure)) currentControlStructure.replaceCodeWithReturnValue(currentIndex, simplifedInput);
             else simplifedInput=currentControlStructure.getMyUserInput();
             currentIndex++;
-            System.out.println("yeet");
         }
         }
 

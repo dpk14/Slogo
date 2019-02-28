@@ -26,7 +26,7 @@ public abstract class ControlStructure {
     protected ArrayList<String> evaluateLineSection(int startingIndex, ArrayList<String> lineSection) {
         ArrayList<String> simplifiedLineSection = new ArrayList<String>(lineSection);
         String firstEntry = simplifiedLineSection.get(startingIndex);
-        firstEntry=myParser.getSymbol(firstEntry);
+        String firstEntrySymbol=myParser.getSymbol(firstEntry);
         if (firstEntry.equals("[")) {
             int currentIndex = startingIndex;
             while (!simplifiedLineSection.get(currentIndex + 1).equals("]")) {
@@ -37,8 +37,8 @@ public abstract class ControlStructure {
                 else; //error
                 currentIndex++;
             }
-        } else if(!(firstEntry.equals("Variable")|| firstEntry.equals("Constant"))){
-            parseOperation(firstEntry, startingIndex, simplifiedLineSection);
+        } else if(!(firstEntrySymbol.equals("Variable")|| firstEntry.equals("Constant"))){
+            parseOperation(firstEntrySymbol, startingIndex, simplifiedLineSection);
         }
         return simplifiedLineSection;
     }

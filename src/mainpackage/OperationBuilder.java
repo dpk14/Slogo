@@ -27,12 +27,12 @@ public class OperationBuilder {
             String kthArgument = myUserInput.get(myStartingIndex + 1 + k);
             String kthArgumentSymbol = myParser.getSymbol(kthArgument);
             if (kthArgumentSymbol.equals("Variable")) {
+                if (myOperationArguments[k]==null) myNumOfArgsFilled++;
                 myOperationArguments[k] = myParser.parseVariable(kthArgument);
-                myNumOfArgsFilled++;
             }
             else if (kthArgumentSymbol.equals("Constant")) {
+                if (myOperationArguments[k]==null) myNumOfArgsFilled++;
                 myOperationArguments[k] = kthArgument;
-                myNumOfArgsFilled++;
             }
             else {
                 Operation defaultOperation = myParser.getOperation(kthArgumentSymbol);
