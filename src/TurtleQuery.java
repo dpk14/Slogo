@@ -29,7 +29,7 @@ public class TurtleQuery extends Command {
             }
         }
         else if (myType.equals("showing")){
-            myTurtle.
+            myTurtle.setVisibility(true);
         }
         return ret;
     }

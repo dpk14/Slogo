@@ -18,7 +18,7 @@ public class SetAbsoluteCommand extends Command {
             ret = myTurtle.setPosition(x, y);
         }
         else if (myType.equals("towards")){
-
+            ret = myTurtle.setToward(parseString(myArgs.get(0)), parseString(myArgs.get(1)));
         }
         return ret;
     }
