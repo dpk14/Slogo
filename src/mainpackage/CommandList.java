@@ -20,11 +20,10 @@ public class CommandList extends ControlStructure {
             else if (currentEntry.equals("]")) closedBracketCount++;
             if(closedBracketCount+3==openBracketCount); //error, bracket imbalance
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
-            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, currentIndex, myUserInput);
-            else if (myParser.isOperation(currentEntrySymbol))
-                parseOperation(currentEntrySymbol, currentIndex, myUserInput);
+            //System.out.printf("%d", myUserInput.size());
+            if (myParser.isControl(currentEntrySymbol)) myUserInput=parseNestedControl(currentEntrySymbol, currentIndex, myUserInput);
+            else if (myParser.isOperation(currentEntrySymbol)) myUserInput=parseOperation(currentEntrySymbol, currentIndex, myUserInput);
             else ; //error
-            currentIndex++;
         }
         return 0;
     }

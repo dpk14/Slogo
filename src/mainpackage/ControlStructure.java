@@ -36,8 +36,7 @@ public abstract class ControlStructure {
 
 
     //replaces any operation tag with the return value of that operation, simplifying the line section
-    protected double parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiedLineSection) {
-        double operationReturnValue=0;
+    protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiedLineSection) {
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
         OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiedLineSection, currentIndex, myParser, builderStack);
@@ -45,14 +44,15 @@ public abstract class ControlStructure {
         while (builderStack.size() != 0) {
             builder = builderStack.peek();
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
-                operationReturnValue=builder.performOperationAndSimplifyLine(currentIndex);
+                currentIndex=builder.getStartingIndex();
+                simplifiedLineSection=builder.performOperationAndSimplifyLine(currentIndex);
                 builderStack.pop();
             } else builder.continueBuildingOperation();
         }
-        return operationReturnValue;
+        return simplifiedLineSection;
     }
 
-    protected void parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiedLineSection) {
+    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiedLineSection) {
         ControlStructure nestedControlStructure=new NoControlStructure(0, myParser, myStorage);
         if (controlType.equals("List")){
             nestedControlStructure=new CommandList(1, myParser, myStorage);
@@ -60,8 +60,9 @@ public abstract class ControlStructure {
         else nestedControlStructure = myParser.getControlStructure(controlType);
         nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
         double returnValue=nestedControlStructure.executeCode();
-        nestedControlStructure.replaceCodeWithReturnValue(currentIndex, simplifiedLineSection, returnValue);
-        }
+        simplifiedLineSection=nestedControlStructure.replaceCodeWithReturnValue(currentIndex, simplifiedLineSection, returnValue);
+        return simplifiedLineSection;
+    }
 
     protected ArrayList<String> replaceCodeWithReturnValue(int currentIndex, ArrayList<String> simplifiedLineSection, double returnValue){
         for(int k=0; k<myNumOfListArguments; k++) {
