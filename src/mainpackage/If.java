@@ -21,8 +21,9 @@ public class If extends ControlStructure {
         if (!simplifiedLine.get( myIndexOfList).equals("[")); //throw error
         List<Command> previousCommandLog=myStorage.getMyCommandLog();
         if(simplifiedExpression==1) {
-            evaluateLineSection(myIndexOfList, simplifiedLine);
+            simplifiedLine=evaluateLineSection(myIndexOfList, simplifiedLine);
         }
+        myUserInput=simplifiedLine;
         List<Command> currentCommandLog=myStorage.getMyCommandLog();
         if(previousCommandLog.size()!=currentCommandLog.size()){
             return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();

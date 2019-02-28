@@ -19,8 +19,9 @@ public class Repeat extends ControlStructure {
             if (!simplifiedLine.get(myIndexOfList).equals("[")); //throw error
             List<Command> previousCommandLog=myStorage.getMyCommandLog();
             for(int k=0; k<myTimesToRepeat; k++) {
-                evaluateLineSection(myIndexOfList, myUserInput);
+                simplifiedLine=evaluateLineSection(myIndexOfList, myUserInput);
             }
+            myUserInput=simplifiedLine;
             List<Command> currentCommandLog=myStorage.getMyCommandLog();
             if(previousCommandLog.size()!=currentCommandLog.size()){
                 return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();

@@ -10,20 +10,23 @@ public class CommandList extends ControlStructure {
 
     public double executeCode() {
         int currentIndex = myStartingIndex;
+        currentIndex++;
         String currentEntry;
         int openBracketCount=1;
         int closedBracketCount=0;
         while(openBracketCount!=closedBracketCount && currentIndex!=myUserInput.size()-1){
-            currentIndex++;
             currentEntry=myUserInput.get(currentIndex);
-            if(currentEntry.equals("[")) openBracketCount++;
-            else if (currentEntry.equals("]")) closedBracketCount++;
-            if(closedBracketCount+3==openBracketCount); //error, bracket imbalance
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
             //System.out.printf("%d", myUserInput.size());
+            ArrayList<String> simplifiedLine;
             if (myParser.isControl(currentEntrySymbol)) myUserInput=parseNestedControl(currentEntrySymbol, currentIndex, myUserInput);
             else if (myParser.isOperation(currentEntrySymbol)) myUserInput=parseOperation(currentEntrySymbol, currentIndex, myUserInput);
             else ; //error
+            currentIndex++;
+            String updatedEntry=myUserInput.get(currentIndex);
+            if(updatedEntry.equals("[")) openBracketCount++;
+            else if (updatedEntry.equals("]")) closedBracketCount++;
+            if(closedBracketCount+3==openBracketCount); //error, bracket imbalance
         }
         return 0;
     }
