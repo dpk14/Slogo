@@ -32,7 +32,6 @@ public class Animal {
         direction_vector = new double[2];
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
-        System.out.println(direction_vector[1]);
         isVisible = true;
         node = new ImageView();
         node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream("turtle.png")));
