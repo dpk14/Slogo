@@ -64,18 +64,18 @@ public abstract class ControlStructure {
     protected void parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiedLineSection) {
         ControlStructure nestedControlStructure = myParser.getControlStructure(controlType); //will automatically throw error if doesn't work
         nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
-        nestedControlStructure.executeCode();
-        nestedControlStructure.replaceCodeWithReturnValue(currentIndex, simplifiedLineSection);
+        double returnValue=nestedControlStructure.executeCode();
+        nestedControlStructure.replaceCodeWithReturnValue(currentIndex, simplifiedLineSection, returnValue);
         }
 
-    protected ArrayList<String> replaceCodeWithReturnValue(int currentIndex, ArrayList<String> simplifiedLineSection){
+    protected ArrayList<String> replaceCodeWithReturnValue(int currentIndex, ArrayList<String> simplifiedLineSection, double returnValue){
         for(int k=0; k<myNumOfListArguments; k++) {
             while (!simplifiedLineSection.get(currentIndex).equals("]")) {
                 simplifiedLineSection.remove(currentIndex);
             }
         }
         simplifiedLineSection.remove(currentIndex);
-        simplifiedLineSection.add(currentIndex, "SIMPLIFIED_CONTROL");
+        simplifiedLineSection.add(currentIndex, Double.toString(returnValue));
         return simplifiedLineSection;
     }
 
