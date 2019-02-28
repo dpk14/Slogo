@@ -21,10 +21,11 @@ public class IfElse extends ControlStructure {
         if (!simplifiedLine.get(myIndexOfSecondList).equals("[")) ; //throw error
         List<Command> previousCommandLog = myStorage.getMyCommandLog();
         if (simplifiedExpression == 1) {
-            evaluateLineSection(myIndexOfFirstList, simplifiedLine);
+            simplifiedLine=evaluateLineSection(myIndexOfFirstList, simplifiedLine);
         } else {
-            evaluateLineSection(myIndexOfSecondList, simplifiedLine);
+            simplifiedLine=evaluateLineSection(myIndexOfSecondList, simplifiedLine);
         }
+        myUserInput=simplifiedLine;
 
         List<Command> currentCommandLog = myStorage.getMyCommandLog();
         if (previousCommandLog.size() != currentCommandLog.size()) {
