@@ -58,11 +58,22 @@ public class Animal {
     public double setPosition(double x, double y){
         double current_x = node.getX();
         double current_y = node.getY();
-        node.setX(x);
+        node.setX(x); //TODO FIX in relation to (0,0)
         node.setY(y);
         return Math.sqrt(Math.pow(current_x-x,2) + Math.pow(current_y-y, 2));
 
 
+    }
+
+    public void setVisibility(Boolean visible){
+        node.setVisible(visible);
+    }
+
+    public double setToward(double x, double y){
+        double radian = Math.tan(x/y);
+        double degrees = Math.toDegrees(radian);
+        setHeading(degrees);
+        return degrees;
     }
 
     public void changePosition(double delta){
