@@ -15,6 +15,7 @@ public class Animal {
     private boolean myPen;
     private Pane myPane;
     private ArrayList<Line> trail;
+    private boolean isVisible;
 
     public Animal(String name, int HEIGHT, int WIDTH, Pane pane){
         animal_name = name;
@@ -25,7 +26,7 @@ public class Animal {
         direction_vector = new double[2];
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
-
+        isVisible = true;
         node = new ImageView();
         node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream("turtle.png")));
         node.setX(WIDTH/2);
@@ -65,7 +66,13 @@ public class Animal {
 
     }
 
+    public boolean isVisible(){
+        return isVisible;
+
+    }
+
     public void setVisibility(Boolean visible){
+        isVisible = visible;
         node.setVisible(visible);
     }
 
