@@ -58,7 +58,7 @@ public abstract class ControlStructure {
     }
 
     protected void parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiedLineSection) {
-        ControlStructure nestedControlStructure = myParser.getControl(controlType); //will automatically throw error if doesn't work
+        ControlStructure nestedControlStructure = myParser.getControlStructure(controlType); //will automatically throw error if doesn't work
         nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
         nestedControlStructure.executeCode();
         nestedControlStructure.removeAndAdvance(currentIndex, simplifiedLineSection);
