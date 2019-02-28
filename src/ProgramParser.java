@@ -16,11 +16,15 @@ public class ProgramParser {
     private List<Entry<String, Pattern>> mySymbols;
     private HashMap<String, Operation> myOperationsMap;
     private HashMap<String, ControlStructure> myControlMap;
+    private SystemStorage myStorage;
     /**
      * Create an empty parser.
      */
-    public ProgramParser() {
+    public ProgramParser(SystemStorage storage) {
         mySymbols = new ArrayList<>();
+        myOperationsMap=new HashMap<>();
+        myControlMap=new HashMap<>();
+        myStorage=storage;
         //initialize mySymbols and myOperations with the given values
     }
 
@@ -37,16 +41,20 @@ public class ProgramParser {
         }
     }
 
-    public HashMap makeControlMap(){
-        return new HashMap<String, ControlStructure>();
+    public void makeControlMap(){
+        myControlMap.put("MakeVariable", new MakeVariable(0, this, myStorage));
+        myControlMap.put("Repeat", new Repeat(1, this, myStorage));
+        myControlMap.put("DoTimes", new DoTimes(2, this, myStorage));
+        myControlMap.put("For", new For(2, this, myStorage));
+        myControlMap.put("If", new If(1, this, myStorage));
+        myControlMap.put("IfElse", new IfElse(1, this, myStorage));
     }
 
-    public HashMap makeOperationsMap() {
+    public void makeOperationsMap() {
         myOperationsMap.put("Forward", new MovementCommand(FORWARD_DIRECTION, DEFAULT_MOVEMENT));
         myOperationsMap.put("Backward", new MovementCommand(BACKWARD_DIRECTION, DEFAULT_MOVEMENT));
         // continue
 
-        return new HashMap<String, Operation>();
     }
     /*
         if (currentString.equals("home")) {
@@ -125,16 +133,36 @@ public class ProgramParser {
         return myOperationsMap;
     }
 
-    public ControlStructure getControlStructure(String controlTag){
-        if (!myControlMap.containsKey(controlTag)) return new NoControlStructure();
-        else return (myControlMap.get(controlTag));
+    public ControlStructure getControlStructure(String controlType){
+        if (!myControlMap.containsKey(controlType)) return new NoControlStructure(0, this, myStorage);
+        else return (myControlMap.get(controlType));
     }
 
-    /**
-     * Returns true if the given text matches the given regular expression pattern
-     */
+    public Operation getOperation(String operationType){
+        if (!myOperationsMap.containsKey(operationType)); //throw error
+        return (myOperationsMap.get(operationType));
+    }
+
+    public boolean isControl(String candidate){
+        return myControlMap.containsKey(candidate);
+    }
+
+    public boolean isOperation(String candidate){
+        return myOperationsMap.containsKey(candidate);
+    }
+
     private boolean match (String text, Pattern regex) {
-        // THIS IS THE IMPORTANT LINE
         return regex.matcher(text).matches();
     }
+
+    public String parseVariable(String variable){
+        variable=removeColon(variable);
+        return Double.toString(myStorage.getVariableValue(variable));
+    }
+
+    public String removeColon(String variable){
+        return variable.substring(1);
+    }
+
+
 }
