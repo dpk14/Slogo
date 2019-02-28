@@ -75,7 +75,6 @@ public class Animal {
 
     public boolean isVisible(){
         return isVisible;
-
     }
 
     public void setVisibility(Boolean visible){
@@ -91,8 +90,6 @@ public class Animal {
     }
 
     public void changePosition(double delta){
-        System.out.println(direction_vector[0]);
-
 
         double x_delta = delta * direction_vector[0];
         double y_delta = delta * direction_vector[1];

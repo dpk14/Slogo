@@ -13,7 +13,7 @@ public class AnimalScreen {
         canvas.prefWidth(width);
         String style = String.format("-fx-background-color: %s;", STARTING_COLOR);
         canvas.setStyle(style);
-        Animal firstAnimal = new Animal("first",height, width, canvas);
+        Animal firstAnimal = new Animal("first", height, width, canvas);
         mySystemStorage.storeAnimal("first", firstAnimal);
         canvas.getChildren().add(firstAnimal.getImageView());
 
