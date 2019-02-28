@@ -21,7 +21,7 @@ public class Animal {
     private int WIDTH_OF_TURTLE;
     private int HEIGHT_OF_TURTLE;
 
-    public Animal(String name, int HEIGHT, int WIDTH, Pane pane){
+    public Animal(String name, double height_of_screen, double width_of_screen, Pane pane){
         animal_name = name;
         myPane = pane;
         current_angle = 90;
@@ -36,8 +36,8 @@ public class Animal {
         isVisible = true;
         node = new ImageView();
         node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream("turtle.png")));
-        node.setX(WIDTH/2);
-        node.setY(HEIGHT/2);
+        node.setX(width_of_screen/2 - WIDTH_OF_TURTLE);
+        node.setY(height_of_screen/2 - HEIGHT_OF_TURTLE);
     }
 
     public void penUp(){

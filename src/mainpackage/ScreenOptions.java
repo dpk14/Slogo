@@ -15,7 +15,8 @@ public class ScreenOptions {
     Pane centerScreen;
     SystemStorage mySystemStorage;
 
-    public ScreenOptions(Pane canvas, SystemStorage storage) {
+
+    public ScreenOptions(Pane canvas, SystemStorage storage, double height_of_options) {
         mySystemStorage = storage;
 
         centerScreen = canvas;
@@ -25,6 +26,7 @@ public class ScreenOptions {
 
         options = new MenuBar();
         options.getMenus().addAll(backGroundColor, chooseAnimal);
+        options.setPrefHeight(height_of_options);
     }
 
     private Menu BackgroundMenu() {

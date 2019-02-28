@@ -11,13 +11,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Console {
-    TextArea userInput;
-    Button implement;
-    TextArea history;
-    ShowVariables myVariableDisplay;
-    VBox consoleArea;
+    private TextArea userInput;
+    private Button implement;
+    private TextArea history;
+    private ShowVariables myVariableDisplay;
+    private VBox consoleArea;
+    private int WIDTH_OF_HISTORY_INPUT = 900;
+    private int WIDTH_VARIABLE_DISPLAY = 100;
 
-    public Console(SystemStorage mySystemStorage) {
+
+    public Console(SystemStorage mySystemStorage, int height_of_console_area) {
         myVariableDisplay = new ShowVariables(mySystemStorage);
         var inputHistoryBox = new VBox();
         var variableBoxArea = new HBox();
@@ -29,11 +32,12 @@ public class Console {
         history.setEditable(false);
         history.setWrapText(true);
         inputHistoryBox.getChildren().addAll(history, userInput);
-        inputHistoryBox.setPrefWidth(900);
+        inputHistoryBox.setPrefWidth(WIDTH_OF_HISTORY_INPUT);
         TextArea variableDisplay = myVariableDisplay.getVDisplay();
-        variableDisplay.setPrefWidth(100);
+        variableDisplay.setPrefWidth(WIDTH_VARIABLE_DISPLAY);
         variableBoxArea.getChildren().addAll(inputHistoryBox, variableDisplay);
         consoleArea = new VBox();
+        consoleArea.setPrefHeight(height_of_console_area);
         consoleArea.getChildren().addAll(variableBoxArea, implement);
 
     }

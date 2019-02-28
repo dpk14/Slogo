@@ -18,15 +18,14 @@ public class  Main extends Application {
     final private int HEIGHT_OF_SCENE = 800;
     final private int WIDTH_OF_SCENE = 1000;
 
-    final private int HEIGHT_OF_ANIMAL_SCREEN = 600;
+    final private int HEIGHT_OF_CONSOLE_AREA = 160 ;
+    final private int HEIGHT_OF_OPTIONS = 20;
+    final private int HEIGHT_OF_ANIMAL_SCREEN = 620;
     final private int WIDTH_OF_ANIMAL_SCREEN = 1000;
 
     private Console myConsole;
     public ProgramParser myParser;
     public SystemStorage mySystemStorage;
-    private ShowVariables myVariableDisplay;
-
-    public final String WHITESPACE = "\\s+";
 
     @Override
     public void start(Stage stage) {
@@ -68,7 +67,7 @@ public class  Main extends Application {
         myParser.addPatterns("resources/languages/Syntax");
         myParser.makeOperationsMap();
         myParser.makeControlMap();
-        myConsole = new Console(mySystemStorage);
+        myConsole = new Console(mySystemStorage, HEIGHT_OF_CONSOLE_AREA);
         Button myRun = myConsole.getButton();
         myRun.setOnAction(e->sendText());
         Scene scene = createScene();
@@ -85,7 +84,7 @@ public class  Main extends Application {
         var main_pane = new BorderPane();
 
         var animal_screen = new AnimalScreen(mySystemStorage, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
-        var options = new ScreenOptions(animal_screen.getAnimalPane(), mySystemStorage);
+        var options = new ScreenOptions(animal_screen.getAnimalPane(), mySystemStorage, HEIGHT_OF_OPTIONS);
 
         main_pane.setCenter(animal_screen.getAnimalPane());
         main_pane.setTop(options.getOptions());
