@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.lang.NullPointerException;
 
 public class SystemStorage {
@@ -17,6 +14,27 @@ public class SystemStorage {
         myCustomCommands = new HashMap<>();
         myCommandLog = new ArrayList<>();
     }
+
+    public Set<String> getAnimalNames(){
+        HashSet<String> names = new HashSet<>();
+        for (String name: habitat.keySet()){
+            names.add(name);
+        }
+        return names;
+    }
+
+    public Map<String, Double> getVariableMap(){
+        return userVariables;
+    }
+
+    public Set<String> getVariableNames(){
+        HashSet<String> names = new HashSet<>();
+        for (String name: userVariables.keySet()){
+            names.add(name);
+        }
+        return names;
+    }
+
 
     public void storeAnimal (String animalName, Animal object){
         habitat.put(animalName, object);

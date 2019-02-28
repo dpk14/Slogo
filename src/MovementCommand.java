@@ -8,11 +8,6 @@ public class  MovementCommand extends Command {
         super(movementType, arguments, storage, turtle);
     }
 
-    public MovementCommand(SystemStorage storage, Animal turtle){
-        super("forward", new ArrayList<String>(), storage, turtle);
-        super.getMyArgs().add("0");
-    }
-
     @Override
     public double execute() {
         double stepSize = parseString(myArgs.get(0));

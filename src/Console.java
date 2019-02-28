@@ -10,18 +10,30 @@ public class Console {
     TextArea userInput;
     VBox consoleArea;
     Button implement;
+    TextArea history;
 
     public Console() {
         consoleArea = new VBox();
         userInput = new TextArea();
         userInput.setWrapText(true);
         implement = new Button("Run");
-        consoleArea.getChildren().addAll(userInput, implement);
+        history = new TextArea();
+        history.setPrefHeight(50);
+        history.setEditable(false);
+        history.setWrapText(true);
+        consoleArea.getChildren().addAll(history, userInput, implement);
 
     }
 
     public String getText(){
-        return userInput.getText();
+        String input = userInput.getText();
+        addToHistory(input);
+        userInput.clear();
+        return input;
+    }
+
+    private void addToHistory(String string){
+        history.appendText(string);
     }
 
     public Button getButton(){
