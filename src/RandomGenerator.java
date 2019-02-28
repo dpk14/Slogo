@@ -1,14 +1,12 @@
-import java.util.ArrayList;
-import java.util.List;
 
-public class RandomGenerator extends Expression {
-    public RandomGenerator (String myType, List<String> args, SystemStorage storage){
-        super(myType, args, storage);
+public class RandomGenerator extends Operation {
+    public RandomGenerator (String myType, int numArgs, SystemStorage storage){
+        super(myType, numArgs, storage);
     }
 
     @Override
     public double execute() {
-        double ret = -1;
+        ret = -1;
         if (myType.equals("random")){
             ret = Math.random() * parseString(myArgs.get(0));
         }
@@ -17,7 +15,7 @@ public class RandomGenerator extends Expression {
 
     @Override
     public Operation copy() {
-        Operation copy = new RandomGenerator(myType, myArgs, mySystemStorage);
+        Operation copy = new RandomGenerator(myType, myNumArgs, mySystemStorage);
         return copy;
     }
 }

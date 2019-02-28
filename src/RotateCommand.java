@@ -4,8 +4,8 @@ import java.util.List;
 public class RotateCommand extends Command{
     private final int RIGHT_HEADING_MULTIPLIER = -1;
 
-    public RotateCommand(String movementType, List<String> arguments, SystemStorage storage, Animal turtle){
-        super(movementType, arguments, storage, turtle);
+    public RotateCommand(String movementType, int numArgs, SystemStorage storage, Animal turtle){
+        super(movementType, numArgs, storage, turtle);
     }
 
     @Override
@@ -17,12 +17,13 @@ public class RotateCommand extends Command{
         else if (myType.equals("right")){
             myTurtle.adjustHeading(angle * RIGHT_HEADING_MULTIPLIER);
         }
-        return angle;
+        ret = angle;
+        return ret;
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new RotateCommand(myType, myArgs, mySystemStorage, myTurtle);
+        Operation copy = new RotateCommand(myType, myNumArgs, mySystemStorage, myTurtle);
         return copy;
     }
 }

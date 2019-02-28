@@ -1,16 +1,14 @@
-import java.util.ArrayList;
 import java.util.List;
 
-public class BasicMathOperation extends Expression {
+public class BasicMathOperation extends Operation {
     private final int MINUS_MULTIPLIER = -1;
 
-    public BasicMathOperation(String myType, List<String> args, SystemStorage storage){
-        super(myType, args, storage);
+    public BasicMathOperation(String myType, int numArgs, SystemStorage storage){
+        super(myType, numArgs, storage);
     }
 
     @Override
     public double execute() {
-        double ret = 0;
         if (myType.equals("sum")){
             double sum = Double.parseDouble(myArgs.get(0)) + Double.parseDouble(myArgs.get(1));
             ret = sum;
@@ -25,7 +23,7 @@ public class BasicMathOperation extends Expression {
         }
         else if (myType.equals("quotient")){
             double quotient = parseString(myArgs.get(0)) / parseString(myArgs.get(1));
-
+            ret = quotient;
         }
         else if (myType.equals("minus")){
             ret = parseString(myArgs.get(0)) * MINUS_MULTIPLIER;
@@ -39,7 +37,7 @@ public class BasicMathOperation extends Expression {
 
     @Override
     public Operation copy() {
-        Operation copy = new BasicMathOperation(myType, myArgs, mySystemStorage);
+        Operation copy = new BasicMathOperation(myType, myNumArgs, mySystemStorage);
         return copy;
     }
 }

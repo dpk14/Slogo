@@ -1,14 +1,12 @@
-import java.util.ArrayList;
-import java.util.List;
 
 public class SetAbsoluteCommand extends Command {
-    public SetAbsoluteCommand (String movementType, List<String> arguments, SystemStorage storage, Animal turtle){
-        super(movementType, arguments, storage, turtle);
+    public SetAbsoluteCommand (String movementType, int numArgs, SystemStorage storage, Animal turtle){
+        super(movementType, numArgs, storage, turtle);
     }
 
     @Override
     public double execute() {
-        double ret = -1;
+        ret = -1;
         if (myType.equals("heading")){
             double angle = parseString(myArgs.get(0));
             myTurtle.setHeading(angle);
@@ -20,14 +18,14 @@ public class SetAbsoluteCommand extends Command {
             ret = myTurtle.setPosition(x, y);
         }
         else if (myType.equals("towards")){
-
+            ret = myTurtle.setToward(parseString(myArgs.get(0)), parseString(myArgs.get(1)));
         }
         return ret;
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new SetAbsoluteCommand(myType, myArgs, mySystemStorage, myTurtle);
+        Operation copy = new SetAbsoluteCommand(myType, myNumArgs, mySystemStorage, myTurtle);
         return copy;
     }
 }
