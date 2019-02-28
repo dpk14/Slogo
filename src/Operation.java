@@ -6,7 +6,7 @@ import java.util.List;
 abstract public class Operation {
     protected String myType;
     protected List<String> myArgs;
-    protected SystemStorage mySystemStorage;
+    protected SystemStorage mySystemStorage; 
 
     public Operation(String operationType, List arugments, SystemStorage systemStorage) {
         myType = operationType;
