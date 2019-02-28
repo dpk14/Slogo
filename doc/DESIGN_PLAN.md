@@ -139,7 +139,7 @@ External:
 * x = 10, y = 20, fd sum x y
     * UI stores each separate line of command as a string until "interpret" button is clicked
     * Then, each string is sent to the parser
-    * x = 10 and y = 20 are recognized as variable setting commands by Parser, which then calls the Command Setter subclass which adds the entries ("x", 10) and ("y", 20) to the variables Map in the SystemStorage class
+    * x = 10 and y = 20 are recognized as variable setting commands by Parser, which then calls the Command MakeVariable subclass which adds the entries ("x", 10) and ("y", 20) to the variables Map in the SystemStorage class
     * The fd keyword is recognized by Parser, which creates the Command Movement subclass that takes in "fd" and "x+y" as parameters
     * "sum x y" is then recognized to contain variables x and y (using Command superclass private method scanVariables()), and the respective values are retrieved
     * Then, the sum  is recognized by the Command superclass private method scanOperation() that checks for operations and performs the math

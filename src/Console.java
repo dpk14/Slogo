@@ -25,21 +25,16 @@ public class Console {
 
     }
 
+    public String getText(){
+        String input = userInput.getText();
+        addToHistory(input);
+        userInput.clear();
+        return input;
+    }
+
     private void addToHistory(String string){
         history.appendText(string);
     }
-
-
-    public ArrayList<String> getText(){
-        String input = userInput.getText();
-        ArrayList<String> textBlock = (ArrayList<String>) Arrays.asList(userInput.getText().split("\n"));
-        addToHistory(input);
-        userInput.clear();
-        return textBlock;
-    }
-
-
-
 
     public Button getButton(){
         return implement;
