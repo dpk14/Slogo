@@ -29,7 +29,7 @@ public abstract class ControlStructure {
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
         if (firstEntry.equals("[")) parseNestedControl("List", startingIndex, simplifiedLineSection);
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))){
-            parseOperation(firstEntrySymbol, startingIndex, simplifiedLineSection);
+            simplifiedLineSection=parseOperation(firstEntrySymbol, startingIndex, simplifiedLineSection);
         }
         return simplifiedLineSection;
     }
@@ -60,18 +60,19 @@ public abstract class ControlStructure {
         else nestedControlStructure = myParser.getControlStructure(controlType);
         nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
         double returnValue=nestedControlStructure.executeCode();
-        simplifiedLineSection=nestedControlStructure.replaceCodeWithReturnValue(currentIndex, simplifiedLineSection, returnValue);
+        simplifiedLineSection=nestedControlStructure.replaceCodeWithReturnValue(nestedControlStructure.getStartingIndex(), simplifiedLineSection, returnValue);
         return simplifiedLineSection;
     }
 
-    protected ArrayList<String> replaceCodeWithReturnValue(int currentIndex, ArrayList<String> simplifiedLineSection, double returnValue){
+    protected ArrayList<String> replaceCodeWithReturnValue(int startingIndex, ArrayList<String> simplifiedLineSection, double returnValue){
         for(int k=0; k<myNumOfListArguments; k++) {
-            while (!simplifiedLineSection.get(currentIndex).equals("]")) {
-                simplifiedLineSection.remove(currentIndex);
+            while (!simplifiedLineSection.get(startingIndex).equals("]")) {
+                simplifiedLineSection.remove(startingIndex);
+                if (simplifiedLineSection.size()==0) return simplifiedLineSection;
             }
         }
-        simplifiedLineSection.remove(currentIndex);
-        simplifiedLineSection.add(currentIndex, Double.toString(returnValue));
+        simplifiedLineSection.remove(startingIndex);
+        simplifiedLineSection.add(startingIndex, Double.toString(returnValue));
         return simplifiedLineSection;
     }
 
@@ -94,6 +95,10 @@ public abstract class ControlStructure {
 
     public ArrayList<String> getMyUserInput(){
         return myUserInput;
+    }
+
+    public int getStartingIndex(){
+        return myStartingIndex;
     }
 
     public abstract double executeCode();

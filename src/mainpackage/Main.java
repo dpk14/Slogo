@@ -120,7 +120,9 @@ public class  Main extends Application {
             ControlStructure currentControlStructure = myParser.getControlStructure(currentEntrySymbol);
             currentControlStructure.initializeStructure(currentIndex, simplifedInput);
             double returnValue=currentControlStructure.executeCode();
-            if (!(currentControlStructure instanceof NoControlStructure)) currentControlStructure.replaceCodeWithReturnValue(currentIndex, simplifedInput, returnValue);
+            if (!(currentControlStructure instanceof NoControlStructure)) {
+                simplifedInput=currentControlStructure.replaceCodeWithReturnValue(currentIndex, currentControlStructure.getMyUserInput(), returnValue);
+            }
             else simplifedInput=currentControlStructure.getMyUserInput();
             currentIndex++;
         }
