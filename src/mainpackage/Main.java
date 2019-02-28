@@ -116,7 +116,8 @@ public class  Main extends Application {
         ArrayList<String> simplifedInput=new ArrayList<>(userInputList);
         while(currentIndex<simplifedInput.size()) {
             String currentEntry = simplifedInput.get(currentIndex);
-            ControlStructure currentControlStructure = myParser.getControlStructure(currentEntry);
+            String currentEntrySymbol = myParser.getSymbol(currentEntry);
+            ControlStructure currentControlStructure = myParser.getControlStructure(currentEntrySymbol);
             currentControlStructure.initializeStructure(currentIndex, simplifedInput);
             double returnValue=currentControlStructure.executeCode();
             if (!(currentControlStructure instanceof NoControlStructure)) currentControlStructure.replaceCodeWithReturnValue(currentIndex, simplifedInput, returnValue);

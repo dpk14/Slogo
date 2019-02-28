@@ -1,6 +1,6 @@
 package mainpackage;
 
-import java.lang.reflect.Array;
+import javax.sound.sampled.Control;
 import java.util.ArrayList;
 import java.util.Stack;
 
@@ -27,17 +27,8 @@ public abstract class ControlStructure {
         ArrayList<String> simplifiedLineSection = new ArrayList<String>(lineSection);
         String firstEntry = simplifiedLineSection.get(startingIndex);
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
-        if (firstEntry.equals("[")) {
-            int currentIndex = startingIndex;
-            while (!simplifiedLineSection.get(currentIndex + 1).equals("]")) {
-                String nextEntry=simplifiedLineSection.get(currentIndex+1);
-                nextEntry=myParser.getSymbol(nextEntry);
-                if(myParser.isControl(nextEntry)) parseNestedControl(nextEntry, currentIndex+1, simplifiedLineSection);
-                else if (myParser.isOperation(nextEntry)) parseOperation(nextEntry, currentIndex+1, simplifiedLineSection);
-                else; //error
-                currentIndex++;
-            }
-        } else if(!(firstEntrySymbol.equals("Variable")|| firstEntry.equals("Constant"))){
+        if (firstEntry.equals("[")) parseNestedControl("List", startingIndex, simplifiedLineSection);
+        else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))){
             parseOperation(firstEntrySymbol, startingIndex, simplifiedLineSection);
         }
         return simplifiedLineSection;
@@ -62,7 +53,11 @@ public abstract class ControlStructure {
     }
 
     protected void parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiedLineSection) {
-        ControlStructure nestedControlStructure = myParser.getControlStructure(controlType); //will automatically throw error if doesn't work
+        ControlStructure nestedControlStructure=new NoControlStructure(0, myParser, myStorage);
+        if (controlType.equals("List")){
+            nestedControlStructure=new CommandList(1, myParser, myStorage);
+        }
+        else nestedControlStructure = myParser.getControlStructure(controlType);
         nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
         double returnValue=nestedControlStructure.executeCode();
         nestedControlStructure.replaceCodeWithReturnValue(currentIndex, simplifiedLineSection, returnValue);
@@ -92,7 +87,8 @@ public abstract class ControlStructure {
             else if (currentInput.equals("]")) closedBracketCount++;
             if(closedBracketCount+3==openBracketCount); //throw bracket imbalance error
         }
-        return currentIndex++;
+        currentIndex++;
+        return currentIndex;
     }
 
     public ArrayList<String> getMyUserInput(){
