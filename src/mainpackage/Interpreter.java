@@ -28,7 +28,7 @@ import java.util.Arrays;
              int currentIndex = 0;
              // else check for a control tag. Call Control.execute, and evaluateIndependentLine will be called accordingly
              //I'm thinking that if no control tag, create base control, which simply calls evaluateIndependentLine until textBlock runs out
-             //if List, call parseOperationAndUpdate Index until close bracket is d etected
+             //if CommandList, call parseOperationAndUpdate Index until close bracket is d etected
          }
      }
 

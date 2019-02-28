@@ -22,7 +22,9 @@ public class IfElse extends ControlStructure {
         List<Command> previousCommandLog = myStorage.getMyCommandLog();
         if (simplifiedExpression == 1) {
             evaluateLineSection(myIndexOfFirstList, simplifiedLine);
-        } else evaluateLineSection(myIndexOfSecondList, simplifiedLine);
+        } else {
+            evaluateLineSection(myIndexOfSecondList, simplifiedLine);
+        }
 
         List<Command> currentCommandLog = myStorage.getMyCommandLog();
         if (previousCommandLog.size() != currentCommandLog.size()) {

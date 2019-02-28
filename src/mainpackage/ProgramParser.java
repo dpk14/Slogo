@@ -52,48 +52,48 @@ public class ProgramParser {
         myControlMap.put("IfElse", new IfElse(1, this, myStorage));
     }
     public void makeOperationsMap() {
-        myOperationsMap.put("Forward", new MovementCommand("forward", 1, null, null));
-        myOperationsMap.put("Backward", new MovementCommand("backward", 1, null, null));
-        myOperationsMap.put("Left", new RotateCommand("left", 1, null, null));
-        myOperationsMap.put("Right", new RotateCommand("right", 1, null, null));
-        myOperationsMap.put("SetHeading", new SetAbsoluteCommand("heading", 1, null, null));
-        myOperationsMap.put("SetTowards", new SetAbsoluteCommand("towards", 2, null, null));
-        myOperationsMap.put("SetPosition", new SetAbsoluteCommand("position", 2, null, null));
-        myOperationsMap.put("PenDown", new SetPen("down", 0, null, null));
-        myOperationsMap.put("PenUp", new SetPen("up", 0, null, null));
-        myOperationsMap.put("ShowTurtle", new VisibilityCommand("show", 0, null, null));
-        myOperationsMap.put("HideTurtle", new VisibilityCommand("hide", 0, null, null));
-        myOperationsMap.put("Home", new HomeCommand("home", 0, null, null));
-        myOperationsMap.put("ClearScreen", new HomeCommand("clear", 0, null, null));
+        myOperationsMap.put("Forward", new MovementCommand("forward", 1, myStorage));
+        myOperationsMap.put("Backward", new MovementCommand("backward", 1, myStorage));
+        myOperationsMap.put("Left", new RotateCommand("left", 1, myStorage));
+        myOperationsMap.put("Right", new RotateCommand("right", 1, myStorage));
+        myOperationsMap.put("SetHeading", new SetAbsoluteCommand("heading", 1, myStorage));
+        myOperationsMap.put("SetTowards", new SetAbsoluteCommand("towards", 2, myStorage));
+        myOperationsMap.put("SetPosition", new SetAbsoluteCommand("position", 2, myStorage));
+        myOperationsMap.put("PenDown", new SetPen("down", 0, myStorage));
+        myOperationsMap.put("PenUp", new SetPen("up", 0, myStorage));
+        myOperationsMap.put("ShowTurtle", new VisibilityCommand("show", 0, myStorage));
+        myOperationsMap.put("HideTurtle", new VisibilityCommand("hide", 0, myStorage));
+        myOperationsMap.put("Home", new HomeCommand("home", 0, myStorage));
+        myOperationsMap.put("ClearScreen", new HomeCommand("clear", 0, myStorage));
 
-        myOperationsMap.put("XCoordinate", new TurtleQuery("xcor", 0, null, null));
-        myOperationsMap.put("YCoordinate", new TurtleQuery("ycor", 0, null, null));
-        myOperationsMap.put("Heading", new TurtleQuery("heading", 0, null, null));
-        myOperationsMap.put("IsPenDown", new TurtleQuery("pen", 0, null, null));
-        myOperationsMap.put("IsShowing", new TurtleQuery("showing", 0, null, null));
+        myOperationsMap.put("XCoordinate", new TurtleQuery("xcor", 0, myStorage));
+        myOperationsMap.put("YCoordinate", new TurtleQuery("ycor", 0, myStorage));
+        myOperationsMap.put("Heading", new TurtleQuery("heading", 0, myStorage));
+        myOperationsMap.put("IsPenDown", new TurtleQuery("pen", 0, myStorage));
+        myOperationsMap.put("IsShowing", new TurtleQuery("showing", 0, myStorage));
 
-        myOperationsMap.put("Sum", new BasicMathOperation("sum", 2, null));
-        myOperationsMap.put("Difference", new BasicMathOperation("difference", 2, null));
-        myOperationsMap.put("Product", new BasicMathOperation("product", 2, null));
-        myOperationsMap.put("Quotient", new BasicMathOperation("quotient", 2, null));
-        myOperationsMap.put("Remainder", new BasicMathOperation("remainder", 2, null));
-        myOperationsMap.put("Minus", new BasicMathOperation("minus", 1, null));
-        myOperationsMap.put("Random", new RandomGenerator("random", 1, null));
-        myOperationsMap.put("Sine", new TrigonometricOperation("sin", 1, null));
-        myOperationsMap.put("Cosine", new TrigonometricOperation("cos", 1, null));
-        myOperationsMap.put("Tangent", new TrigonometricOperation("tan", 1, null));
-        myOperationsMap.put("ArcTangent", new TrigonometricOperation("atan", 1, null));
-        myOperationsMap.put("NaturalLog", new ExponentialOperation("log", 1, null));
-        myOperationsMap.put("Power", new ExponentialOperation("pow", 2, null));
-        myOperationsMap.put("Pi", new TrigonometricOperation("pi", 0, null));
+        myOperationsMap.put("Sum", new BasicMathOperation("sum", 2, myStorage));
+        myOperationsMap.put("Difference", new BasicMathOperation("difference", 2, myStorage));
+        myOperationsMap.put("Product", new BasicMathOperation("product", 2, myStorage));
+        myOperationsMap.put("Quotient", new BasicMathOperation("quotient", 2, myStorage));
+        myOperationsMap.put("Remainder", new BasicMathOperation("remainder", 2, myStorage));
+        myOperationsMap.put("Minus", new BasicMathOperation("minus", 1, myStorage));
+        myOperationsMap.put("Random", new RandomGenerator("random", 1, myStorage));
+        myOperationsMap.put("Sine", new TrigonometricOperation("sin", 1, myStorage));
+        myOperationsMap.put("Cosine", new TrigonometricOperation("cos", 1, myStorage));
+        myOperationsMap.put("Tangent", new TrigonometricOperation("tan", 1, myStorage));
+        myOperationsMap.put("ArcTangent", new TrigonometricOperation("atan", 1, myStorage));
+        myOperationsMap.put("NaturalLog", new ExponentialOperation("log", 1, myStorage));
+        myOperationsMap.put("Power", new ExponentialOperation("pow", 2, myStorage));
+        myOperationsMap.put("Pi", new TrigonometricOperation("pi", 0, myStorage));
 
-        myOperationsMap.put("LessThan", new BooleanExpression("less", 2, null));
-        myOperationsMap.put("GreaterThan", new BooleanExpression("greater", 2, null));
-        myOperationsMap.put("Equal", new BooleanExpression("equal", 2, null));
-        myOperationsMap.put("NotEqual", new BooleanExpression("notequal", 2, null));
-        myOperationsMap.put("And", new BooleanOperator("and", 2, null));
-        myOperationsMap.put("Or", new BooleanOperator("or", 2, null));
-        myOperationsMap.put("Not", new BooleanOperator("not", 1, null));
+        myOperationsMap.put("LessThan", new BooleanExpression("less", 2, myStorage));
+        myOperationsMap.put("GreaterThan", new BooleanExpression("greater", 2, myStorage));
+        myOperationsMap.put("Equal", new BooleanExpression("equal", 2, myStorage));
+        myOperationsMap.put("NotEqual", new BooleanExpression("notequal", 2, myStorage));
+        myOperationsMap.put("And", new BooleanOperator("and", 2, myStorage));
+        myOperationsMap.put("Or", new BooleanOperator("or", 2, myStorage));
+        myOperationsMap.put("Not", new BooleanOperator("not", 1, myStorage));
     }
 
     /**
@@ -120,7 +120,9 @@ public class ProgramParser {
     }
 
     public Operation getOperation(String operationType){
-        if (!myOperationsMap.containsKey(operationType)); //throw error
+        if (!myOperationsMap.containsKey(operationType)) {
+            //throw new Error("Illegal Operation");
+        }
         return (myOperationsMap.get(operationType));
     }
 

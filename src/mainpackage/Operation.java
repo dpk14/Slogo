@@ -21,7 +21,7 @@ abstract public class Operation {
     abstract public double execute();
 
     public int getNumArgs() {
-        return myArgs.size();
+        return myNumArgs;
     }
 
     public void setArgs(List<String> args){

@@ -16,10 +16,10 @@ public class Repeat extends ControlStructure {
             ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
             myTimesToRepeat=Double.parseDouble(simplifiedLine.get(myStartingIndex+1));
             myIndexOfList=myStartingIndex+2;
-            if (!simplifiedLine.get( myIndexOfList).equals("[")); //throw error
+            if (!simplifiedLine.get(myIndexOfList).equals("[")); //throw error
             List<Command> previousCommandLog=myStorage.getMyCommandLog();
             for(int k=0; k<myTimesToRepeat; k++) {
-                evaluateLineSection(myIndexOfList, simplifiedLine);
+                evaluateLineSection(myIndexOfList, myUserInput);
             }
             List<Command> currentCommandLog=myStorage.getMyCommandLog();
             if(previousCommandLog.size()!=currentCommandLog.size()){

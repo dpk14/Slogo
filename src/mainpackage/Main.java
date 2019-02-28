@@ -8,6 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -100,16 +101,27 @@ public class  Main extends Application {
 
     //gets the contents of the textbox as a string without newline characters
     private void evaluateInput(String inputString) {
-        String[] splitByLine=inputString.split("\n");
+        if (inputString.length() == 0) return;
+        String[] splitByLine = inputString.split("\n");
+        for (int k = 0; k < splitByLine.length; k++) {
+            if (splitByLine[k].contains("#")) splitByLine[k] = " ";
+        }
         String newLineCharacterRemoved=String.join(" ", splitByLine);
-        ArrayList<String> userInputList = new ArrayList<String>(Arrays.asList(newLineCharacterRemoved.split(" ")));
+        String[] splitString=newLineCharacterRemoved.split(" ");
+        ArrayList<String> userInputList = new ArrayList<String>();
+        for(String s: splitString) {
+            if(s.length()!=0) userInputList.add(s);
+        }
         int currentIndex = 0;
-        while(currentIndex<userInputList.size()) {
-            String nextEntry = userInputList.get(currentIndex);
-            ControlStructure currentControlStructure = myParser.getControlStructure(nextEntry);
-            currentControlStructure.initializeStructure(currentIndex, userInputList);
-            currentControlStructure.executeCode();
-            currentControlStructure.removeAndAdvance(currentIndex, userInputList);
+        ArrayList<String> simplifedInput=new ArrayList<>(userInputList);
+        while(currentIndex<simplifedInput.size()) {
+            String currentEntry = simplifedInput.get(currentIndex);
+            String currentEntrySymbol = myParser.getSymbol(currentEntry);
+            ControlStructure currentControlStructure = myParser.getControlStructure(currentEntrySymbol);
+            currentControlStructure.initializeStructure(currentIndex, simplifedInput);
+            double returnValue=currentControlStructure.executeCode();
+            if (!(currentControlStructure instanceof NoControlStructure)) currentControlStructure.replaceCodeWithReturnValue(currentIndex, simplifedInput, returnValue);
+            else simplifedInput=currentControlStructure.getMyUserInput();
             currentIndex++;
         }
         }
