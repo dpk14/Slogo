@@ -3,31 +3,30 @@ import java.util.regex.Pattern;
 
 public class OperationBuilder {
     ArrayList<String> myCurrentLine;
-    private List<Map.Entry<String, Pattern>> mySymbols;
-    private HashMap<String, Operation> myOperationsMap;
     Operation myOperation;
     String myOperationMarker;
     int myNumOfArgsNeeded;
     int myNumOfArgsFilled;
     String[] myOperationArguments;
+    ProgramParser myParser;
 
 
-    public OperationBuilder(Operation defaultOperation, ArrayList<String> currentLine, String operationMarker, List<Map.Entry<String, Pattern>> symbols, HashMap<String, Operation> operations){
+
+    public OperationBuilder(Operation defaultOperation, ArrayList<String> currentLine, String operationMarker, ProgramParser parser){
         myCurrentLine=currentLine;
         myOperation=defaultOperation.copy();
         myOperationMarker=operationMarker;
         myNumOfArgsNeeded=myOperation.getNumArgs();
         myOperationArguments=new String[myNumOfArgsNeeded];
-        myOperationsMap=operations;
-        mySymbols=symbols;
+        myParser=parser;
     }
 
     public void continueBuildingOperation(Stack<OperationBuilder> builderStack) {
         int builderIndex = myCurrentLine.indexOf(myOperationMarker);
         for (int k = 0; k < myNumOfArgsNeeded; k++) {
             String kthArgument = myCurrentLine.get(builderIndex + k);
-            String kthArgumentSymbol = mySymbols.get(kthArgument);
-            if (kthArgumentSymbol.equals("Variable")) myOperationArguments[k] = variableToConstant(kthArgument);
+            String kthArgumentSymbol = myParser.getSymbol(kthArgument);
+            if (kthArgumentSymbol.equals("Variable")) myOperationArguments[k] = myParser.parseVariable(kthArgument);
             else if (kthArgumentSymbol.equals("Constant")) myOperationArguments[k] = kthArgument;
             else {
                 Operation defaultOperation = myOperationsMap.get(kthArgumentSymbol);
@@ -56,7 +55,7 @@ public class OperationBuilder {
         }
         */
 
-        myCurrentLine.add(currentIndex, returnVal.toString());
+        myCurrentLine.add(currentIndex, Double.toString(returnVal));
         if (myOperation instanceof Command) myCommandLog.add(myOperation);
         builderStack.pop();
         return returnVal;

@@ -7,15 +7,15 @@ public class RepeatStructure extends ControlStructure {
     private int myIndexOfList;
 
     @Override
-    public void executeCode(){
-            ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1);
-            myTimesToRepeat=Double.parseVariableOrDouble(simplifiedLine.get(myStartingIndex+1));
+    public double executeCode(){
+            ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
+            myTimesToRepeat=Double.parseDouble(simplifiedLine.get(myStartingIndex+1));
             myIndexOfList=myStartingIndex+2;
-            if (!simplifiedLine.get( myStartingIndex+2).equals("[")); //throw error
+            if (!simplifiedLine.get( myIndexOfList).equals("[")); //throw error
             for(int k=0; k<myTimesToRepeat; k++) {
                 evaluateLineSection(myIndexOfList, simplifiedLine);
             }
-            simplifyLine(simplifiedLine);
+            //return last command result
     }
     }
 

@@ -16,11 +16,15 @@ public class ProgramParser {
     private List<Entry<String, Pattern>> mySymbols;
     private HashMap<String, Operation> myOperationsMap;
     private HashMap<String, ControlStructure> myControlMap;
+    private SystemStorage myStorage;
     /**
      * Create an empty parser.
      */
-    public ProgramParser() {
+    public ProgramParser(SystemStorage storage) {
         mySymbols = new ArrayList<>();
+        myOperationsMap=new HashMap<>();
+        myControlMap=new HashMap<>();
+        myStorage=storage;
         //initialize mySymbols and myOperations with the given values
     }
 
@@ -137,4 +141,15 @@ public class ProgramParser {
         // THIS IS THE IMPORTANT LINE
         return regex.matcher(text).matches();
     }
+
+    public String parseVariable(String variable){
+        variable=removeColon(variable);
+        return Double.toString(myStorage.getVariableValue(variable));
+    }
+
+    public String removeColon(String variable){
+        return variable.substring(1);
+    }
+
+
 }

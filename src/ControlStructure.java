@@ -3,14 +3,16 @@ import java.util.Stack;
 
 public class ControlStructure {
     ProgramParser myParser;
+    SystemStorage myStorage;
     int myStartingIndex;
     ArrayList<String> myUserInput;
     int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
     // Amanda ToDo:
     /** make constructor, make basic CntrlStruct commands, think about logic*/
 
-    public ControlStructure(ProgramParser parser, int numOfListArguments){
+    public ControlStructure(ProgramParser parser, int numOfListArguments, SystemStorage storage){
         myParser=parser;
+        myStorage=storage;
         myNumOfListArguments=numOfListArguments;
     }
 
@@ -62,7 +64,7 @@ public class ControlStructure {
         nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
         nestedControlStructure.executeCode();
         nestedControlStructure.removeAndAdvance(currentIndex, simplifiedLineSection);
-        } 
+        }
 
     protected void removeAndAdvance(int currentIndex, ArrayList<String> simplifiedLineSection){
         for(int k=0; k<myNumOfListArguments; k++) {
@@ -71,6 +73,15 @@ public class ControlStructure {
             }
         }
         simplifiedLineSection.add(currentIndex, "SIMPLIFIED_CONTROL");
+    }
+
+    public String parseVariable(String variable){
+        variable=removeColon(variable);
+        return Double.toString(myStorage.getVariableValue(variable));
+    }
+
+    public String removeColon(String variable){
+        return variable.substring(1);
     }
 
 

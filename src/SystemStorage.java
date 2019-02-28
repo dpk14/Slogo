@@ -27,13 +27,11 @@ public class SystemStorage {
     }
 
     public double getVariableValue (String variable){
-        if (userVariables.keySet().contains(variable)){
-            return userVariables.get(variable);
+        if (!userVariables.keySet().contains(variable)){
+            setVariableValue(variable, 0);
         }
-        else {
-            return 0; //TODO: throw NullPointerException
+        return userVariables.get(variable);
         }
-    }
 
     public List<Command> getCustomCommand(String commandName){
         return myCustomCommands.get(commandName);
