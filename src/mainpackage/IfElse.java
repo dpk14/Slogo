@@ -13,7 +13,7 @@ public class IfElse extends ControlStructure {
 
     @Override
     protected void simplifyAndExecuteStructure(){
-        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex);
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
         double simplifiedExpression=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+1));
         myIndexOfFirstList = myStartingIndex + 2;
         if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")) ; //throw error

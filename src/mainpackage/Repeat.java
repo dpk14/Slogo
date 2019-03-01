@@ -19,9 +19,12 @@ public class Repeat extends ControlStructure {
         myIndexOfList = myStartingIndex + 2;
         if (!mySimplifiableLine.get(myIndexOfList).equals("[")) ; //throw error
         for (int k = 0; k < myTimesToRepeat; k++) {
-            mySimplifiableLine=new ArrayList<String>(mySavedLine);
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
-        }
+            if (k==0) simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
+            else {
+                ArrayList<String> simplifiedAgain = new ArrayList<String>(mySavedLine);
+                simplifyAndEvaluate(simplifiedAgain, myIndexOfList);
+            }
+            }
     }
     }
 

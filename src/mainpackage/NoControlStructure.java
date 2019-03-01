@@ -11,6 +11,7 @@ public class NoControlStructure extends ControlStructure {
 
         @Override
         public double executeCode(){
+            simplifyAndExecuteStructure();
             return 0;
         }
 
