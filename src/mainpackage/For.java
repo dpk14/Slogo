@@ -16,6 +16,11 @@ public class For extends ControlStructure {
     }
 
     @Override
+    public ControlStructure copy() {
+        return new For(myNumOfListArguments, myParser, myStorage);
+    }
+
+    @Override
     public void simplifyAndExecuteStructure(){
         simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
         String variable=mySimplifiableLine.get(myStartingIndex+2);

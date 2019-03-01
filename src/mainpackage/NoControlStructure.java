@@ -10,6 +10,11 @@ public class NoControlStructure extends ControlStructure {
         }
 
         @Override
+        public ControlStructure copy() {
+            return new NoControlStructure(myNumOfListArguments, myParser, myStorage);
+        }
+
+        @Override
         public double executeCode(){
             simplifyAndExecuteStructure();
             return 0;

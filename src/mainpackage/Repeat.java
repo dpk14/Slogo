@@ -7,25 +7,30 @@ public class Repeat extends ControlStructure {
     double myTimesToRepeat;
     int myIndexOfList;
 
-    public Repeat(int numOfListArguments, ProgramParser parser, SystemStorage storage){
+    public Repeat(int numOfListArguments, ProgramParser parser, SystemStorage storage) {
         super(numOfListArguments, parser, storage);
+    }
+
+    @Override
+    public ControlStructure copy() {
+        return new Repeat(myNumOfListArguments, myParser, myStorage);
     }
 
     // performs updates on Simplifiable copy, then adjusts myUserInput to equal this, until it's simplified
     @Override
     protected void simplifyAndExecuteStructure() {
-        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex + 1);
-        myTimesToRepeat = Double.parseDouble(mySimplifiableLine.get(myStartingIndex + 1));
-        myIndexOfList = myStartingIndex + 2;
-        if (!mySimplifiableLine.get(myIndexOfList).equals("[")) ; //throw error
-        for (int k = 0; k < myTimesToRepeat; k++) {
-            if (k==0) simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
-            else {
-                ArrayList<String> simplifiedAgain = new ArrayList<String>(mySavedLine);
-                simplifyAndEvaluate(simplifiedAgain, myIndexOfList);
-            }
-            }
+        int counter = 0;
+        do {
+            simplifyAndEvaluate(mySimplifiableLine, myStartingIndex + 1);
+            myTimesToRepeat = Double.parseDouble(mySimplifiableLine.get(myStartingIndex + 1)); //TODO: change to say MyParser.parseValue in case its a vari
+            if (myTimesToRepeat == 0) return;
+            myIndexOfList = myStartingIndex + 2;
+            if (!mySimplifiableLine.get(myIndexOfList).equals("[")) ;
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
+            if (counter != myTimesToRepeat - 1) resetSimplification(mySavedLine);
+            counter++;
+        } while (counter < myTimesToRepeat);
     }
-    }
+}
 
 

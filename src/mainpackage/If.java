@@ -11,6 +11,11 @@ public class If extends ControlStructure {
     }
 
     @Override
+    public ControlStructure copy() {
+        return new If(myNumOfListArguments, myParser, myStorage);
+    }
+
+    @Override
     protected void simplifyAndExecuteStructure(){
         simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
         double simplifiedExpression=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+1));

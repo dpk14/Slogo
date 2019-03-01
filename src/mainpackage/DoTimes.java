@@ -14,6 +14,11 @@ public class DoTimes extends ControlStructure {
     }
 
     @Override
+    public ControlStructure copy() {
+        return new DoTimes(myNumOfListArguments, myParser, myStorage);
+    }
+
+    @Override
     protected void simplifyAndExecuteStructure(){
         String variable=mySimplifiableLine.get(myStartingIndex+2);
         myVariableName=myParser.removeColon(variable);

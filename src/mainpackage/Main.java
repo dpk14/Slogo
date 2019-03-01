@@ -116,10 +116,20 @@ public class  Main extends Application {
         while(currentIndex<simplifiableInput.size()) {
             String currentEntry = simplifiableInput.get(currentIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
-            ControlStructure currentControlStructure = myParser.getControlStructure(currentEntrySymbol);
-            currentControlStructure.initializeStructure(currentIndex, simplifiableInput);
+            ControlStructure defaultStructure = myParser.getControlStructure(currentEntrySymbol);
+            ControlStructure currentControlStructure=defaultStructure.copy();
+            currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null);
             double returnValue=currentControlStructure.executeCode();
-            simplifiableInput=currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
+            System.out.println("\n");
+            for (String s:simplifiableInput){
+                System.out.printf("%s ", s);
+            }
+            //simplifiableInput=currentControlStructure.getMySimplifiableLine();
+            System.out.println("\n");
+            for (String s:simplifiableInput){
+                System.out.printf("%s ", s);
+            }
+            currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
             currentIndex++;
         }
         }

@@ -12,6 +12,8 @@ public abstract class ControlStructure {
     int myStartingIndex;
     ArrayList<String> mySimplifiableLine;
     ArrayList<String> mySavedLine;
+    ControlStructure myOuterStructure;
+    int myIndexOfList;
 
     int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
 
@@ -21,18 +23,32 @@ public abstract class ControlStructure {
         myStorage=storage;
     }
 
-    //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
-    public void initializeStructure(int startingIndex, ArrayList<String> currentLineSection){
+    public abstract ControlStructure copy();
+
+    public void initializeStructure(int startingIndex, ArrayList<String> currentLineSection, ControlStructure OuterStructure){
         myStartingIndex=startingIndex;
         mySimplifiableLine=currentLineSection;
         mySavedLine=new ArrayList<>(currentLineSection);
+        myOuterStructure=OuterStructure;
+        if (myOuterStructure==null) System.out.println("null");
+        System.out.println("yeet");
     }
 
-    protected List<String> simplifyAndEvaluate(ArrayList<String> simplifiableLine, int startingIndex) {
+    protected void resetSimplification(ArrayList<String> savedLine){
+        mySimplifiableLine=savedLine;
+        if(myOuterStructure==null) return;
+        myOuterStructure.resetSimplification(savedLine);
+    }
+
+    //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
+
+    protected ArrayList<String> simplifyAndEvaluate(ArrayList<String> simplifiableLine, int startingIndex) {
+        printTest(startingIndex, simplifiableLine);
+
         String firstEntry = simplifiableLine.get(startingIndex);
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
         if (firstEntry.equals("[")) {
-            simplifiableLine=parseNestedControl("List", startingIndex, simplifiableLine);
+            simplifiableLine=parseList(startingIndex, simplifiableLine);
         }
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
             simplifiableLine = parseOperation(firstEntrySymbol, startingIndex, simplifiableLine);
@@ -40,15 +56,33 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine) {
-        ControlStructure nestedControlStructure=new NoControlStructure(0, myParser, myStorage);
-        if (controlType.equals("List")){
-            nestedControlStructure=new CommandList(1, myParser, myStorage);
+    protected ArrayList<String> parseList(int startingIndex, ArrayList<String> simplifiableLine) {
+        startingIndex++;
+        String currentEntry;
+        int openBracketCount = 1;
+        int closedBracketCount = 0;
+        while (openBracketCount != closedBracketCount) {
+            currentEntry = simplifiableLine.get(startingIndex);
+            String currentEntrySymbol = myParser.getSymbol(currentEntry);
+            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine);
+            else if (myParser.isOperation(currentEntrySymbol)) {
+                simplifiableLine=parseOperation(currentEntrySymbol, startingIndex, simplifiableLine);
+            } else ; //error
+            startingIndex++;
+            String updatedEntry = simplifiableLine.get(startingIndex);
+            if (updatedEntry.equals("[")) openBracketCount++;
+            else if (updatedEntry.equals("]")) closedBracketCount++;
+            if (closedBracketCount + 3 == openBracketCount) ; //error, bracket imbalance
         }
-        else nestedControlStructure = myParser.getControlStructure(controlType);
-        nestedControlStructure.initializeStructure(currentIndex, simplifiableLine);
+        return simplifiableLine;
+    }
+
+    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine) {
+        ControlStructure defaultStructure = myParser.getControlStructure(controlType);
+        ControlStructure nestedControlStructure=defaultStructure.copy();
+        nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this);
         double returnValue=nestedControlStructure.executeCode();
-        simplifiableLine=nestedControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableLine);
+        nestedControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableLine);
         return simplifiableLine;
     }
 
@@ -82,6 +116,7 @@ public abstract class ControlStructure {
     }
 
     protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> simplifiableLine){
+
         for(int k=0; k<myNumOfListArguments; k++) {
             while (!simplifiableLine.get(myStartingIndex).equals("]")) {
                 simplifiableLine.remove(myStartingIndex);
@@ -121,4 +156,14 @@ public abstract class ControlStructure {
 
     protected void simplifyAndExecuteStructure(){}
 
+    public void printTest(int index, ArrayList<String> line){
+        for (String s:line){
+            System.out.printf("%s ", s);
+        }
+        System.out.printf("\n%d\n", index);
+    }
+
+    public ArrayList<String> getMySimplifiableLine(){
+        return mySimplifiableLine;
+    }
 }

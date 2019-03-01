@@ -11,6 +11,11 @@ public class MakeVariable extends ControlStructure {
     }
 
     @Override
+    public ControlStructure copy() {
+        return new MakeVariable(myNumOfListArguments, myParser, myStorage);
+    }
+
+    @Override
     public double executeCode(){
         String variable=mySimplifiableLine.get(myStartingIndex+1);
         myVariableName=myParser.removeColon(variable);

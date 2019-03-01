@@ -16,6 +16,11 @@ public class CommandList extends ControlStructure {
     }
 
     @Override
+    public ControlStructure copy(){
+        return this;
+    }
+
+    @Override
     protected void simplifyAndExecuteStructure(){
         int currentIndex = myStartingIndex;
         currentIndex++;
