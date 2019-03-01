@@ -11,30 +11,27 @@ public class CommandList extends ControlStructure {
 
     @Override
     public double executeCode() {
-        convertCodeToCommands();
+        simplifyAndExecuteStructure();
         return 0;
     }
 
     @Override
-    protected void convertCodeToCommands(){
+    protected void simplifyAndExecuteStructure(){
         int currentIndex = myStartingIndex;
         currentIndex++;
         String currentEntry;
         int openBracketCount=1;
         int closedBracketCount=0;
         while(openBracketCount!=closedBracketCount){
-            currentEntry=myUserInput.get(currentIndex);
+            currentEntry=mySimplifiableLine.get(currentIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
-            if (myParser.isControl(currentEntrySymbol)) {
-                myCommands.addAll(parseNestedControl(currentEntrySymbol, currentIndex));
-            }
+            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, currentIndex, mySimplifiableLine);
             else if (myParser.isOperation(currentEntrySymbol)) {
-                Operation operation=parseOperation(currentEntrySymbol, currentIndex);
-                if (operation instanceof Command) myCommands.add((Command) operation);
+                parseOperation(currentEntrySymbol, currentIndex, mySimplifiableLine);
             }
             else ; //error
             currentIndex++;
-            String updatedEntry=myUserInput.get(currentIndex);
+            String updatedEntry=mySimplifiableLine.get(currentIndex);
             if(updatedEntry.equals("[")) openBracketCount++;
             else if (updatedEntry.equals("]")) closedBracketCount++;
             if(closedBracketCount+3==openBracketCount); //error, bracket imbalance
@@ -42,8 +39,8 @@ public class CommandList extends ControlStructure {
     }
 
     @Override
-    protected ArrayList<String> replaceCodeWithReturnValue(double returnValue) {
-        return myUserInput;
+    protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> simplifiableLine) {
+        return simplifiableLine;
     }
 }
 

@@ -10,13 +10,18 @@ public class NoControlStructure extends ControlStructure {
         }
 
         @Override
-        protected void convertCodeToCommands(){
-            simplifyLineSection(myStartingIndex);
+        public double executeCode(){
+            return 0;
         }
 
         @Override
-        protected ArrayList<String> replaceCodeWithReturnValue(double returnValue){
-            return myUserInput;
+        protected void simplifyAndExecuteStructure(){
+            simplifyAndEvaluate(mySimplifiableLine, myStartingIndex);
+        }
+
+        @Override
+        protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> mySimplifiableLine){
+            return mySimplifiableLine;
         }
     }
 

@@ -14,16 +14,17 @@ public class DoTimes extends ControlStructure {
     }
 
     @Override
-    protected void convertCodeToCommands(){
-        String variable=myUserInput.get(myStartingIndex+2);
+    protected void simplifyAndExecuteStructure(){
+        String variable=mySimplifiableLine.get(myStartingIndex+2);
         myVariableName=myParser.removeColon(variable);
         myVariableValue=0;
-        simplifyLineSection(myStartingIndex+1);
-        myLimit=Double.parseDouble(myUserInput.get(myStartingIndex+3));
+        simplifyAndEvaluate(mySimplifiableLine,myStartingIndex+1);
+        myLimit=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+3));
         myIndexOfList=myStartingIndex+4;
-        if (!myUserInput.get(myIndexOfList).equals("[")); //throw error
+        if (!mySimplifiableLine.get(myIndexOfList).equals("[")); //throw error
         while(myVariableValue<myLimit) {
-            myCommands.addAll(simplifyLineSection(myIndexOfList));
+            mySimplifiableLine=new ArrayList<>(mySavedLine);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
             myVariableValue++;
             myStorage.setVariableValue(myVariableName, myVariableValue);
         }

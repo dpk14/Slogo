@@ -112,14 +112,14 @@ public class  Main extends Application {
         }
 
         int currentIndex = 0;
-        ArrayList<String> simplifedInput=new ArrayList<>(userInputList);
-        while(currentIndex<simplifedInput.size()) {
-            String currentEntry = simplifedInput.get(currentIndex);
+        ArrayList<String> simplifiableInput=new ArrayList<>(userInputList);
+        while(currentIndex<simplifiableInput.size()) {
+            String currentEntry = simplifiableInput.get(currentIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
             ControlStructure currentControlStructure = myParser.getControlStructure(currentEntrySymbol);
-            currentControlStructure.initializeStructure(currentIndex, simplifedInput);
-            double returnValue=currentControlStructure.evaluateCode();
-            simplifedInput=currentControlStructure.replaceCodeWithReturnValue(returnValue);
+            currentControlStructure.initializeStructure(currentIndex, simplifiableInput);
+            double returnValue=currentControlStructure.executeCode();
+            simplifiableInput=currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
             currentIndex++;
         }
         }

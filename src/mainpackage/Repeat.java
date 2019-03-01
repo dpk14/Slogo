@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Repeat extends ControlStructure {
-    private double myTimesToRepeat;
-    private int myIndexOfList;
+    double myTimesToRepeat;
+    int myIndexOfList;
 
     public Repeat(int numOfListArguments, ProgramParser parser, SystemStorage storage){
         super(numOfListArguments, parser, storage);
@@ -13,14 +13,14 @@ public class Repeat extends ControlStructure {
 
     // performs updates on Simplifiable copy, then adjusts myUserInput to equal this, until it's simplified
     @Override
-    protected void convertCodeToCommands() {
-        simplifyLineSection(myStartingIndex + 1);
-        myTimesToRepeat = Double.parseDouble(myUserInput.get(myStartingIndex + 1));
+    protected void simplifyAndExecuteStructure() {
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex + 1);
+        myTimesToRepeat = Double.parseDouble(mySimplifiableLine.get(myStartingIndex + 1));
         myIndexOfList = myStartingIndex + 2;
-        if (!myUserInput.get(myIndexOfList).equals("[")) ; //throw error
-        List<Command> parsedList = simplifyLineSection(myIndexOfList);
+        if (!mySimplifiableLine.get(myIndexOfList).equals("[")) ; //throw error
         for (int k = 0; k < myTimesToRepeat; k++) {
-            myCommands.addAll(parsedList);
+            mySimplifiableLine=new ArrayList<String>(mySavedLine);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
         }
     }
     }

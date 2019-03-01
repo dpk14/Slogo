@@ -14,15 +14,13 @@ public class If extends ControlStructure {
     }
 
     @Override
-    protected void convertCodeToCommands(){
-        simplifyLineSection(myStartingIndex);
-        double simplifiedExpression=Double.parseDouble(myUserInput.get(myStartingIndex+1));
+    protected void simplifyAndExecuteStructure(){
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex);
+        double simplifiedExpression=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+1));
         myIndexOfList=myStartingIndex+2;
-        if (!myUserInput.get(myIndexOfList).equals("[")); //throw error
-        List<Command> parsedList=new ArrayList<>();
+        if (!mySimplifiableLine.get(myIndexOfList).equals("[")); //throw error
         if(simplifiedExpression==1) {
-            parsedList=simplifyLineSection(myIndexOfList);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
         }
-        myCommands.addAll(parsedList);
     }
 }

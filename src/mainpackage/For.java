@@ -7,6 +7,7 @@ public class For extends ControlStructure {
     private int myIndexOfList;
     private double myVariableValue;
     private String myVariableName;
+    private double myStart;
     private double myEnd;
     private double myIncrement;
 
@@ -15,19 +16,19 @@ public class For extends ControlStructure {
     }
 
     @Override
-    public void convertCodeToCommands(){
-        simplifyLineSection(myStartingIndex+1);
-        String variable=myUserInput.get(myStartingIndex+2);
+    public void simplifyAndExecuteStructure(){
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
+        String variable=mySimplifiableLine.get(myStartingIndex+2);
         myVariableName=myParser.removeColon(variable);
-        double startValue=Double.parseDouble(myUserInput.get(myStartingIndex+3));
-        myVariableValue=startValue;
-        myEnd=Double.parseDouble(myUserInput.get(myStartingIndex+4));
-        myIncrement=Double.parseDouble(myUserInput.get(myStartingIndex+5));
+        myStart=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+3));
+        myVariableValue=myStart;
+        myEnd=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+4));
+        myIncrement=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+5));
         myIndexOfList=myStartingIndex+6;
-        if (!myUserInput.get( myIndexOfList).equals("[")); //throw error
-        List<Command> parsedList=simplifyLineSection(myIndexOfList);
+        if (!mySimplifiableLine.get( myIndexOfList).equals("[")); //throw error
         while(myVariableValue<myEnd) {
-            myCommands.addAll(parsedList);
+            mySimplifiableLine=new ArrayList<>(mySavedLine);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
             myVariableValue+=myIncrement;
             myStorage.setVariableValue(myVariableName, myVariableValue);
         }

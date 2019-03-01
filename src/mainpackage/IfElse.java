@@ -12,19 +12,19 @@ public class IfElse extends ControlStructure {
     }
 
     @Override
-    public void convertCodeToCommands() {
-        simplifyLineSection(myStartingIndex + 1);
-        double simplifiedExpression = Double.parseDouble(myUserInput.get(myStartingIndex + 1));
+    protected void simplifyAndExecuteStructure(){
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex);
+        double simplifiedExpression=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+1));
         myIndexOfFirstList = myStartingIndex + 2;
-        if (!myUserInput.get(myIndexOfFirstList).equals("[")) ; //throw error
-        myIndexOfSecondList = findIndexOfNextList(myIndexOfFirstList, myUserInput);
-        if (!myUserInput.get(myIndexOfSecondList).equals("[")) ; //throw error
-        List<Command> parsedList;
+        if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")) ; //throw error
+        myIndexOfSecondList = findIndexOfNextList(myIndexOfFirstList, mySimplifiableLine);
+        if (!mySimplifiableLine.get(myIndexOfSecondList).equals("[")) ; //throw error
+
         if (simplifiedExpression == 1) {
-            parsedList=simplifyLineSection(myIndexOfFirstList);
-        } else {
-            parsedList=simplifyLineSection(myIndexOfSecondList);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
         }
-        myCommands.addAll(parsedList);
+        else {
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList);
+        }
     }
 }
