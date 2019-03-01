@@ -118,7 +118,7 @@ public class  Main extends Application {
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
             ControlStructure currentControlStructure = myParser.getControlStructure(currentEntrySymbol);
             currentControlStructure.initializeStructure(currentIndex, simplifedInput);
-            double returnValue=currentControlStructure.executeCode();
+            double returnValue=currentControlStructure.evaluateCode();
             simplifedInput=currentControlStructure.replaceCodeWithReturnValue(returnValue);
             currentIndex++;
         }

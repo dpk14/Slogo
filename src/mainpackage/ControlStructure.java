@@ -29,18 +29,19 @@ public abstract class ControlStructure {
     }
 
     protected List<Command> simplifyLineSection(int startingIndex) {
-        List<Command> simplifiedCommands=new ArrayList<>();
+        List<Command> nestedCommands=new ArrayList<>();
 
         String firstEntry = myUserInput.get(startingIndex);
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
         if (firstEntry.equals("[")) {
-            simplifiedCommands=parseNestedControl("List", startingIndex);
+            List<Command> parsedList=parseNestedControl("List", startingIndex);
+            nestedCommands.addAll(parsedList);
         }
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
-            Operation operation = parseOperation(firstEntrySymbol, startingIndex);
-            if (operation instanceof Command) operation.storeCommand();
+            List<Command> parsedCommands=parseOperation(firstEntrySymbol, startingIndex);
+            nestedCommands.addAll(parsedCommands);
         }
-        return simplifiedCommands;
+        return nestedCommands;
     }
 
     protected List<Command> parseNestedControl(String controlType, int currentIndex) {
@@ -50,7 +51,7 @@ public abstract class ControlStructure {
         }
         else nestedControlStructure = myParser.getControlStructure(controlType);
         nestedControlStructure.initializeStructure(currentIndex, myUserInput);
-        double returnValue=nestedControlStructure.executeCode();
+        double returnValue=nestedControlStructure.evaluateCode();
         nestedControlStructure.replaceCodeWithReturnValue(returnValue);
         List<Command> listOfCommands=nestedControlStructure.getMyCommands();
         return listOfCommands;
@@ -58,24 +59,24 @@ public abstract class ControlStructure {
 
 
     //replaces any operation tag with the return value of that operation, simplifying the line section
-    protected Operation parseOperation(String operationType, int currentIndex) {
-        Operation emptyOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
+    protected List<Command> parseOperation(String operationType, int currentIndex) {
+        Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
+        ArrayList<Command> parsedCommands=new ArrayList<>();
         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
-        OperationBuilder builder = new OperationBuilder(emptyOperation, myUserInput, currentIndex, myParser, builderStack);
+        OperationBuilder builder = new OperationBuilder(defaultOperation, myUserInput, currentIndex, myParser, builderStack);
         builderStack.push(builder);
         while (builderStack.size() != 0) {
             builder = builderStack.peek();
+            currentIndex = builder.getStartingIndex();
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
-                builder.completeBuild();
-                Operation parsedOperation=builder.getMyOperation();
-                int operationIndex = builder.getStartingIndex();
-                double returnVal = parsedOperation.execute();
-                replaceOperationWithReturnValue(parsedOperation, operationIndex, returnVal);
+                Operation parsedOperation=builder.createOperation();
+                if (parsedOperation instanceof Command) parsedCommands.add((Command) parsedOperation);
+                double returnVal = parsedOperation.evaluate();
+                replaceOperationWithReturnValue(parsedOperation, currentIndex, returnVal);
                 builderStack.pop();
-                return parsedOperation;
             } else builder.continueBuildingOperation();
         }
-        return emptyOperation;
+        return parsedCommands;
     }
 
     protected double replaceOperationWithReturnValue(Operation operation, int currentIndex, double returnVal) {
@@ -116,14 +117,10 @@ public abstract class ControlStructure {
         return currentIndex;
     }
 
-    public double executeCode(){
-        List<Command> previousCommandLog=myStorage.getMyCommandLog();
+    public double evaluateCode(){
         convertCodeToCommands();
-        List<Command> currentCommandLog=myStorage.getMyCommandLog();
-        if(previousCommandLog.size()!=currentCommandLog.size()){
-            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
-        }
-        return 0;
+        if(myCommands.size()==0) return 0;
+        else return myCommands.get(myCommands.size()-1).getReturnValue();
     }
 
     protected void convertCodeToCommands(){}
