@@ -12,25 +12,24 @@ public class IfElse extends ControlStructure {
     }
 
     @Override
-    public double executeCode() {
-        ArrayList<String> simplifiedLine = evaluateLineSection(myStartingIndex + 1, myUserInput);
-        double simplifiedExpression = Double.parseDouble(simplifiedLine.get(myStartingIndex + 1));
-        myIndexOfFirstList = myStartingIndex + 2;
-        if (!simplifiedLine.get(myIndexOfFirstList).equals("[")) ; //throw error
-        myIndexOfSecondList = findIndexOfNextList(myIndexOfFirstList);
-        if (!simplifiedLine.get(myIndexOfSecondList).equals("[")) ; //throw error
-        List<Command> previousCommandLog = myStorage.getMyCommandLog();
-        if (simplifiedExpression == 1) {
-            simplifiedLine=evaluateLineSection(myIndexOfFirstList, simplifiedLine);
-        } else {
-            simplifiedLine=evaluateLineSection(myIndexOfSecondList, simplifiedLine);
-        }
-        myUserInput=simplifiedLine;
+    public ControlStructure copy() {
+        return new IfElse(myNumOfListArguments, myParser, myStorage);
+    }
 
-        List<Command> currentCommandLog = myStorage.getMyCommandLog();
-        if (previousCommandLog.size() != currentCommandLog.size()) {
-            return currentCommandLog.get(currentCommandLog.size() - 1).getReturnValue();
+    @Override
+    protected void simplifyAndExecuteStructure(){
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
+        double simplifiedExpression=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+1));
+        myIndexOfFirstList = myStartingIndex + 2;
+        if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")) ; //throw error
+        myIndexOfSecondList = findIndexOfNextList(myIndexOfFirstList, mySimplifiableLine);
+        if (!mySimplifiableLine.get(myIndexOfSecondList).equals("[")) ; //throw error
+
+        if (simplifiedExpression == 1) {
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
         }
-        return 0;
+        else {
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList);
+        }
     }
 }

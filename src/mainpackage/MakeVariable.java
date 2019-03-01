@@ -11,13 +11,27 @@ public class MakeVariable extends ControlStructure {
     }
 
     @Override
+    public ControlStructure copy() {
+        return new MakeVariable(myNumOfListArguments, myParser, myStorage);
+    }
+
+    @Override
     public double executeCode(){
-        String variable=myUserInput.get(myStartingIndex+1);
+        String variable=mySimplifiableLine.get(myStartingIndex+1);
         myVariableName=myParser.removeColon(variable);
-        ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+2, myUserInput);
-        String simplifiedExpression=simplifiedLine.get(myStartingIndex+2);
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+2);
+        String simplifiedExpression=mySimplifiableLine.get(myStartingIndex+2);
         myVariableValue=Double.parseDouble(simplifiedExpression);
         myStorage.setVariableValue(myVariableName, myVariableValue);
         return myVariableValue;
+    }
+
+    @Override
+    protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> simplifiableLine){
+        for(int k=0; k<3; k++) {
+                simplifiableLine.remove(myStartingIndex);
+            }
+        simplifiableLine.add(myStartingIndex, Double.toString(returnValue));
+        return simplifiableLine;
     }
 }

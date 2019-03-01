@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Stack;
 
 public class  Main extends Application {
 
@@ -109,18 +110,26 @@ public class  Main extends Application {
         for(String s: splitString) {
             if(s.length()!=0) userInputList.add(s);
         }
+
         int currentIndex = 0;
-        ArrayList<String> simplifedInput=new ArrayList<>(userInputList);
-        while(currentIndex<simplifedInput.size()) {
-            String currentEntry = simplifedInput.get(currentIndex);
+        ArrayList<String> simplifiableInput=new ArrayList<>(userInputList);
+        while(currentIndex<simplifiableInput.size()) {
+            String currentEntry = simplifiableInput.get(currentIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
-            ControlStructure currentControlStructure = myParser.getControlStructure(currentEntrySymbol);
-            currentControlStructure.initializeStructure(currentIndex, simplifedInput);
+            ControlStructure defaultStructure = myParser.getControlStructure(currentEntrySymbol);
+            ControlStructure currentControlStructure=defaultStructure.copy();
+            currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null);
             double returnValue=currentControlStructure.executeCode();
-            if (!(currentControlStructure instanceof NoControlStructure)) {
-                simplifedInput=currentControlStructure.replaceCodeWithReturnValue(currentIndex, currentControlStructure.getMyUserInput(), returnValue);
+            System.out.println("\n");
+            for (String s:simplifiableInput){
+                System.out.printf("%s ", s);
             }
-            else simplifedInput=currentControlStructure.getMyUserInput();
+            //simplifiableInput=currentControlStructure.getMySimplifiableLine();
+            System.out.println("\n");
+            for (String s:simplifiableInput){
+                System.out.printf("%s ", s);
+            }
+            currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
             currentIndex++;
         }
         }

@@ -14,25 +14,25 @@ public class DoTimes extends ControlStructure {
     }
 
     @Override
-    public double executeCode(){
-        String variable=myUserInput.get(myStartingIndex+2);
+    public ControlStructure copy() {
+        return new DoTimes(myNumOfListArguments, myParser, myStorage);
+    }
+
+    @Override
+    protected void simplifyAndExecuteStructure(){
+        String variable=mySimplifiableLine.get(myStartingIndex+2);
         myVariableName=myParser.removeColon(variable);
         myVariableValue=0;
-        ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
-        myLimit=Double.parseDouble(simplifiedLine.get(myStartingIndex+3));
+        simplifyAndEvaluate(mySimplifiableLine,myStartingIndex+1);
+        myLimit=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+3));
         myIndexOfList=myStartingIndex+4;
-        if (!simplifiedLine.get(myIndexOfList).equals("[")); //throw error
-        List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        if (!mySimplifiableLine.get(myIndexOfList).equals("[")); //throw error
         while(myVariableValue<myLimit) {
-            evaluateLineSection(myIndexOfList, simplifiedLine);
+            mySimplifiableLine=new ArrayList<>(mySavedLine);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
             myVariableValue++;
             myStorage.setVariableValue(myVariableName, myVariableValue);
         }
-        List<Command> currentCommandLog=myStorage.getMyCommandLog();
-        if(previousCommandLog.size()!=currentCommandLog.size()){
-            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
-        }
-        return 0;
     }
 }
 

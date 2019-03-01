@@ -1,6 +1,7 @@
 package mainpackage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoControlStructure extends ControlStructure {
 
@@ -9,10 +10,24 @@ public class NoControlStructure extends ControlStructure {
         }
 
         @Override
+        public ControlStructure copy() {
+            return new NoControlStructure(myNumOfListArguments, myParser, myStorage);
+        }
+
+        @Override
         public double executeCode(){
-            ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex, myUserInput);
-            myUserInput=simplifiedLine;
+            simplifyAndExecuteStructure();
             return 0;
+        }
+
+        @Override
+        protected void simplifyAndExecuteStructure(){
+            simplifyAndEvaluate(mySimplifiableLine, myStartingIndex);
+        }
+
+        @Override
+        protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> mySimplifiableLine){
+            return mySimplifiableLine;
         }
     }
 

@@ -5,29 +5,24 @@ import java.util.List;
 
 public class If extends ControlStructure {
     private int myIndexOfList;
-    private double myVariableValue;
-    private String myVariableName;
-    private double myLimit;
 
     public If(int numOfListArguments, ProgramParser parser, SystemStorage storage){
         super(numOfListArguments, parser, storage);
     }
 
     @Override
-    public double executeCode(){
-        ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
-        double simplifiedExpression=Double.parseDouble(simplifiedLine.get(myStartingIndex+1));
+    public ControlStructure copy() {
+        return new If(myNumOfListArguments, myParser, myStorage);
+    }
+
+    @Override
+    protected void simplifyAndExecuteStructure(){
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
+        double simplifiedExpression=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+1));
         myIndexOfList=myStartingIndex+2;
-        if (!simplifiedLine.get( myIndexOfList).equals("[")); //throw error
-        List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        if (!mySimplifiableLine.get(myIndexOfList).equals("[")); //throw error
         if(simplifiedExpression==1) {
-            simplifiedLine=evaluateLineSection(myIndexOfList, simplifiedLine);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
         }
-        myUserInput=simplifiedLine;
-        List<Command> currentCommandLog=myStorage.getMyCommandLog();
-        if(previousCommandLog.size()!=currentCommandLog.size()){
-            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
-        }
-        return 0;
     }
 }

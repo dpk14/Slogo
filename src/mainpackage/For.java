@@ -7,6 +7,7 @@ public class For extends ControlStructure {
     private int myIndexOfList;
     private double myVariableValue;
     private String myVariableName;
+    private double myStart;
     private double myEnd;
     private double myIncrement;
 
@@ -15,27 +16,27 @@ public class For extends ControlStructure {
     }
 
     @Override
-    public double executeCode(){
-        String variable=myUserInput.get(myStartingIndex+2);
+    public ControlStructure copy() {
+        return new For(myNumOfListArguments, myParser, myStorage);
+    }
+
+    @Override
+    public void simplifyAndExecuteStructure(){
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
+        String variable=mySimplifiableLine.get(myStartingIndex+2);
         myVariableName=myParser.removeColon(variable);
-        ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
-        double startValue=Double.parseDouble(simplifiedLine.get(myStartingIndex+3));
-        myVariableValue=startValue;
-        myEnd=Double.parseDouble(simplifiedLine.get(myStartingIndex+4));
-        myIncrement=Double.parseDouble(simplifiedLine.get(myStartingIndex+5));
+        myStart=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+3));
+        myVariableValue=myStart;
+        myEnd=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+4));
+        myIncrement=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+5));
         myIndexOfList=myStartingIndex+6;
-        if (!simplifiedLine.get( myIndexOfList).equals("[")); //throw error
-        List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        if (!mySimplifiableLine.get( myIndexOfList).equals("[")); //throw error
         while(myVariableValue<myEnd) {
-            evaluateLineSection(myIndexOfList, simplifiedLine);
+            mySimplifiableLine=new ArrayList<>(mySavedLine);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
             myVariableValue+=myIncrement;
             myStorage.setVariableValue(myVariableName, myVariableValue);
         }
-        List<Command> currentCommandLog=myStorage.getMyCommandLog();
-        if(previousCommandLog.size()!=currentCommandLog.size()){
-            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
-        }
-        return 0;
     }
 }
 

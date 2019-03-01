@@ -1,14 +1,20 @@
 package mainpackage;
 
 import javax.sound.sampled.Control;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public abstract class ControlStructure {
     ProgramParser myParser;
     SystemStorage myStorage;
     int myStartingIndex;
-    ArrayList<String> myUserInput=new ArrayList<>();
+    ArrayList<String> mySimplifiableLine;
+    ArrayList<String> mySavedLine;
+    ControlStructure myOuterStructure;
+    int myIndexOfList;
+
     int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
 
     public ControlStructure(int numOfListArguments, ProgramParser parser, SystemStorage storage){
@@ -17,74 +23,119 @@ public abstract class ControlStructure {
         myStorage=storage;
     }
 
-    //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
-    public void initializeStructure(int startingIndex, ArrayList<String> userInput){
+    public abstract ControlStructure copy();
+
+    public void initializeStructure(int startingIndex, ArrayList<String> currentLineSection, ControlStructure OuterStructure){
         myStartingIndex=startingIndex;
-        myUserInput=userInput;
+        mySimplifiableLine=currentLineSection;
+        mySavedLine=new ArrayList<>(currentLineSection);
+        myOuterStructure=OuterStructure;
+        if (myOuterStructure==null) System.out.println("null");
+        System.out.println("yeet");
     }
 
-    protected ArrayList<String> evaluateLineSection(int startingIndex, ArrayList<String> lineSection) {
-        ArrayList<String> simplifiedLineSection = new ArrayList<String>(lineSection);
-        String firstEntry = simplifiedLineSection.get(startingIndex);
+    protected void resetSimplification(ArrayList<String> savedLine){
+        mySimplifiableLine=savedLine;
+        if(myOuterStructure==null) return;
+        myOuterStructure.resetSimplification(savedLine);
+    }
+
+    //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
+
+    protected ArrayList<String> simplifyAndEvaluate(ArrayList<String> simplifiableLine, int startingIndex) {
+        printTest(startingIndex, simplifiableLine);
+
+        String firstEntry = simplifiableLine.get(startingIndex);
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
-        if (firstEntry.equals("[")) parseNestedControl("List", startingIndex, simplifiedLineSection);
-        else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))){
-            simplifiedLineSection=parseOperation(firstEntrySymbol, startingIndex, simplifiedLineSection);
+        if (firstEntry.equals("[")) {
+            simplifiableLine=parseList(startingIndex, simplifiableLine);
         }
-        return simplifiedLineSection;
+        else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
+            simplifiableLine = parseOperation(firstEntrySymbol, startingIndex, simplifiableLine);
+        }
+        return simplifiableLine;
+    }
+
+    protected ArrayList<String> parseList(int startingIndex, ArrayList<String> simplifiableLine) {
+        startingIndex++;
+        String currentEntry;
+        int openBracketCount = 1;
+        int closedBracketCount = 0;
+        while (openBracketCount != closedBracketCount) {
+            currentEntry = simplifiableLine.get(startingIndex);
+            String currentEntrySymbol = myParser.getSymbol(currentEntry);
+            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine);
+            else if (myParser.isOperation(currentEntrySymbol)) {
+                simplifiableLine=parseOperation(currentEntrySymbol, startingIndex, simplifiableLine);
+            } else ; //error
+            startingIndex++;
+            String updatedEntry = simplifiableLine.get(startingIndex);
+            if (updatedEntry.equals("[")) openBracketCount++;
+            else if (updatedEntry.equals("]")) closedBracketCount++;
+            if (closedBracketCount + 3 == openBracketCount) ; //error, bracket imbalance
+        }
+        return simplifiableLine;
+    }
+
+    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine) {
+        ControlStructure defaultStructure = myParser.getControlStructure(controlType);
+        ControlStructure nestedControlStructure=defaultStructure.copy();
+        nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this);
+        double returnValue=nestedControlStructure.executeCode();
+        nestedControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableLine);
+        return simplifiableLine;
     }
 
 
     //replaces any operation tag with the return value of that operation, simplifying the line section
-    protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiedLineSection) {
+    protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine) {
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
-        OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiedLineSection, currentIndex, myParser, builderStack);
+        OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiableLine, currentIndex, myParser, builderStack);
         builderStack.push(builder);
         while (builderStack.size() != 0) {
             builder = builderStack.peek();
+            currentIndex = builder.getStartingIndex();
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
-                currentIndex=builder.getStartingIndex();
-                simplifiedLineSection=builder.performOperationAndSimplifyLine(currentIndex);
+                Operation parsedOperation=builder.createOperation();
+                if (parsedOperation instanceof Command) parsedOperation.storeCommand();
+                double returnVal = parsedOperation.execute();
+                replaceOperationWithReturnValue(parsedOperation, currentIndex, returnVal, simplifiableLine);
                 builderStack.pop();
             } else builder.continueBuildingOperation();
         }
-        return simplifiedLineSection;
+        return simplifiableLine;
     }
 
-    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiedLineSection) {
-        ControlStructure nestedControlStructure=new NoControlStructure(0, myParser, myStorage);
-        if (controlType.equals("List")){
-            nestedControlStructure=new CommandList(1, myParser, myStorage);
+    protected double replaceOperationWithReturnValue(Operation operation, int currentIndex, double returnVal, ArrayList<String> simplifiableLine) {
+        for (int k = -1; k < operation.getNumArgs(); k++) {
+            simplifiableLine.remove(currentIndex);
         }
-        else nestedControlStructure = myParser.getControlStructure(controlType);
-        nestedControlStructure.initializeStructure(currentIndex, simplifiedLineSection);
-        double returnValue=nestedControlStructure.executeCode();
-        simplifiedLineSection=nestedControlStructure.replaceCodeWithReturnValue(nestedControlStructure.getStartingIndex(), simplifiedLineSection, returnValue);
-        return simplifiedLineSection;
+        simplifiableLine.add(currentIndex, Double.toString(returnVal));
+        return returnVal;
     }
 
-    protected ArrayList<String> replaceCodeWithReturnValue(int startingIndex, ArrayList<String> simplifiedLineSection, double returnValue){
+    protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> simplifiableLine){
+
         for(int k=0; k<myNumOfListArguments; k++) {
-            while (!simplifiedLineSection.get(startingIndex).equals("]")) {
-                simplifiedLineSection.remove(startingIndex);
-                if (simplifiedLineSection.size()==0) return simplifiedLineSection;
+            while (!simplifiableLine.get(myStartingIndex).equals("]")) {
+                simplifiableLine.remove(myStartingIndex);
+                if (simplifiableLine.size()==0) return simplifiableLine;
             }
         }
-        simplifiedLineSection.remove(startingIndex);
-        simplifiedLineSection.add(startingIndex, Double.toString(returnValue));
-        return simplifiedLineSection;
+        simplifiableLine.remove(myStartingIndex);
+        simplifiableLine.add(myStartingIndex, Double.toString(returnValue));
+        return simplifiableLine;
     }
 
-
-    protected int findIndexOfNextList(int startingIndex) {
+    protected int findIndexOfNextList(int startingIndex, ArrayList<String> lineSection) {
         int currentIndex = startingIndex;
         String currentInput;
         int openBracketCount=1;
         int closedBracketCount=0;
         while(openBracketCount!=closedBracketCount){
             currentIndex++;
-            currentInput=myUserInput.get(currentIndex);
+            currentInput=lineSection.get(currentIndex);
             if(currentInput.equals("[")) openBracketCount++;
             else if (currentInput.equals("]")) closedBracketCount++;
             if(closedBracketCount+3==openBracketCount); //throw bracket imbalance error
@@ -93,20 +144,26 @@ public abstract class ControlStructure {
         return currentIndex;
     }
 
-    public ArrayList<String> getMyUserInput(){
-        return myUserInput;
+    public double executeCode(){
+        List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        simplifyAndExecuteStructure();
+        List<Command> currentCommandLog=myStorage.getMyCommandLog();
+        if(previousCommandLog.size()!=currentCommandLog.size()){
+            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
+        }
+        return 0;
     }
 
-    public int getStartingIndex(){
-        return myStartingIndex;
+    protected void simplifyAndExecuteStructure(){}
+
+    public void printTest(int index, ArrayList<String> line){
+        for (String s:line){
+            System.out.printf("%s ", s);
+        }
+        System.out.printf("\n%d\n", index);
     }
 
-    public abstract double executeCode();
-
-        //check next index. If it is a control structure, push it on stack
-
-        //Each Control subclass inherits the above "push to stack conditional" through super.
-        // Then this method is extended for the specific base case and expected structure of each ControlStructure
-        // ** for instance, if some "base case" is met, the control structure executes its operations and is popped from the stack
-
+    public ArrayList<String> getMySimplifiableLine(){
+        return mySimplifiableLine;
+    }
 }
