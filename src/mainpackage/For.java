@@ -15,30 +15,21 @@ public class For extends ControlStructure {
     }
 
     @Override
-    public double executeCode(){
-        String variable=mySimplifiableCopy.get(myStartingIndex+2);
+    public void convertCodeToCommands(){
+        String variable=myUserInput.get(myStartingIndex+2);
         myVariableName=myParser.removeColon(variable);
-        evaluateSimplifiableCopy(myStartingIndex+1);
-        double startValue=Double.parseDouble(mySimplifiableCopy.get(myStartingIndex+3));
+        simplifyLineSection(myStartingIndex+1);
+        double startValue=Double.parseDouble(myUserInput.get(myStartingIndex+3));
         myVariableValue=startValue;
-        myEnd=Double.parseDouble(mySimplifiableCopy.get(myStartingIndex+4));
-        myIncrement=Double.parseDouble(mySimplifiableCopy.get(myStartingIndex+5));
+        myEnd=Double.parseDouble(myUserInput.get(myStartingIndex+4));
+        myIncrement=Double.parseDouble(myUserInput.get(myStartingIndex+5));
         myIndexOfList=myStartingIndex+6;
-        if (!mySimplifiableCopy.get( myIndexOfList).equals("[")); //throw error
-        List<Command> previousCommandLog=myStorage.getMyCommandLog();
-        myUserInput=mySimplifiableCopy;
+        if (!myUserInput.get( myIndexOfList).equals("[")); //throw error
         while(myVariableValue<myEnd) {
-            mySimplifiableCopy=new ArrayList<>(myUserInput);
-            evaluateSimplifiableCopy(myIndexOfList);
+            myCommands.addAll(simplifyLineSection(myIndexOfList));
             myVariableValue+=myIncrement;
             myStorage.setVariableValue(myVariableName, myVariableValue);
         }
-        myUserInput=mySimplifiableCopy;
-        List<Command> currentCommandLog=myStorage.getMyCommandLog();
-        if(previousCommandLog.size()!=currentCommandLog.size()){
-            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
-        }
-        return 0;
     }
 }
 

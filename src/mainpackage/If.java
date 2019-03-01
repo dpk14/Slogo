@@ -14,20 +14,15 @@ public class If extends ControlStructure {
     }
 
     @Override
-    public double executeCode(){
-        evaluateSimplifiableCopy(myStartingIndex);
-        double simplifiedExpression=Double.parseDouble(mySimplifiableCopy.get(myStartingIndex+1));
+    protected void convertCodeToCommands(){
+        simplifyLineSection(myStartingIndex);
+        double simplifiedExpression=Double.parseDouble(myUserInput.get(myStartingIndex+1));
         myIndexOfList=myStartingIndex+2;
-        if (!mySimplifiableCopy.get( myIndexOfList).equals("[")); //throw error
-        List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        if (!myUserInput.get(myIndexOfList).equals("[")); //throw error
+        List<Command> parsedList=new ArrayList<>();
         if(simplifiedExpression==1) {
-            evaluateSimplifiableCopy(myIndexOfList);
+            parsedList=simplifyLineSection(myIndexOfList);
         }
-        myUserInput=mySimplifiableCopy;
-        List<Command> currentCommandLog=myStorage.getMyCommandLog();
-        if(previousCommandLog.size()!=currentCommandLog.size()){
-            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
-        }
-        return 0;
+        myCommands.addAll(parsedList);
     }
 }

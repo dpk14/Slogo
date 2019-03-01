@@ -3,20 +3,23 @@ package mainpackage;
 import javax.sound.sampled.Control;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 public abstract class ControlStructure {
     ProgramParser myParser;
     SystemStorage myStorage;
     int myStartingIndex;
-    ArrayList<String> myUserInput=new ArrayList<>();
-    ArrayList<Command> myNestedCommands=new ArrayList<>();
+    ArrayList<String> myUserInput;
+    List<Command> myCommands;
     int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
 
     public ControlStructure(int numOfListArguments, ProgramParser parser, SystemStorage storage){
         myNumOfListArguments=numOfListArguments;
         myParser=parser;
         myStorage=storage;
+        myUserInput=new ArrayList<>();
+        myCommands=new ArrayList<>();
     }
 
     //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
@@ -25,22 +28,22 @@ public abstract class ControlStructure {
         myUserInput=userInput;
     }
 
-    protected void simplifyLineSection(int startingIndex) {
+    protected List<Command> simplifyLineSection(int startingIndex) {
+        List<Command> simplifiedCommands=new ArrayList<>();
+
         String firstEntry = myUserInput.get(startingIndex);
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
         if (firstEntry.equals("[")) {
-            parseNestedControl("List", startingIndex);
+            simplifiedCommands=parseNestedControl("List", startingIndex);
         }
-        else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))){
-            Operation operation=parseOperation(firstEntrySymbol, startingIndex);
-            if (operation instanceof Command) {
-                myNestedCommands.add((Command) operation);
-                operation.storeCommand();
-            }
+        else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
+            Operation operation = parseOperation(firstEntrySymbol, startingIndex);
+            if (operation instanceof Command) operation.storeCommand();
         }
+        return simplifiedCommands;
     }
 
-    protected ArrayList<Command> parseNestedControl(String controlType, int currentIndex) {
+    protected List<Command> parseNestedControl(String controlType, int currentIndex) {
         ControlStructure nestedControlStructure=new NoControlStructure(0, myParser, myStorage);
         if (controlType.equals("List")){
             nestedControlStructure=new CommandList(1, myParser, myStorage);
@@ -49,6 +52,8 @@ public abstract class ControlStructure {
         nestedControlStructure.initializeStructure(currentIndex, myUserInput);
         double returnValue=nestedControlStructure.executeCode();
         nestedControlStructure.replaceCodeWithReturnValue(returnValue);
+        List<Command> listOfCommands=nestedControlStructure.getMyCommands();
+        return listOfCommands;
     }
 
 
@@ -95,7 +100,6 @@ public abstract class ControlStructure {
         return myUserInput;
     }
 
-
     protected int findIndexOfNextList(int startingIndex, ArrayList<String> lineSection) {
         int currentIndex = startingIndex;
         String currentInput;
@@ -112,6 +116,18 @@ public abstract class ControlStructure {
         return currentIndex;
     }
 
+    public double executeCode(){
+        List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        convertCodeToCommands();
+        List<Command> currentCommandLog=myStorage.getMyCommandLog();
+        if(previousCommandLog.size()!=currentCommandLog.size()){
+            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
+        }
+        return 0;
+    }
+
+    protected void convertCodeToCommands(){}
+
     public ArrayList<String> getMyUserInput(){
         return myUserInput;
     }
@@ -120,12 +136,7 @@ public abstract class ControlStructure {
         return myStartingIndex;
     }
 
-    public abstract double executeCode();
-
-        //check next index. If it is a control structure, push it on stack
-
-        //Each Control subclass inherits the above "push to stack conditional" through super.
-        // Then this method is extended for the specific base case and expected structure of each ControlStructure
-        // ** for instance, if some "base case" is met, the control structure executes its operations and is popped from the stack
-
+    public List<Command> getMyCommands() {
+        return myCommands;
+    }
 }

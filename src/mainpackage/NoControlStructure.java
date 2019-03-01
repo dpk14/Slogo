@@ -1,6 +1,7 @@
 package mainpackage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NoControlStructure extends ControlStructure {
 
@@ -9,10 +10,8 @@ public class NoControlStructure extends ControlStructure {
         }
 
         @Override
-        public double executeCode(){
-            evaluateSimplifiableCopy(myStartingIndex);
-            myUserInput=mySimplifiableCopy;
-            return 0;
+        protected void convertCodeToCommands(){
+            simplifyLineSection(myStartingIndex);
         }
 
         @Override
