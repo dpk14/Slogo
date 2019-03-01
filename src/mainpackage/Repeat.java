@@ -11,17 +11,20 @@ public class Repeat extends ControlStructure {
         super(numOfListArguments, parser, storage);
     }
 
+    // performs updates on Simplifiable copy, then adjusts myUserInput to equal this, until it's simplified
     @Override
     public double executeCode(){
-            ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
-            myTimesToRepeat=Double.parseDouble(simplifiedLine.get(myStartingIndex+1));
+            evaluateSimplifiableCopy(myStartingIndex+1);
+            myTimesToRepeat=Double.parseDouble(myUserInput.get(myStartingIndex+1));
             myIndexOfList=myStartingIndex+2;
-            if (!simplifiedLine.get(myIndexOfList).equals("[")); //throw error
+            myUserInput=mySimplifiableCopy;
+            if (!myUserInput.get(myIndexOfList).equals("[")); //throw error
             List<Command> previousCommandLog=myStorage.getMyCommandLog();
             for(int k=0; k<myTimesToRepeat; k++) {
-                simplifiedLine=evaluateLineSection(myIndexOfList, myUserInput);
+                mySimplifiableCopy=new ArrayList<>(myUserInput);
+                evaluateSimplifiableCopy(myIndexOfList);
             }
-            myUserInput=simplifiedLine;
+            myUserInput=mySimplifiableCopy;
             List<Command> currentCommandLog=myStorage.getMyCommandLog();
             if(previousCommandLog.size()!=currentCommandLog.size()){
                 return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();

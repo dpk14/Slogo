@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Stack;
 
 public class  Main extends Application {
 
@@ -109,6 +110,7 @@ public class  Main extends Application {
         for(String s: splitString) {
             if(s.length()!=0) userInputList.add(s);
         }
+
         int currentIndex = 0;
         ArrayList<String> simplifedInput=new ArrayList<>(userInputList);
         while(currentIndex<simplifedInput.size()) {
@@ -117,10 +119,7 @@ public class  Main extends Application {
             ControlStructure currentControlStructure = myParser.getControlStructure(currentEntrySymbol);
             currentControlStructure.initializeStructure(currentIndex, simplifedInput);
             double returnValue=currentControlStructure.executeCode();
-            if (!(currentControlStructure instanceof NoControlStructure)) {
-                simplifedInput=currentControlStructure.replaceCodeWithReturnValue(currentIndex, currentControlStructure.getMyUserInput(), returnValue);
-            }
-            else simplifedInput=currentControlStructure.getMyUserInput();
+            simplifedInput=currentControlStructure.replaceCodeWithReturnValue(returnValue);
             currentIndex++;
         }
         }

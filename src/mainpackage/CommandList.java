@@ -1,5 +1,6 @@
 package mainpackage;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class CommandList extends ControlStructure {
@@ -14,20 +15,25 @@ public class CommandList extends ControlStructure {
         String currentEntry;
         int openBracketCount=1;
         int closedBracketCount=0;
-        while(openBracketCount!=closedBracketCount && currentIndex!=myUserInput.size()-1){
-            currentEntry=myUserInput.get(currentIndex);
+        while(openBracketCount!=closedBracketCount && currentIndex!=mySimplifiableCopy.size()-1){
+            currentEntry=mySimplifiableCopy.get(currentIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
-            //System.out.printf("%d", myUserInput.size());
-            ArrayList<String> simplifiedLine;
-            if (myParser.isControl(currentEntrySymbol)) myUserInput=parseNestedControl(currentEntrySymbol, currentIndex, myUserInput);
-            else if (myParser.isOperation(currentEntrySymbol)) myUserInput=parseOperation(currentEntrySymbol, currentIndex, myUserInput);
+            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, currentIndex);
+            else if (myParser.isOperation(currentEntrySymbol)) parseOperation(currentEntrySymbol, currentIndex);
             else ; //error
             currentIndex++;
-            String updatedEntry=myUserInput.get(currentIndex);
+            String updatedEntry=mySimplifiableCopy.get(currentIndex);
             if(updatedEntry.equals("[")) openBracketCount++;
             else if (updatedEntry.equals("]")) closedBracketCount++;
             if(closedBracketCount+3==openBracketCount); //error, bracket imbalance
+            myUserInput=mySimplifiableCopy;
         }
         return 0;
     }
+
+    @Override
+    protected ArrayList<String> replaceCodeWithReturnValue(double returnValue) {
+        return myUserInput;
+    }
 }
+

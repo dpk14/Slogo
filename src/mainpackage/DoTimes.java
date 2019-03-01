@@ -15,16 +15,18 @@ public class DoTimes extends ControlStructure {
 
     @Override
     public double executeCode(){
-        String variable=myUserInput.get(myStartingIndex+2);
+        String variable=mySimplifiableCopy.get(myStartingIndex+2);
         myVariableName=myParser.removeColon(variable);
         myVariableValue=0;
-        ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex+1, myUserInput);
-        myLimit=Double.parseDouble(simplifiedLine.get(myStartingIndex+3));
+        evaluateSimplifiableCopy(myStartingIndex+1);
+        myLimit=Double.parseDouble(mySimplifiableCopy.get(myStartingIndex+3));
         myIndexOfList=myStartingIndex+4;
-        if (!simplifiedLine.get(myIndexOfList).equals("[")); //throw error
+        if (!mySimplifiableCopy.get(myIndexOfList).equals("[")); //throw error
         List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        myUserInput=mySimplifiableCopy;
         while(myVariableValue<myLimit) {
-            evaluateLineSection(myIndexOfList, simplifiedLine);
+            mySimplifiableCopy=new ArrayList<>(myUserInput);
+            evaluateSimplifiableCopy(myIndexOfList);
             myVariableValue++;
             myStorage.setVariableValue(myVariableName, myVariableValue);
         }

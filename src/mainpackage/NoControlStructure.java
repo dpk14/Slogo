@@ -10,9 +10,14 @@ public class NoControlStructure extends ControlStructure {
 
         @Override
         public double executeCode(){
-            ArrayList<String> simplifiedLine=evaluateLineSection(myStartingIndex, myUserInput);
-            myUserInput=simplifiedLine;
+            evaluateSimplifiableCopy(myStartingIndex);
+            myUserInput=mySimplifiableCopy;
             return 0;
+        }
+
+        @Override
+        protected ArrayList<String> replaceCodeWithReturnValue(double returnValue){
+            return myUserInput;
         }
     }
 
