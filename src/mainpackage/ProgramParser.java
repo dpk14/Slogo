@@ -44,13 +44,14 @@ public class ProgramParser {
     }
 
     public void makeControlMap(){
-        myControlMap.put("MakeVariable", new MakeVariable(0, this, myStorage));
-        myControlMap.put("Repeat", new Repeat(1, this, myStorage));
-        myControlMap.put("DoTimes", new DoTimes(2, this, myStorage));
-        myControlMap.put("For", new For(2, this, myStorage));
-        myControlMap.put("If", new If(1, this, myStorage));
-        myControlMap.put("IfElse", new IfElse(1, this, myStorage));
+        myControlMap.put("MakeVariable", new MakeVariable(2, 0, this, myStorage));
+        myControlMap.put("Repeat", new Repeat(1, 1, this, myStorage));
+        myControlMap.put("DoTimes", new DoTimes(0,2, this, myStorage));
+        myControlMap.put("For", new For(0,2, this, myStorage));
+        myControlMap.put("If", new If(1,1, this, myStorage));
+        myControlMap.put("IfElse", new IfElse(1, 2, this, myStorage));
     }
+
     public void makeOperationsMap() {
         myOperationsMap.put("Forward", new MovementCommand("forward", 1, myStorage));
         myOperationsMap.put("Backward", new MovementCommand("backward", 1, myStorage));
@@ -115,7 +116,7 @@ public class ProgramParser {
     }
 
     public ControlStructure getControlStructure(String controlType){
-        if (!myControlMap.containsKey(controlType)) return new NoControlStructure(0, this, myStorage);
+        if (!myControlMap.containsKey(controlType)) return new NoControlStructure(0, 0, this, myStorage);
         else return (myControlMap.get(controlType));
     }
 

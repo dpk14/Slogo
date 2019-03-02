@@ -120,16 +120,16 @@ public class  Main extends Application {
             ControlStructure currentControlStructure=defaultStructure.copy();
             currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null);
             double returnValue=currentControlStructure.executeCode();
-            System.out.println("\n");
-            for (String s:simplifiableInput){
-                System.out.printf("%s ", s);
-            }
             //simplifiableInput=currentControlStructure.getMySimplifiableLine();
             System.out.println("\n");
             for (String s:simplifiableInput){
                 System.out.printf("%s ", s);
             }
             currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
+            System.out.println("\n");
+            for (String s:simplifiableInput){
+                System.out.printf("%s ", s);
+            }
             currentIndex++;
         }
         }

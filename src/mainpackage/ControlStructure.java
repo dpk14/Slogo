@@ -13,11 +13,13 @@ public abstract class ControlStructure {
     ArrayList<String> mySimplifiableLine;
     ArrayList<String> mySavedLine;
     ControlStructure myOuterStructure;
-    int myIndexOfList;
+    int myNumOfExpressionArguments;
+    int myIndexOfFirstList;
 
     int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
 
-    public ControlStructure(int numOfListArguments, ProgramParser parser, SystemStorage storage){
+    public ControlStructure(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
+        myNumOfExpressionArguments=numOfExpressionArguments;
         myNumOfListArguments=numOfListArguments;
         myParser=parser;
         myStorage=storage;
@@ -117,14 +119,40 @@ public abstract class ControlStructure {
 
     protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> simplifiableLine){
 
+        simplifiableLine.remove(myStartingIndex); //removes control tag
+
+        for (int k=0; k<myNumOfExpressionArguments; k++){
+            simplifiableLine.remove(myStartingIndex);
+        }
+
+        String currentEntry;
+        for(int k=0; k<myNumOfListArguments; k++) {
+            int openBracketCount=1;
+            int closedBracketCount=0;
+            simplifiableLine.remove(myStartingIndex); //removes first outer bracket of list currently being removed
+            while (openBracketCount != closedBracketCount) {
+                currentEntry = simplifiableLine.get(myStartingIndex);
+                if (currentEntry.equals("[")) openBracketCount++;
+                else if (currentEntry.equals("]")) closedBracketCount++;
+                if (closedBracketCount + 3 == openBracketCount) ; //throw bracket imbalance error
+                simplifiableLine.remove(myStartingIndex);
+                //printTest(myStartingIndex, simplifiableLine);
+            }
+           // if (!simplifiableLine.get(myStartingIndex).equals("[")); //TODO: error: second list of structure must directly follow first list
+        }
+        simplifiableLine.add(myStartingIndex, Double.toString(returnValue));
+
+
+        /*
         for(int k=0; k<myNumOfListArguments; k++) {
             while (!simplifiableLine.get(myStartingIndex).equals("]")) {
                 simplifiableLine.remove(myStartingIndex);
-                if (simplifiableLine.size()==0) return simplifiableLine;
+                //if (simplifiableLine.size()==0) return simplifiableLine;
             }
+            simplifiableLine.remove(myStartingIndex);
         }
-        simplifiableLine.remove(myStartingIndex);
         simplifiableLine.add(myStartingIndex, Double.toString(returnValue));
+        */
         return simplifiableLine;
     }
 

@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class IfElse extends ControlStructure {
-    private int myIndexOfFirstList;
     private int myIndexOfSecondList;
 
-    public IfElse(int numOfListArguments, ProgramParser parser, SystemStorage storage){
-        super(numOfListArguments, parser, storage);
+    public IfElse(int numOfExpressionArgumens, int numOfListArguments, ProgramParser parser, SystemStorage storage){
+        super(numOfExpressionArgumens, numOfListArguments, parser, storage);
     }
 
     @Override
     public ControlStructure copy() {
-        return new IfElse(myNumOfListArguments, myParser, myStorage);
+        return new IfElse(myNumOfExpressionArguments, myNumOfListArguments, myParser, myStorage);
     }
 
     @Override

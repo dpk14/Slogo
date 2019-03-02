@@ -6,14 +6,15 @@ public class MakeVariable extends ControlStructure {
     private double myVariableValue;
     private String myVariableName;
 
-    public MakeVariable(int numOfListArguments, ProgramParser parser, SystemStorage storage){
-        super(numOfListArguments, parser, storage);
+    public MakeVariable(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
+        super(numOfExpressionArguments, numOfListArguments, parser, storage);
     }
 
     @Override
     public ControlStructure copy() {
-        return new MakeVariable(myNumOfListArguments, myParser, myStorage);
+        return new MakeVariable(myNumOfExpressionArguments, myNumOfListArguments, myParser, myStorage);
     }
+
 
     @Override
     public double executeCode(){

@@ -17,6 +17,7 @@ public class  MovementCommand extends Command {
             myTurtle.changePosition(stepSize * BACKWARD_MULTIPLIER);
         }
         ret = stepSize;
+        System.out.printf("%f", ret);
         return ret;
     }
 
