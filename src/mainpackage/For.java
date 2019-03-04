@@ -4,39 +4,52 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class For extends ControlStructure {
-    private int myIndexOfList;
     private double myVariableValue;
     private String myVariableName;
     private double myStart;
     private double myEnd;
     private double myIncrement;
+    private int myIndexOfSecondList;
 
-    public For(int numOfListArguments, ProgramParser parser, SystemStorage storage){
-        super(numOfListArguments, parser, storage);
+    public For(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
+        super(numOfExpressionArguments, numOfListArguments, parser, storage);
     }
 
     @Override
     public ControlStructure copy() {
-        return new For(myNumOfListArguments, myParser, myStorage);
+        return new For(myNumOfExpressionArguments, myNumOfListArguments, myParser, myStorage);
     }
 
     @Override
     public void simplifyAndExecuteStructure(){
-        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
-        String variable=mySimplifiableLine.get(myStartingIndex+2);
-        myVariableName=myParser.removeColon(variable);
-        myStart=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+3));
-        myVariableValue=myStart;
-        myEnd=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+4));
-        myIncrement=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+5));
-        myIndexOfList=myStartingIndex+6;
-        if (!mySimplifiableLine.get( myIndexOfList).equals("[")); //throw error
-        while(myVariableValue<myEnd) {
-            mySimplifiableLine=new ArrayList<>(mySavedLine);
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfList);
-            myVariableValue+=myIncrement;
+        int counter=0;
+        do {
+            myIndexOfFirstList=myStartingIndex+1;
+            if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")); //TODO error
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
+            String variable = mySimplifiableLine.get(myIndexOfFirstList + 1);
+            myVariableName = myParser.removeColon(variable);
+            myStart = Double.parseDouble(mySimplifiableLine.get(myIndexOfFirstList + 2));
+            if (counter == 0) myVariableValue = myStart;
             myStorage.setVariableValue(myVariableName, myVariableValue);
-        }
+            //System.out.printf("%f", myStorage.getVariableValue(myVariableName));
+            myEnd = Double.parseDouble(mySimplifiableLine.get(myIndexOfFirstList + 3));
+            myIncrement = Double.parseDouble(mySimplifiableLine.get(myIndexOfFirstList + 4));
+            myIndexOfSecondList = findIndexOfNextList(myIndexOfFirstList, mySimplifiableLine);
+
+            if (!mySimplifiableLine.get(myIndexOfSecondList).equals("[")) ; //throw error
+            //myIndexOfSecondList = myStartingIndex + 6;
+            if (myStart > myEnd) ; //TODO: error
+
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList);
+            if (myStart != myEnd) {
+                resetSimplification(mySavedLine);
+                mySavedLine=new ArrayList<>(mySavedLine);
+            }
+            myVariableValue += myIncrement;
+            counter++;
+
+        } while(myVariableValue<=myEnd);
     }
 }
 

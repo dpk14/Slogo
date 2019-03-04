@@ -5,13 +5,13 @@ import java.util.List;
 
 public class NoControlStructure extends ControlStructure {
 
-        public NoControlStructure(int numOfListArguments, ProgramParser parser, SystemStorage storage){
-            super(numOfListArguments, parser, storage);
+        public NoControlStructure(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
+            super(numOfExpressionArguments, numOfListArguments, parser, storage);
         }
 
         @Override
         public ControlStructure copy() {
-            return new NoControlStructure(myNumOfListArguments, myParser, myStorage);
+            return new NoControlStructure(myNumOfExpressionArguments, myNumOfListArguments, myParser, myStorage);
         }
 
         @Override
