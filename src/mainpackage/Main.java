@@ -9,10 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 public class  Main extends Application {
 
@@ -24,6 +21,8 @@ public class  Main extends Application {
     final private int HEIGHT_OF_OPTIONS = 20;
     final private int HEIGHT_OF_ANIMAL_SCREEN = 620;
     final private int WIDTH_OF_ANIMAL_SCREEN = 1000;
+
+    private HashMap<String, Animal> myActiveTurtles=new HashMap<>();
 
     private Console myConsole;
     public ProgramParser myParser;
@@ -114,12 +113,14 @@ public class  Main extends Application {
 
         int currentIndex = 0;
         ArrayList<String> simplifiableInput=new ArrayList<>(userInputList);
+
         while(currentIndex<simplifiableInput.size()) {
             String currentEntry = simplifiableInput.get(currentIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
             ControlStructure defaultStructure = myParser.getControlStructure(currentEntrySymbol);
             ControlStructure currentControlStructure=defaultStructure.copy();
             currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null);
+            currentControlStructure.giveAnimals(mySystemStorage.getActveAnimals());
             double returnValue=currentControlStructure.executeCode();
             //simplifiableInput=currentControlStructure.getMySimplifiableLine();
             System.out.println("\n");

@@ -17,22 +17,20 @@ public class MakeVariable extends ControlStructure {
 
 
     @Override
-    public double executeCode(){
+    public void simplifyAndExecuteStructure(){
         String variable=mySimplifiableLine.get(myStartingIndex+1);
         myVariableName=myParser.removeColon(variable);
-        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+2);
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+2, myActiveAnimals);
         String simplifiedExpression=mySimplifiableLine.get(myStartingIndex+2);
         myVariableValue=Double.parseDouble(simplifiedExpression);
         myStorage.setVariableValue(myVariableName, myVariableValue);
-        return myVariableValue;
     }
 
     @Override
-    protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> simplifiableLine){
-        for(int k=0; k<3; k++) {
-                simplifiableLine.remove(myStartingIndex);
-            }
-        simplifiableLine.add(myStartingIndex, Double.toString(returnValue));
-        return simplifiableLine;
+    public double executeCode(){
+        simplifyAndExecuteStructure();
+        return myVariableValue;
+
     }
+
 }

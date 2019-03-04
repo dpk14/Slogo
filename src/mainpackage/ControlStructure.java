@@ -3,6 +3,8 @@ package mainpackage;
 import javax.sound.sampled.Control;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.List;
 import java.util.Stack;
 
@@ -13,6 +15,7 @@ public abstract class ControlStructure {
     ArrayList<String> mySimplifiableLine;
     ArrayList<String> mySavedLine;
     ControlStructure myOuterStructure;
+    List<Entry<String, Animal>> myActiveAnimals;
     int myNumOfExpressionArguments;
     int myIndexOfFirstList;
 
@@ -36,6 +39,10 @@ public abstract class ControlStructure {
         System.out.println("yeet");
     }
 
+    public void giveAnimals(List<Entry<String, Animal>> activeAnimals){
+        myActiveAnimals=activeAnimals;
+    }
+
     protected void resetSimplification(ArrayList<String> savedLine){
         mySimplifiableLine=savedLine;
         if(myOuterStructure==null) return;
@@ -44,21 +51,21 @@ public abstract class ControlStructure {
 
     //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
 
-    protected ArrayList<String> simplifyAndEvaluate(ArrayList<String> simplifiableLine, int startingIndex) {
+    protected ArrayList<String> simplifyAndEvaluate(ArrayList<String> simplifiableLine, int startingIndex, List<Entry<String, Animal>> activeAnimals) {
         printTest(startingIndex, simplifiableLine);
 
         String firstEntry = simplifiableLine.get(startingIndex);
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
         if (firstEntry.equals("[")) {
-            parseList(startingIndex, simplifiableLine);
+            parseList(startingIndex, simplifiableLine, activeAnimals);
         }
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
-            parseOperation(firstEntrySymbol, startingIndex, simplifiableLine);
+            parseOperation(firstEntrySymbol, startingIndex, simplifiableLine, activeAnimals);
         }
         return simplifiableLine;
     }
 
-    protected ArrayList<String> parseList(int startingIndex, ArrayList<String> simplifiableLine) {
+    protected ArrayList<String> parseList(int startingIndex, ArrayList<String> simplifiableLine, List<Entry<String, Animal>> activeAnimals) {
         startingIndex++;
         String currentEntry;
         int openBracketCount = 1;
@@ -66,9 +73,9 @@ public abstract class ControlStructure {
         while (openBracketCount != closedBracketCount) {
             currentEntry = simplifiableLine.get(startingIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
-            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine);
+            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimals);
             else if (myParser.isOperation(currentEntrySymbol)) {
-                parseOperation(currentEntrySymbol, startingIndex, simplifiableLine);
+                parseOperation(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimals);
             } else ; //error
             startingIndex++;
             String updatedEntry = simplifiableLine.get(startingIndex);
@@ -79,10 +86,11 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine) {
+    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine, List<Entry<String, Animal>> activeAnimals) {
         ControlStructure defaultStructure = myParser.getControlStructure(controlType);
         ControlStructure nestedControlStructure=defaultStructure.copy();
         nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this);
+        nestedControlStructure.giveAnimals(activeAnimals);
         double returnValue=nestedControlStructure.executeCode();
         nestedControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableLine);
         return simplifiableLine;
@@ -90,7 +98,7 @@ public abstract class ControlStructure {
 
 
     //replaces any operation tag with the return value of that operation, simplifying the line section
-    protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine) {
+    protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine, List<Entry<String, Animal>> activeAnimals) {
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
         OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiableLine, currentIndex, myParser, builderStack);
@@ -101,7 +109,7 @@ public abstract class ControlStructure {
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
                 Operation parsedOperation=builder.createOperation();
                 if (parsedOperation instanceof Command) parsedOperation.storeCommand();
-                double returnVal = parsedOperation.execute();
+                double returnVal = operateOnAnimals(parsedOperation, activeAnimals);
                 replaceOperationWithReturnValue(parsedOperation, currentIndex, returnVal, simplifiableLine);
                 builderStack.pop();
             } else builder.continueBuildingOperation();
@@ -156,7 +164,7 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected int findIndexOfNextList(int startingIndex, ArrayList<String> lineSection) {
+    protected int findIndexOfEndBracket(int startingIndex, ArrayList<String> lineSection) {
         int currentIndex = startingIndex;
         String currentInput;
         int openBracketCount=1;
@@ -168,8 +176,16 @@ public abstract class ControlStructure {
             else if (currentInput.equals("]")) closedBracketCount++;
             if(closedBracketCount+3==openBracketCount); //throw bracket imbalance error
         }
-        currentIndex++;
         return currentIndex;
+    }
+
+    double operateOnAnimals(Operation operation, List<Entry<String, Animal>> activeAnimals){
+        double returnVal=0;
+        for(Entry entry : activeAnimals){
+            Animal animal=(Animal) entry.getValue();
+            returnVal=operation.executeCode(animal);
+        }
+        return returnVal;
     }
 
     public double executeCode(){

@@ -21,6 +21,10 @@ public class SystemStorage {
         myCommandLog = new ArrayList<>();
     }
 
+    public Map<String, Animal> getAnimals(){
+        return habitat;
+    }
+
     public Set<String> getAnimalNames(){
         HashSet<String> names = new HashSet<>();
         for (String name: habitat.keySet()){

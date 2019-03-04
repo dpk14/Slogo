@@ -22,7 +22,7 @@ public class NoControlStructure extends ControlStructure {
 
         @Override
         protected void simplifyAndExecuteStructure(){
-            simplifyAndEvaluate(mySimplifiableLine, myStartingIndex);
+            simplifyAndEvaluate(mySimplifiableLine, myStartingIndex, myActiveAnimals);
         }
 
         @Override

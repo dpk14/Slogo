@@ -26,7 +26,7 @@ public class For extends ControlStructure {
         do {
             myIndexOfFirstList=myStartingIndex+1;
             if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")); //TODO error
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myActiveAnimals);
             String variable = mySimplifiableLine.get(myIndexOfFirstList + 1);
             myVariableName = myParser.removeColon(variable);
             myStart = Double.parseDouble(mySimplifiableLine.get(myIndexOfFirstList + 2));
@@ -35,14 +35,14 @@ public class For extends ControlStructure {
             //System.out.printf("%f", myStorage.getVariableValue(myVariableName));
             myEnd = Double.parseDouble(mySimplifiableLine.get(myIndexOfFirstList + 3));
             myIncrement = Double.parseDouble(mySimplifiableLine.get(myIndexOfFirstList + 4));
-            myIndexOfSecondList = findIndexOfNextList(myIndexOfFirstList, mySimplifiableLine);
+            myIndexOfSecondList = findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine)+1;
 
             if (!mySimplifiableLine.get(myIndexOfSecondList).equals("[")) ; //throw error
             //myIndexOfSecondList = myStartingIndex + 6;
             if (myStart > myEnd) ; //TODO: error
 
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList);
-            if (myStart != myEnd) {
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, myActiveAnimals);
+            if (myVariableValue != myEnd) {
                 resetSimplification(mySavedLine);
                 mySavedLine=new ArrayList<>(mySavedLine);
             }
