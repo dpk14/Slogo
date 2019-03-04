@@ -50,10 +50,10 @@ public abstract class ControlStructure {
         String firstEntry = simplifiableLine.get(startingIndex);
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
         if (firstEntry.equals("[")) {
-            simplifiableLine=parseList(startingIndex, simplifiableLine);
+            parseList(startingIndex, simplifiableLine);
         }
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
-            simplifiableLine = parseOperation(firstEntrySymbol, startingIndex, simplifiableLine);
+            parseOperation(firstEntrySymbol, startingIndex, simplifiableLine);
         }
         return simplifiableLine;
     }
@@ -68,7 +68,7 @@ public abstract class ControlStructure {
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
             if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine);
             else if (myParser.isOperation(currentEntrySymbol)) {
-                simplifiableLine=parseOperation(currentEntrySymbol, startingIndex, simplifiableLine);
+                parseOperation(currentEntrySymbol, startingIndex, simplifiableLine);
             } else ; //error
             startingIndex++;
             String updatedEntry = simplifiableLine.get(startingIndex);
@@ -174,9 +174,11 @@ public abstract class ControlStructure {
 
     public double executeCode(){
         List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        int previousSize=previousCommandLog.size();
         simplifyAndExecuteStructure();
         List<Command> currentCommandLog=myStorage.getMyCommandLog();
-        if(previousCommandLog.size()!=currentCommandLog.size()){
+        int currentSize=currentCommandLog.size();
+        if(previousSize!=currentSize){
             return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
         }
         return 0;

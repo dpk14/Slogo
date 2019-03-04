@@ -7,6 +7,7 @@ public class DoTimes extends ControlStructure {
     private double myVariableValue;
     private String myVariableName;
     private double myLimit;
+    private int myIndexOfSecondList;
 
     public DoTimes(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
         super(numOfExpressionArguments, numOfListArguments, parser, storage);
@@ -19,23 +20,29 @@ public class DoTimes extends ControlStructure {
 
     @Override
     protected void simplifyAndExecuteStructure() {
+        int counter=0;
         do {
-            String variable = mySimplifiableLine.get(myStartingIndex + 2);
+            myIndexOfFirstList=myStartingIndex+1;
+            if(mySimplifiableLine.get(myIndexOfFirstList)!="["); //TODO: error, list expected
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
+            String variable = mySimplifiableLine.get(myIndexOfFirstList + 1);
             myVariableName = myParser.removeColon(variable);
-            myVariableValue = 1;
+            if (counter==0) myVariableValue = 1;
             myStorage.setVariableValue(myVariableName, myVariableValue);
-            simplifyAndEvaluate(mySimplifiableLine, myStartingIndex + 1);
-            myLimit = Double.parseDouble(mySimplifiableLine.get(myStartingIndex + 3));
-            myIndexOfFirstList = myStartingIndex + 4;
+            myLimit = Double.parseDouble(mySimplifiableLine.get(myIndexOfFirstList + 2));
+            myIndexOfSecondList = myIndexOfFirstList + 4;
 
             if (myLimit == 0) return;
             else if (myLimit < 0) ; // TODO: error
-            if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")) ; //TODO: throw error
+            if (!mySimplifiableLine.get(myIndexOfSecondList).equals("[")) ; //TODO: throw error
 
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
-            if (myVariableValue != myLimit) resetSimplification(mySavedLine);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList);
+            if (myVariableValue != myLimit) {
+                resetSimplification(mySavedLine);
+                mySavedLine=new ArrayList<>(mySavedLine);
+            }
             myVariableValue++;
-
+            counter++;
         } while (myVariableValue <= myLimit);
     }
 }

@@ -42,7 +42,10 @@ public class For extends ControlStructure {
             if (myStart > myEnd) ; //TODO: error
 
             simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList);
-            if (myStart != myEnd) resetSimplification(mySavedLine);
+            if (myStart != myEnd) {
+                resetSimplification(mySavedLine);
+                mySavedLine=new ArrayList<>(mySavedLine);
+            }
             myVariableValue += myIncrement;
             counter++;
 

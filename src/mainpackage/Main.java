@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Stack;
 
 public class  Main extends Application {
@@ -132,7 +133,7 @@ public class  Main extends Application {
             }
             currentIndex++;
         }
-        }
+    }
 
     public static void main (String[] args) {
         launch(args);

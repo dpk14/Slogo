@@ -29,7 +29,10 @@ public class Repeat extends ControlStructure {
             if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")) ;
 
             simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
-            if (counter != myTimesToRepeat - 1) resetSimplification(mySavedLine);
+            if (counter != myTimesToRepeat - 1) {
+                resetSimplification(mySavedLine);
+                mySavedLine=new ArrayList<>(mySavedLine);
+            }
             counter++;
         } while (counter < myTimesToRepeat);
     }
