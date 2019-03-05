@@ -10,7 +10,7 @@ abstract public class Command extends Operation {
         super(commandType, numArgs, storage);
         myTurtle = mySystemStorage.getAnimal(0);
     }
-    @Override
+
     abstract public void execute();
 
     @Override
