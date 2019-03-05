@@ -2,7 +2,7 @@ package mainpackage;
 
 abstract public class DisplayCommand extends Command{
 
-    public DisplayCommand(String commandType, int numArgs, SystemStorage storage, ) {
+    public DisplayCommand(String commandType, int numArgs, SystemStorage storage) {
         super(commandType, numArgs, storage);
     }
 
