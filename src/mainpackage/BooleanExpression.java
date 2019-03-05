@@ -6,7 +6,7 @@ public class BooleanExpression extends Operation{
     }
 
     @Override
-    public double execute() {
+    public double evaluate() {
         boolean booleanRet = false;
         ret = 0;
         if (myType.equals("less")){

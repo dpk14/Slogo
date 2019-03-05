@@ -5,18 +5,23 @@ public class RotateCommand extends Command{
 
     public RotateCommand(String movementType, int numArgs, SystemStorage storage){
         super(movementType, numArgs, storage);
+        evaluate();
     }
 
     @Override
-    public double execute() {
-        double angle = parseString(myArgs.get(0));
+    public void execute() {
+        double angle = ret;
         if (myType.equals("right")){
             myTurtle.adjustHeading(angle);
         }
         else if (myType.equals("left")){
             myTurtle.adjustHeading(angle * RIGHT_HEADING_MULTIPLIER);
         }
-        ret = angle;
+    }
+
+    @Override
+    public double evaluate(){
+        ret = parseString(myArgs.get(0));
         return ret;
     }
 

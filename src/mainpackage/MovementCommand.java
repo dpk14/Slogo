@@ -5,19 +5,23 @@ public class  MovementCommand extends Command {
 
     public MovementCommand(String movementType, int numArgs, SystemStorage storage){
         super(movementType, numArgs, storage);
+        evaluate();
     }
 
     @Override
-    public double execute() {
-        double stepSize = parseString(myArgs.get(0));
+    public void execute() {
+        double stepSize = ret;
         if (myType.equals("forward")){
             myTurtle.changePosition(stepSize);
         }
         else if (myType.equals("backward")){
             myTurtle.changePosition(stepSize * BACKWARD_MULTIPLIER);
         }
-        ret = stepSize;
-        System.out.printf("%f", ret);
+    }
+
+    @Override
+    public double evaluate(){
+        ret = parseString(myArgs.get(0));
         return ret;
     }
 

@@ -6,7 +6,7 @@ public class TrigonometricOperation extends Operation {
     }
 
     @Override
-    public double execute() {
+    public double evaluate() {
         ret = -1;
         if (myType.equals("sin")){
             ret = Math.sin(parseString(myArgs.get(0)));
