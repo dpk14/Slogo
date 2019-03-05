@@ -28,7 +28,7 @@ public class  Main extends Application {
     private Console myConsole;
     public ProgramParser myParser;
     public SystemStorage mySystemStorage;
-
+    private AnimalScreen animal_screen;
     @Override
     public void start(Stage stage) {
         askForLanguages(stage);
@@ -64,6 +64,7 @@ public class  Main extends Application {
 
     private void createSLOGO(String language, Stage stage){
         mySystemStorage = new SystemStorage();
+        animal_screen = new AnimalScreen(mySystemStorage, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         myParser = new ProgramParser(mySystemStorage);
         myParser.addPatterns("resources/languages/" + language);
         myParser.addPatterns("resources/languages/Syntax");
@@ -85,7 +86,6 @@ public class  Main extends Application {
     private Scene createScene() {
         var main_pane = new BorderPane();
 
-        var animal_screen = new AnimalScreen(mySystemStorage, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         var options = new ScreenOptions(animal_screen.getAnimalPane(), mySystemStorage, HEIGHT_OF_OPTIONS);
 
         main_pane.setCenter(animal_screen.getAnimalPane());

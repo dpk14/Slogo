@@ -152,4 +152,21 @@ public class Animal {
     public ImageView getImageView(){
         return node;
     }
+
+
+    /*
+    private Animation makeAnimation (Node agent) {
+        // create something to follow
+        var path = new Path();
+        path.getElements().addAll(new MoveTo(50, 50), new HLineTo(350));
+        // create an animation where the shape follows a path
+        var pt = new PathTransition(Duration.millis(4000), path, agent);
+        // create an animation that rotates the shape
+        var rt = new RotateTransition(Duration.seconds(3));
+        rt.setByAngle(90);
+        // put them together in order
+        return new SequentialTransition(agent, pt, rt);
+    }
+
+     */
 }

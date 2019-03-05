@@ -8,7 +8,7 @@ abstract public class Command extends Operation {
 
     public Command(String commandType, int numArgs, SystemStorage storage){
         super(commandType, numArgs, storage);
-        myTurtle=mySystemStorage.getAnimal("first");
+        myTurtle=mySystemStorage.getAnimal(0);
     }
 
     @Override
