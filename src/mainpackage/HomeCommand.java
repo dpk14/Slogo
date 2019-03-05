@@ -1,6 +1,6 @@
 package mainpackage;
 
-public class HomeCommand extends Command {
+public class HomeCommand extends TurtleCommand {
     private final double HOME_X = 0;
     private final double HOME_Y = 0;
 

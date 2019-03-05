@@ -1,6 +1,6 @@
 package mainpackage;
 
-public class SetAbsoluteCommand extends Command {
+public class SetAbsoluteCommand extends TurtleCommand {
     public SetAbsoluteCommand (String movementType, int numArgs, SystemStorage storage, Animal turtle){
         super(movementType, numArgs, storage, turtle);
         evaluate();

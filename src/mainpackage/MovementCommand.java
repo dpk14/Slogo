@@ -1,6 +1,6 @@
 package mainpackage;
 
-public class  MovementCommand extends Command {
+public class  MovementCommand extends TurtleCommand {
     private final int BACKWARD_MULTIPLIER = -1;
 
     public MovementCommand(String movementType, int numArgs, SystemStorage storage, Animal turtle){

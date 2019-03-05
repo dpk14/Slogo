@@ -1,6 +1,6 @@
 package mainpackage;
 
-public class RotateCommand extends Command{
+public class RotateCommand extends TurtleCommand{
     private final int RIGHT_HEADING_MULTIPLIER = -1;
 
     public RotateCommand(String movementType, int numArgs, SystemStorage storage, Animal turtle){

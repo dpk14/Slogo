@@ -1,9 +1,9 @@
 package mainpackage;
 
-public class VisibilityCommand extends Command{
+public class VisibilityCommand extends TurtleCommand{
 
-    public VisibilityCommand(String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+    public VisibilityCommand(String movementType, int numArgs, SystemStorage storage, Animal turtle){
+        super(movementType, numArgs, storage, turtle);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class VisibilityCommand extends Command{
 
     @Override
     public Operation copy() {
-        Operation copy = new VisibilityCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new VisibilityCommand(myType, myNumArgs, mySystemStorage, myTurtle);
         return copy;
     }
 }
