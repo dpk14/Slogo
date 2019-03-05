@@ -53,25 +53,25 @@ public class ProgramParser {
     }
 
     public void makeOperationsMap() {
-        myOperationsMap.put("Forward", new MovementCommand("forward", 1, myStorage));
-        myOperationsMap.put("Backward", new MovementCommand("backward", 1, myStorage));
-        myOperationsMap.put("Left", new RotateCommand("left", 1, myStorage));
-        myOperationsMap.put("Right", new RotateCommand("right", 1, myStorage));
-        myOperationsMap.put("SetHeading", new SetAbsoluteCommand("heading", 1, myStorage));
-        myOperationsMap.put("SetTowards", new SetAbsoluteCommand("towards", 2, myStorage));
-        myOperationsMap.put("SetPosition", new SetAbsoluteCommand("position", 2, myStorage));
+        myOperationsMap.put("Forward", new MovementCommand("forward", 1, myStorage, null));
+        myOperationsMap.put("Backward", new MovementCommand("backward", 1, myStorage, null));
+        myOperationsMap.put("Left", new RotateCommand("left", 1, myStorage, null));
+        myOperationsMap.put("Right", new RotateCommand("right", 1, myStorage, null));
+        myOperationsMap.put("SetHeading", new SetAbsoluteCommand("heading", 1, myStorage, null));
+        myOperationsMap.put("SetTowards", new SetAbsoluteCommand("towards", 2, myStorage, null));
+        myOperationsMap.put("SetPosition", new SetAbsoluteCommand("position", 2, myStorage, null));
         myOperationsMap.put("PenDown", new SetPen("down", 0, myStorage));
         myOperationsMap.put("PenUp", new SetPen("up", 0, myStorage));
         myOperationsMap.put("ShowTurtle", new VisibilityCommand("show", 0, myStorage));
         myOperationsMap.put("HideTurtle", new VisibilityCommand("hide", 0, myStorage));
-        myOperationsMap.put("Home", new HomeCommand("home", 0, myStorage));
-        myOperationsMap.put("ClearScreen", new HomeCommand("clear", 0, myStorage));
+        myOperationsMap.put("Home", new HomeCommand("home", 0, myStorage, null));
+        myOperationsMap.put("ClearScreen", new HomeCommand("clear", 0, myStorage, null));
 
-        myOperationsMap.put("XCoordinate", new TurtleQuery("xcor", 0, myStorage));
-        myOperationsMap.put("YCoordinate", new TurtleQuery("ycor", 0, myStorage));
-        myOperationsMap.put("Heading", new TurtleQuery("heading", 0, myStorage));
-        myOperationsMap.put("IsPenDown", new TurtleQuery("pen", 0, myStorage));
-        myOperationsMap.put("IsShowing", new TurtleQuery("showing", 0, myStorage));
+        myOperationsMap.put("XCoordinate", new TurtleQuery("xcor", 0, myStorage, null));
+        myOperationsMap.put("YCoordinate", new TurtleQuery("ycor", 0, myStorage, null));
+        myOperationsMap.put("Heading", new TurtleQuery("heading", 0, myStorage, null));
+        myOperationsMap.put("IsPenDown", new TurtleQuery("pen", 0, myStorage, null));
+        myOperationsMap.put("IsShowing", new TurtleQuery("showing", 0, myStorage, null));
 
         myOperationsMap.put("Sum", new BasicMathOperation("sum", 2, myStorage));
         myOperationsMap.put("Difference", new BasicMathOperation("difference", 2, myStorage));

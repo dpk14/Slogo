@@ -3,8 +3,8 @@ package mainpackage;
 public class RotateCommand extends Command{
     private final int RIGHT_HEADING_MULTIPLIER = -1;
 
-    public RotateCommand(String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+    public RotateCommand(String movementType, int numArgs, SystemStorage storage, Animal turtle){
+        super(movementType, numArgs, storage, turtle);
         evaluate();
     }
 
@@ -27,7 +27,7 @@ public class RotateCommand extends Command{
 
     @Override
     public Operation copy() {
-        Operation copy = new RotateCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new RotateCommand(myType, myNumArgs, mySystemStorage, myTurtle);
         return copy;
     }
 }

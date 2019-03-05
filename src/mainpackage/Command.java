@@ -11,6 +11,10 @@ abstract public class Command extends Operation {
         myTurtle = turtle;
     }
 
+    public void setMyTurtle(Animal turtle){
+        myTurtle = turtle;
+    }
+
     abstract public void execute();
 
     @Override

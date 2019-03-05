@@ -4,8 +4,8 @@ public class HomeCommand extends Command {
     private final double HOME_X = 0;
     private final double HOME_Y = 0;
 
-    public HomeCommand (String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+    public HomeCommand (String movementType, int numArgs, SystemStorage storage, Animal turtle){
+        super(movementType, numArgs, storage, turtle);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class HomeCommand extends Command {
 
     @Override
     public Operation copy() {
-        Operation copy = new HomeCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new HomeCommand(myType, myNumArgs, mySystemStorage, myTurtle);
         return copy;
     }
 }
