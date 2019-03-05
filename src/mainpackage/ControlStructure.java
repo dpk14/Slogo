@@ -15,9 +15,10 @@ public abstract class ControlStructure {
     ArrayList<String> mySimplifiableLine;
     ArrayList<String> mySavedLine;
     ControlStructure myOuterStructure;
-    List<Entry<String, Animal>> myActiveAnimals;
+    Animal myAnimal;
     int myNumOfExpressionArguments;
     int myIndexOfFirstList;
+    boolean isRepeatable;
 
     int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
 
@@ -26,21 +27,26 @@ public abstract class ControlStructure {
         myNumOfListArguments=numOfListArguments;
         myParser=parser;
         myStorage=storage;
+        isRepeatable=true;
     }
 
     public abstract ControlStructure copy();
 
-    public void initializeStructure(int startingIndex, ArrayList<String> currentLineSection, ControlStructure OuterStructure){
+    /*
+    This secondary constructor tells the specific ControlStructure-- which has been copied from its default case -- the specific
+    location on the UserInput line it begins, what animal it is operating on, and a pointer to the ControlStructure it is nested inside.
+    This pointer allows nested structures to give a simplified version of themselves back to all of their outer control structures, as well as restore
+    a saved, past version of themselves to be modified again by the outer structures. See resetSimplification for an example.
+     */
+
+    public void initializeStructure(int startingIndex, ArrayList<String> currentLineSection, ControlStructure OuterStructure, Animal animal){
         myStartingIndex=startingIndex;
         mySimplifiableLine=currentLineSection;
         mySavedLine=new ArrayList<>(currentLineSection);
         myOuterStructure=OuterStructure;
+        myAnimal=animal;
         if (myOuterStructure==null) System.out.println("null");
         System.out.println("yeet");
-    }
-
-    public void giveAnimals(List<Entry<String, Animal>> activeAnimals){
-        myActiveAnimals=activeAnimals;
     }
 
     protected void resetSimplification(ArrayList<String> savedLine){
@@ -49,23 +55,39 @@ public abstract class ControlStructure {
         myOuterStructure.resetSimplification(savedLine);
     }
 
+    /*
+     The method evaluateInput in Main repeats the current control structure over and over again for all turtles the "Tell" command declared active.
+     "Tell," which modifies the amount of turtles active, should not be repeated for all turtles, because it is declaring a new
+     set of active turtles to be repeated. Ask and AskWith should also not be repeated for the main active turtles, because
+     they are operating on a different set of turtles. Because these structures are not repeatable, they call the below method
+     declareUnrepeatable() to set the outermost structure as unrepeatable, so that the loop in evaluateInput will only process this code once.
+      */
+
+    protected void declareUnrepeatable(){
+        if(myOuterStructure==null) {
+            isRepeatable=false;
+            return;
+        }
+        myOuterStructure.declareUnrepeatable();
+    }
+
     //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
 
-    protected ArrayList<String> simplifyAndEvaluate(ArrayList<String> simplifiableLine, int startingIndex, List<Entry<String, Animal>> activeAnimals) {
+    protected ArrayList<String> simplifyAndEvaluate(ArrayList<String> simplifiableLine, int startingIndex, Animal activeAnimal) {
         printTest(startingIndex, simplifiableLine);
 
         String firstEntry = simplifiableLine.get(startingIndex);
         String firstEntrySymbol=myParser.getSymbol(firstEntry);
         if (firstEntry.equals("[")) {
-            parseList(startingIndex, simplifiableLine, activeAnimals);
+            parseList(startingIndex, simplifiableLine, activeAnimal);
         }
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
-            parseOperation(firstEntrySymbol, startingIndex, simplifiableLine, activeAnimals);
+            parseOperation(firstEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
         }
         return simplifiableLine;
     }
 
-    protected ArrayList<String> parseList(int startingIndex, ArrayList<String> simplifiableLine, List<Entry<String, Animal>> activeAnimals) {
+    protected ArrayList<String> parseList(int startingIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
         startingIndex++;
         String currentEntry;
         int openBracketCount = 1;
@@ -73,9 +95,9 @@ public abstract class ControlStructure {
         while (openBracketCount != closedBracketCount) {
             currentEntry = simplifiableLine.get(startingIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
-            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimals);
+            if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
             else if (myParser.isOperation(currentEntrySymbol)) {
-                parseOperation(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimals);
+                parseOperation(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
             } else ; //error
             startingIndex++;
             String updatedEntry = simplifiableLine.get(startingIndex);
@@ -86,19 +108,27 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine, List<Entry<String, Animal>> activeAnimals) {
+    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
         ControlStructure defaultStructure = myParser.getControlStructure(controlType);
         ControlStructure nestedControlStructure=defaultStructure.copy();
-        nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this);
-        nestedControlStructure.giveAnimals(activeAnimals);
+        nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this, activeAnimal);
         double returnValue=nestedControlStructure.executeCode();
         nestedControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableLine);
         return simplifiableLine;
     }
 
 
-    //replaces any operation tag with the return value of that operation, simplifying the line section
-    protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine, List<Entry<String, Animal>> activeAnimals) {
+    /*
+    replaces any operation tag with the return value of that operation, simplifying the line section
+
+    to understand this method better, first read continueBuildingOperation in the OperationBuilder class, then come back here and read
+    the below lines.
+
+    If the builder at the top top of the builder stack has filled its arguments, the operation is created and executed, then the builder is popped.
+    The operation is then removed from the line and replaced with its returnValue
+    */
+
+    protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
         Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
         OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiableLine, currentIndex, myParser, builderStack);
@@ -109,7 +139,7 @@ public abstract class ControlStructure {
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
                 Operation parsedOperation=builder.createOperation();
                 if (parsedOperation instanceof Command) parsedOperation.storeCommand();
-                double returnVal = operateOnAnimals(parsedOperation, activeAnimals);
+                double returnVal = parsedOperation.execute(activeAnimal);
                 replaceOperationWithReturnValue(parsedOperation, currentIndex, returnVal, simplifiableLine);
                 builderStack.pop();
             } else builder.continueBuildingOperation();
@@ -174,19 +204,17 @@ public abstract class ControlStructure {
             currentInput=lineSection.get(currentIndex);
             if(currentInput.equals("[")) openBracketCount++;
             else if (currentInput.equals("]")) closedBracketCount++;
+            else if (currentIndex==lineSection.size()-startingIndex-1) return -1;
             if(closedBracketCount+3==openBracketCount); //throw bracket imbalance error
         }
         return currentIndex;
     }
 
-    double operateOnAnimals(Operation operation, List<Entry<String, Animal>> activeAnimals){
-        double returnVal=0;
-        for(Entry entry : activeAnimals){
-            Animal animal=(Animal) entry.getValue();
-            returnVal=operation.executeCode(animal);
-        }
-        return returnVal;
-    }
+    /* called by an outer ControlStructure or by evaluateInput in main, executeCode() actually executes a ControlStructure's associated
+     code chunk, returning the value of the last command made. It always calls simplifyAndExecuteStructure, the method extended
+    in each ControlStructure subclass to contain the specific rules defining how the subclass processes, visits,
+    and evaluates its code chunk
+    */
 
     public double executeCode(){
         List<Command> previousCommandLog=myStorage.getMyCommandLog();
@@ -212,4 +240,9 @@ public abstract class ControlStructure {
     public ArrayList<String> getMySimplifiableLine(){
         return mySimplifiableLine;
     }
+
+    protected boolean repeatable(){
+        return isRepeatable;
+    }
+
 }

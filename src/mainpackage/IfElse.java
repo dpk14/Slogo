@@ -17,7 +17,7 @@ public class IfElse extends ControlStructure {
 
     @Override
     protected void simplifyAndExecuteStructure(){
-        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1, myActiveAnimals);
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1, myAnimal);
         double simplifiedExpression=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+1));
         myIndexOfFirstList = myStartingIndex + 2;
         if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")) ; //throw error
@@ -25,10 +25,10 @@ public class IfElse extends ControlStructure {
         if (!mySimplifiableLine.get(myIndexOfSecondList).equals("[")) ; //throw error
 
         if (simplifiedExpression == 1) {
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myActiveAnimals);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myAnimal);
         }
         else {
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, myActiveAnimals);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, myAnimal);
         }
     }
 }

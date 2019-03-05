@@ -25,20 +25,26 @@ public class AskWith extends ControlStructure{
         if (!mySimplifiableLine.get(myIndexOfFirstList).equals("["));
         Map<String, Animal> existingAnimals=myStorage.getAnimals();
         List<Entry<String, Animal>> activeAnimals=new ArrayList<>();
-        List<Entry<String, Animal>> currentAnimal=new ArrayList<>();
+        Animal animalToBeChecked;
+
         for (String animalName: existingAnimals.keySet()){
 
             resetSimplification(mySavedLine);
             mySavedLine=new ArrayList<>(mySavedLine);
 
-            Animal animal = existingAnimals.get(animalName);
-            Entry turtleToBeChecked= new SimpleEntry<>(animalName, animal);
-            currentAnimal.add(turtleToBeChecked);
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, currentAnimal);
+            animalToBeChecked = existingAnimals.get(animalName);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, animalToBeChecked);
+
             double condition=Double.parseDouble(mySimplifiableLine.get(myIndexOfFirstList+1));
-            if (condition==1) activeAnimals.add(turtleToBeChecked);
+            if (condition==1) activeAnimals.add(new SimpleEntry<>(animalName, animalToBeChecked));
         }
+
         myIndexOfSecondList=findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine)+1;
-        simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, activeAnimals);
+
+        for(Entry entry: activeAnimals) {
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, (Animal) entry.getValue());
+        }
+
+        declareUnrepeatable();
     }
 }

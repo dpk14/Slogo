@@ -21,17 +21,22 @@ public class Ask extends ControlStructure{
     public void simplifyAndExecuteStructure(){
         myIndexOfFirstList=myStartingIndex+1;
         if (!mySimplifiableLine.get(myIndexOfFirstList).equals("["));
-        simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myActiveAnimals);
+        simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myAnimal);
         int end = findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine);
 
         List<Entry<String, Animal>> activeAnimals= new ArrayList<>();
-        String animalID="";
+
         for(int k = myIndexOfFirstList+1; k<end; k++) {
-            animalID=mySimplifiableLine.get(k);
+            String animalID=mySimplifiableLine.get(k);
             Animal animal=myStorage.getAnimal(animalID);
             activeAnimals.add(new SimpleEntry<>(animalID, animal));
         }
         myIndexOfSecondList=end+1;
-        simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, activeAnimals);
-    }
+
+        for(Entry entry: activeAnimals) {
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, (Animal) entry.getValue());
+        }
+
+        declareUnrepeatable();
+        }
 }

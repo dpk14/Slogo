@@ -148,4 +148,7 @@ public class ProgramParser {
         return variable.substring(1);
     }
 
+    public Map getControlMap(){
+        return myControlMap;
+    }
 }

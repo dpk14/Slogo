@@ -23,7 +23,7 @@ public class Tell extends ControlStructure{
         myIndexOfFirstList=myStartingIndex+1;
         if (!mySimplifiableLine.get(myIndexOfFirstList).equals("["));
         List<Entry<String, Animal>> activeAnimals=myStorage.getActiveAnimals();
-        simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, activeAnimals);
+        simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myAnimal);
         int end = findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine);
         activeAnimals.clear();
         String animalID="";
@@ -34,6 +34,7 @@ public class Tell extends ControlStructure{
         }
         if (animalID.length()==0) myReturnVal=0;
         else myReturnVal = Double.parseDouble(animalID);
+        declareUnrepeatable();
     }
 
     @Override

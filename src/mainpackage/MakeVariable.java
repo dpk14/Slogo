@@ -20,7 +20,7 @@ public class MakeVariable extends ControlStructure {
     public void simplifyAndExecuteStructure(){
         String variable=mySimplifiableLine.get(myStartingIndex+1);
         myVariableName=myParser.removeColon(variable);
-        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+2, myActiveAnimals);
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+2, myAnimal);
         String simplifiedExpression=mySimplifiableLine.get(myStartingIndex+2);
         myVariableValue=Double.parseDouble(simplifiedExpression);
         myStorage.setVariableValue(myVariableName, myVariableValue);
