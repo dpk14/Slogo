@@ -18,7 +18,9 @@ abstract public class Operation {
         mySystemStorage = systemStorage;
     }
 
-    abstract public double execute();
+    abstract public void execute();
+
+    abstract public double evaluate();
 
     public int getNumArgs() {
         return myNumArgs;

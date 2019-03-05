@@ -8,11 +8,14 @@ abstract public class Command extends Operation {
 
     public Command(String commandType, int numArgs, SystemStorage storage){
         super(commandType, numArgs, storage);
-        myTurtle=mySystemStorage.getAnimal(0);
+        myTurtle = mySystemStorage.getAnimal(0);
     }
 
     @Override
-    abstract public double execute();
+    abstract public void execute();
+
+    @Override
+    abstract public double evaluate();
 
     @Override
     abstract public Operation copy();
