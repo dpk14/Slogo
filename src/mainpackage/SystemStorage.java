@@ -8,8 +8,8 @@ public class SystemStorage {
 
     private Map<Integer, Animal> habitat;
     private Map<String, Double> userVariables;
-    private Map<String, List<Command>> myCustomCommands;
-    private List<Command> myCommandLog;
+    private Map<String, List<TurtleCommand>> myCustomCommands;
+    private List<TurtleCommand> myCommandLog;
     private Pane animalCanvas;
     private double height_of_screen;
     private double width_of_screen;
@@ -34,6 +34,9 @@ public class SystemStorage {
         return myActiveAnimals;
     }
 
+    public double numTurtlesCreated(){
+        return habitat.keySet().size();
+    }
 
     public Set<Integer> getAnimalNames(){
         HashSet<Integer> names = new HashSet<>();
@@ -78,7 +81,7 @@ public class SystemStorage {
         return userVariables.get(variable);
         }
 
-    public List<Command> getCustomCommand(String commandName){
+    public List<TurtleCommand> getCustomCommand(String commandName){
         return myCustomCommands.get(commandName);
     }
 
@@ -89,18 +92,24 @@ public class SystemStorage {
         }
     }
 
-    public void setCustomCommand(String variableName, List<Command> commands){
+    public void setCustomCommand(String variableName, List<TurtleCommand> commands){
         myCustomCommands.putIfAbsent(variableName, commands);
         if (myCustomCommands.keySet().contains(variableName)){
             myCustomCommands.put(variableName, commands);
         }
     }
 
-    public void addToHistory(Command command){
+    public double getActiveId(){
+        int lastIndex = myCommandLog.size() - 1;
+        double id = myCommandLog.get(lastIndex).getTurtle().getAnimalID();
+        return id;
+    }
+
+    public void addToHistory(TurtleCommand command){
         myCommandLog.add(command);
     }
 
-    public List<Command> getMyCommandLog() {
+    public List<TurtleCommand> getMyCommandLog() {
         return myCommandLog;
     }
 }

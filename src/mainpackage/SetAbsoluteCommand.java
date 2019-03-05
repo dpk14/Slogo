@@ -1,8 +1,8 @@
 package mainpackage;
 
 public class SetAbsoluteCommand extends TurtleCommand {
-    public SetAbsoluteCommand (String movementType, int numArgs, SystemStorage storage, Animal turtle){
-        super(movementType, numArgs, storage, turtle);
+    public SetAbsoluteCommand (String movementType, int numArgs, SystemStorage storage){
+        super(movementType, numArgs, storage);
         evaluate();
     }
 
@@ -41,7 +41,7 @@ public class SetAbsoluteCommand extends TurtleCommand {
 
     @Override
     public Operation copy() {
-        Operation copy = new SetAbsoluteCommand(myType, myNumArgs, mySystemStorage, myTurtle);
+        Operation copy = new SetAbsoluteCommand(myType, myNumArgs, mySystemStorage);
         return copy;
     }
 }
