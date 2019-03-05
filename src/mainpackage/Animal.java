@@ -10,23 +10,21 @@ import java.util.ArrayList;
 
 public class Animal {
 
-    final private ImageView node;
-    final private String animal_name;
+    private ImageView node;
+    private Integer animal_ID;
     private double[] direction_vector;
     private double current_angle;
     private boolean myPen;
     private Pane myPane;
     private ArrayList<Line> trail;
     private boolean isVisible;
-    private int WIDTH_OF_TURTLE;
-    private int HEIGHT_OF_TURTLE;
+    private int WIDTH_OF_TURTLE = 25;
+    private int HEIGHT_OF_TURTLE = 25;
 
-    public Animal(String name, double height_of_screen, double width_of_screen, Pane pane){
-        animal_name = name;
+    public Animal(Integer name, double height_of_screen, double width_of_screen, Pane pane){
+        animal_ID = name;
         myPane = pane;
         current_angle = 90;
-        WIDTH_OF_TURTLE = 25;
-        HEIGHT_OF_TURTLE = 25;
         trail = new ArrayList<>();
         double radian = Math.toRadians(current_angle);
         direction_vector = new double[2];
@@ -38,6 +36,7 @@ public class Animal {
         node.setX(width_of_screen/2 - WIDTH_OF_TURTLE);
         node.setY(height_of_screen/2 - HEIGHT_OF_TURTLE);
     }
+
 
     public void penUp(){
         myPen = false;
@@ -144,11 +143,10 @@ public class Animal {
 
     public void setImage(String fileName){
         node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream(fileName)));
-        return;
     }
 
-    public String getAnimalName(){
-        return animal_name;
+    public Integer getAnimalID(){
+        return animal_ID;
     }
 
     public ImageView getImageView(){
