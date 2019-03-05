@@ -9,8 +9,7 @@ public class HomeCommand extends Command {
     }
 
     @Override
-    public double execute() {
-        ret = -1;
+    public void execute() {
         if (myType.equals("home")){
             ret = myTurtle.setPosition(HOME_X, HOME_Y);
         }
@@ -18,6 +17,14 @@ public class HomeCommand extends Command {
             ret = myTurtle.setPosition(HOME_X, HOME_Y);
             myTurtle.clearTrails();
         }
+    }
+
+    @Override
+    public double evaluate(){
+        ret = -1;
+        double current_x = myTurtle.getCoordinates()[0];
+        double current_y = myTurtle.getCoordinates()[1];
+        ret = Math.sqrt(Math.pow(current_x - HOME_X,2) + Math.pow(current_y - HOME_Y, 2));
         return ret;
     }
 

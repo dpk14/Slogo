@@ -8,7 +8,7 @@ public class BasicMathOperation extends Operation {
     }
 
     @Override
-    public double execute() {
+    public double evaluate() {
         if (myType.equals("sum")){
             double sum = Double.parseDouble(myArgs.get(0)) + Double.parseDouble(myArgs.get(1));
             ret = sum;
