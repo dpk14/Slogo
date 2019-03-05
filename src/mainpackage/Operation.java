@@ -33,7 +33,7 @@ abstract public class Operation {
     protected double parseString(String argument) {
         if (argument != null){
             if (argument.contains(":")) {
-                int variableIndex = argument.indexOf(":") + 1;
+                int variableIndex = argument.indexOf(":") + 1; //TODO: use regular expression to check for variable
                 double val = mySystemStorage.getVariableValue(argument.substring(variableIndex)); //TODO: catch NullPointerException
                 return val;
             } else {
@@ -44,7 +44,7 @@ abstract public class Operation {
     }
 
     public void storeCommand(){
-        if (this instanceof Command) mySystemStorage.addToHistory((Command) this);
+        if (this instanceof TurtleCommand) mySystemStorage.addToHistory((TurtleCommand) this);
         else; //throw error
     }
 
