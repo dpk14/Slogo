@@ -30,18 +30,18 @@ abstract public class Operation {
 
     abstract public Operation copy();
 
-    protected double parseString(String argument) {
+    /*protected double parseString(String argument) {
         if (argument != null){
             if (argument.contains(":")) {
-                int variableIndex = argument.indexOf(":") + 1; //TODO: use regular expression to check for variable
-                double val = mySystemStorage.getVariableValue(argument.substring(variableIndex)); //TODO: catch NullPointerException
+                int variableIndex = argument.indexOf(":") + 1;
+                double val = mySystemStorage.getVariableValue(argument.substring(variableIndex));
                 return val;
             } else {
                 return Double.parseDouble(argument);
             }
         }
-        throw new NullPointerException(); //TODO: catch NullPointerException
-    }
+        throw new NullPointerException();
+    */
 
     public void storeCommand(){
         if (this instanceof TurtleCommand) mySystemStorage.addToHistory((TurtleCommand) this);

@@ -10,7 +10,7 @@ abstract public class TurtleCommand extends Command {
         super(commandType, numArgs, storage);
     }
 
-    public void setMyTurtle(Animal turtle){
+    public void setTurtle(Animal turtle){
         myTurtle = turtle;
     }
 
