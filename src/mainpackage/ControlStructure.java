@@ -138,8 +138,11 @@ public abstract class ControlStructure {
             currentIndex = builder.getStartingIndex();
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
                 Operation parsedOperation=builder.createOperation();
-                if (parsedOperation instanceof Command) parsedOperation.storeCommand();
-                double returnVal = parsedOperation.execute(activeAnimal);
+                if (parsedOperation instanceof Command) {
+                    parsedOperation.storeCommand();
+                    parsedOperation.setAnimal(activeAnimal);
+                }
+                double returnVal = parsedOperation.execute();
                 replaceOperationWithReturnValue(parsedOperation, currentIndex, returnVal, simplifiableLine);
                 builderStack.pop();
             } else builder.continueBuildingOperation();
@@ -179,18 +182,6 @@ public abstract class ControlStructure {
            // if (!simplifiableLine.get(myStartingIndex).equals("[")); //TODO: error: second list of structure must directly follow first list
         }
         simplifiableLine.add(myStartingIndex, Double.toString(returnValue));
-
-
-        /*
-        for(int k=0; k<myNumOfListArguments; k++) {
-            while (!simplifiableLine.get(myStartingIndex).equals("]")) {
-                simplifiableLine.remove(myStartingIndex);
-                //if (simplifiableLine.size()==0) return simplifiableLine;
-            }
-            simplifiableLine.remove(myStartingIndex);
-        }
-        simplifiableLine.add(myStartingIndex, Double.toString(returnValue));
-        */
         return simplifiableLine;
     }
 
