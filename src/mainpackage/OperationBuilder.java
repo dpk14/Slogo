@@ -22,6 +22,16 @@ public class OperationBuilder {
         myBuilderStack=builderStack;
     }
 
+    /*
+    operationBuilders simplify the code following an operation tag until they fully fill the operation with simplified, variable or constant arguments.
+    For instance, SUM expects two arguments, so the operationBuilder will simplify the first argument into a variable or constant, fill
+    the first argument of the Operation with that value, then simplify the second argument and fill it. ContinueBuildingOperation does most of this work.
+    It uses a stack, and pushes a nested operation to the front of the stack to be simplified if an operation tag is detected in an argument spot
+    instead of a variable or constant. The builder stack and stack loop is created in the parseOperation method of ControlStructure. See this method
+    to understand how this is performed
+     */
+
+
     public void continueBuildingOperation() {
         for (int k = 0; k < myNumOfArgsNeeded; k++) {
             String kthArgument = myUserInput.get(myStartingIndex + 1 + k);

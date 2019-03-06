@@ -23,9 +23,20 @@ public class SystemStorage {
         myActiveAnimals = new ArrayList<>();
     }
 
+<<<<<<< HEAD
     public void setActiveAnimals(ArrayList<String> activateAnimal){
         for(String animalID : activateAnimal){
             myActiveAnimals.add(new AbstractMap.SimpleEntry<String, Animal>(animalID, getAnimal(animalID)));
+=======
+
+    public Map<String, Animal> getAnimals(){
+        return habitat;
+    }
+
+    public void setActiveAnimals(ArrayList<Integer> activateAnimal){
+        for(Integer animalID : activateAnimal){
+            myActiveAnimals.add(new AbstractMap.SimpleEntry<>(animalID, getAnimal(animalID)));
+>>>>>>> a49de7723d9e8768420b4ecff96bd45fd8a792cc
         }
     }
 

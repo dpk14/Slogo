@@ -20,7 +20,7 @@ public class Repeat extends ControlStructure {
     protected void simplifyAndExecuteStructure() {
         int counter = 0;
         do {
-            simplifyAndEvaluate(mySimplifiableLine, myStartingIndex + 1);
+            simplifyAndEvaluate(mySimplifiableLine, myStartingIndex + 1, myAnimal);
             myTimesToRepeat = Double.parseDouble(mySimplifiableLine.get(myStartingIndex + 1)); //TODO: change to say MyParser.parseValue in case its a vari
             myIndexOfFirstList = myStartingIndex + 2;
 
@@ -28,7 +28,7 @@ public class Repeat extends ControlStructure {
             if (myTimesToRepeat<0); //TODO: error
             if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")) ;
 
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myAnimal);
             if (counter != myTimesToRepeat - 1) {
                 resetSimplification(mySavedLine);
                 mySavedLine=new ArrayList<>(mySavedLine);
