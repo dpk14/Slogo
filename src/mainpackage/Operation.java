@@ -8,7 +8,7 @@ import java.util.List;
 abstract public class Operation {
     protected String myType;
     protected int myNumArgs;
-    protected List<String> myArgs;
+    protected List<Double> myArgs;
     protected SystemStorage mySystemStorage;
     protected double ret;
 
@@ -24,7 +24,7 @@ abstract public class Operation {
         return myNumArgs;
     }
 
-    public void setArgs(List<String> args){
+    public void setArgs(List<Double> args){
         myArgs = args;
     }
 

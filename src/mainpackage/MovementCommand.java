@@ -21,7 +21,7 @@ public class  MovementCommand extends TurtleCommand {
 
     @Override
     public double evaluate(){
-        ret = parseString(myArgs.get(0));
+        ret = myArgs.get(0);
         return ret;
     }
 

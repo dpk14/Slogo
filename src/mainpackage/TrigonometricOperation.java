@@ -9,16 +9,16 @@ public class TrigonometricOperation extends Operation {
     public double evaluate() {
         ret = -1;
         if (myType.equals("sin")){
-            ret = Math.sin(parseString(myArgs.get(0)));
+            ret = Math.sin(myArgs.get(0));
         }
         else if (myType.equals("cos")){
-            ret = Math.cos(parseString(myArgs.get(0)));
+            ret = Math.cos(myArgs.get(0));
         }
         else if (myType.equals("tan")){
-            ret = Math.tan(parseString(myArgs.get(0)));
+            ret = Math.tan(myArgs.get(0));
         }
         else if (myType.equals("atan")){
-            ret = Math.atan(parseString(myArgs.get(0)));
+            ret = Math.atan(myArgs.get(0));
         }
         else if (myType.equals("pi")){
             ret = Math.PI;

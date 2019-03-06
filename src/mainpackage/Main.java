@@ -118,7 +118,7 @@ public class  Main extends Application {
             int currentIndex = 0;
             ArrayList<String> simplifiableInput = new ArrayList<>(userInputList);
             while (currentIndex < simplifiableInput.size()) {
-                List<Entry<String, Animal>> activeAnimals=mySystemStorage.getActveAnimals();
+                List<Entry<String, Animal>> activeAnimals=mySystemStorage.getActiveAnimals();
                 for(Entry entry : activeAnimals) {
                     Animal currentAnimal = (Animal) entry.getValue();
                     String currentInput = simplifiableInput.get(currentIndex);
@@ -143,7 +143,6 @@ public class  Main extends Application {
                 currentIndex++;
             }
         }
-    }
 
     public static void main (String[] args) {
         launch(args);

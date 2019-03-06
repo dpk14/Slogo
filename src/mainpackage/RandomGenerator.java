@@ -6,10 +6,10 @@ public class RandomGenerator extends Operation {
     }
 
     @Override
-    public double execute() {
+    public double evaluate() {
         ret = -1;
         if (myType.equals("random")){
-            ret = Math.random() * parseString(myArgs.get(0));
+            ret = Math.random() * myArgs.get(0);
         }
         return ret;
     }

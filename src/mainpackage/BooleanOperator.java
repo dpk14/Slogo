@@ -10,13 +10,13 @@ public class BooleanOperator extends Operation {
         boolean booleanRet = false;
         ret = 0;
         if (myType.equals("and")){
-            booleanRet = (parseString(myArgs.get(0)) != 0) && (parseString(myArgs.get(1)) != 0);
+            booleanRet = (myArgs.get(0) != 0) && (myArgs.get(1) != 0);
         }
         else if (myType.equals("or")){
-            booleanRet = (parseString(myArgs.get(0)) != 0) || (parseString(myArgs.get(1)) != 0);
+            booleanRet = (myArgs.get(0) != 0) || (myArgs.get(1) != 0);
         }
         else if (myType.equals("not")){
-            booleanRet = parseString(myArgs.get(0)) == 0;
+            booleanRet = myArgs.get(0) == 0;
         }
         if (booleanRet == true){
             ret = 1;
