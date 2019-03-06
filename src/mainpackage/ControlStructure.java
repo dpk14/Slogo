@@ -19,6 +19,7 @@ public abstract class ControlStructure {
     int myNumOfExpressionArguments;
     int myIndexOfFirstList;
     boolean isRepeatable;
+    String myStage;
 
     int myNumOfListArguments; //defined by default ** DO NOT FORGET TO SET THISs
 
@@ -39,12 +40,13 @@ public abstract class ControlStructure {
     a saved, past version of themselves to be modified again by the outer structures. See resetSimplification for an example.
      */
 
-    public void initializeStructure(int startingIndex, ArrayList<String> currentLineSection, ControlStructure OuterStructure, Animal animal){
+    public void initializeStructure(int startingIndex, ArrayList<String> currentLineSection, ControlStructure OuterStructure, Animal animal, String stage){
         myStartingIndex=startingIndex;
         mySimplifiableLine=currentLineSection;
         mySavedLine=new ArrayList<>(currentLineSection);
         myOuterStructure=OuterStructure;
         myAnimal=animal;
+        myStage=stage;
         if (myOuterStructure==null) System.out.println("null");
         System.out.println("yeet");
     }
@@ -111,7 +113,7 @@ public abstract class ControlStructure {
     protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
         ControlStructure defaultStructure = myParser.getControlStructure(controlType);
         ControlStructure nestedControlStructure=defaultStructure.copy();
-        nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this, activeAnimal);
+        nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this, activeAnimal, myStage);
         double returnValue=nestedControlStructure.executeCode();
         nestedControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableLine);
         return simplifiableLine;
@@ -130,7 +132,7 @@ public abstract class ControlStructure {
 
     protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
-        Stack<OperationBuilder> builderStack = new Stack<OperationBuilder>();
+        Stack<OperationBuilder> builderStack = new Stack<>();
         OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiableLine, currentIndex, myParser, builderStack);
         builderStack.push(builder);
         while (builderStack.size() != 0) {
@@ -138,16 +140,24 @@ public abstract class ControlStructure {
             currentIndex = builder.getStartingIndex();
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
                 Operation parsedOperation=builder.createOperation();
-                if (parsedOperation instanceof Command) {
-                    parsedOperation.storeCommand();
-                    parsedOperation.setAnimal(activeAnimal);
-                }
-                double returnVal = parsedOperation.execute();
+                double returnVal=evaluateOrExecute(parsedOperation, activeAnimal);
                 replaceOperationWithReturnValue(parsedOperation, currentIndex, returnVal, simplifiableLine);
                 builderStack.pop();
             } else builder.continueBuildingOperation();
         }
         return simplifiableLine;
+    }
+
+    public double evaluateOrExecute(Operation parsedOperation, Animal activeAnimal) {
+        double returnVal = parsedOperation.evaluate();
+        if (parsedOperation instanceof TurtleCommand && myStage.equals("execute")) {
+            ((TurtleCommand) parsedOperation).setAnimal(activeAnimal);
+            parsedOperation.storeCommand();
+        }
+        if (parsedOperation instanceof Command && myStage.equals("execute")) {
+            ((Command) parsedOperation).execute();
+        }
+        return returnVal;
     }
 
     protected double replaceOperationWithReturnValue(Operation operation, int currentIndex, double returnVal, ArrayList<String> simplifiableLine) {
@@ -208,10 +218,10 @@ public abstract class ControlStructure {
     */
 
     public double executeCode(){
-        List<Command> previousCommandLog=myStorage.getMyCommandLog();
+        List<TurtleCommand> previousCommandLog=myStorage.getMyCommandLog();
         int previousSize=previousCommandLog.size();
         simplifyAndExecuteStructure();
-        List<Command> currentCommandLog=myStorage.getMyCommandLog();
+        List<TurtleCommand> currentCommandLog=myStorage.getMyCommandLog();
         int currentSize=currentCommandLog.size();
         if(previousSize!=currentSize){
             return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
