@@ -1,14 +1,12 @@
 package mainpackage;
 
-/**
- * @author Irene Qiao isq
- */
-abstract public class Command extends Operation {
+abstract public class DisplayCommand extends Command{
 
-    public Command(String commandType, int numArgs, SystemStorage storage){
+    public DisplayCommand(String commandType, int numArgs, SystemStorage storage) {
         super(commandType, numArgs, storage);
     }
 
+    @Override
     abstract public void execute();
 
     @Override

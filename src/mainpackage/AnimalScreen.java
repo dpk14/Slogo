@@ -2,6 +2,8 @@ package mainpackage;
 
 import javafx.scene.layout.Pane;
 
+import java.util.ArrayList;
+
 public class AnimalScreen {
 
     Pane canvas;
@@ -13,9 +15,11 @@ public class AnimalScreen {
         canvas.prefWidth(width);
         String style = String.format("-fx-background-color: %s;", STARTING_COLOR);
         canvas.setStyle(style);
-        Animal firstAnimal = new Animal("first", height, width, canvas);
-        mySystemStorage.storeAnimal("first", firstAnimal);
-        canvas.getChildren().add(firstAnimal.getImageView());
+        mySystemStorage.setScreenParameters(canvas, height, width);
+        mySystemStorage.getAnimal(0);
+        ArrayList<Integer> zeroth = new ArrayList<>();
+        zeroth.add(0);
+        mySystemStorage.setActiveAnimals(zeroth);
 
     }
 

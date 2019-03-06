@@ -18,7 +18,7 @@ abstract public class Operation {
         mySystemStorage = systemStorage;
     }
 
-    abstract public double execute();
+    abstract public double evaluate();
 
     public int getNumArgs() {
         return myNumArgs;
@@ -30,21 +30,21 @@ abstract public class Operation {
 
     abstract public Operation copy();
 
-    protected double parseString(String argument) {
+    /*protected double parseString(String argument) {
         if (argument != null){
             if (argument.contains(":")) {
                 int variableIndex = argument.indexOf(":") + 1;
-                double val = mySystemStorage.getVariableValue(argument.substring(variableIndex)); //TODO: catch NullPointerException
+                double val = mySystemStorage.getVariableValue(argument.substring(variableIndex));
                 return val;
             } else {
                 return Double.parseDouble(argument);
             }
         }
-        throw new NullPointerException(); //TODO: catch NullPointerException
-    }
+        throw new NullPointerException();
+    */
 
     public void storeCommand(){
-        if (this instanceof Command) mySystemStorage.addToHistory((Command) this);
+        if (this instanceof TurtleCommand) mySystemStorage.addToHistory((TurtleCommand) this);
         else; //throw error
     }
 

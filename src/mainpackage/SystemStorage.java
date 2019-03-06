@@ -1,36 +1,59 @@
 package mainpackage;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.HashSet;
+import javafx.scene.layout.Pane;
+
+import java.util.*;
 
 public class SystemStorage {
 
-    private Map<String, Animal> habitat;
+    private Map<Integer, Animal> habitat;
     private Map<String, Double> userVariables;
-    private Map<String, List<Command>> myCustomCommands;
-    private List<Command> myCommandLog;
+    private Map<String, List<TurtleCommand>> myCustomCommands;
+    private List<TurtleCommand> myCommandLog;
+    private Pane animalCanvas;
+    private double height_of_screen;
+    private double width_of_screen;
+    private List<Map.Entry<Integer, Animal>> myActiveAnimals;
 
     public SystemStorage(){
         habitat = new HashMap<>();
         userVariables = new HashMap<>();
         myCustomCommands = new HashMap<>();
         myCommandLog = new ArrayList<>();
+        myActiveAnimals = new ArrayList<>();
     }
+
 
     public Map<String, Animal> getAnimals(){
         return habitat;
     }
 
-    public Set<String> getAnimalNames(){
-        HashSet<String> names = new HashSet<>();
-        for (String name: habitat.keySet()){
-            names.add(name);
+    public void setActiveAnimals(ArrayList<Integer> activateAnimal){
+        for(Integer animalID : activateAnimal){
+            myActiveAnimals.add(new AbstractMap.SimpleEntry<>(animalID, getAnimal(animalID)));
+        }
+    }
+
+    public List<Map.Entry<Integer, Animal>> getActiveAnimals(){
+        return myActiveAnimals;
+    }
+
+    public double numTurtlesCreated(){
+        return habitat.keySet().size();
+    }
+
+    public Set<Integer> getAnimalNames(){
+        HashSet<Integer> names = new HashSet<>();
+        for (Integer integer: habitat.keySet()){
+            names.add(integer);
         }
         return names;
+    }
+
+    public void setScreenParameters(Pane canvas, double height, double width){
+        animalCanvas = canvas;
+        height_of_screen = height;
+        width_of_screen = width;
     }
 
     public Map<String, Double> getVariableMap(){
@@ -46,12 +69,13 @@ public class SystemStorage {
     }
 
 
-    public void storeAnimal (String animalName, Animal object){
-        habitat.put(animalName, object);
-    }
-
-    public Animal getAnimal(String animalName){
-        return habitat.get(animalName);
+    public Animal getAnimal(Integer animalID){
+        if(!habitat.containsKey(animalID)){
+            Animal temp = new Animal(animalID, height_of_screen, width_of_screen, animalCanvas);
+            habitat.put(animalID, temp);
+            animalCanvas.getChildren().add(temp.getImageView());
+        }
+        return habitat.get(animalID);
     }
 
     public double getVariableValue (String variable){
@@ -61,7 +85,7 @@ public class SystemStorage {
         return userVariables.get(variable);
         }
 
-    public List<Command> getCustomCommand(String commandName){
+    public List<TurtleCommand> getCustomCommand(String commandName){
         return myCustomCommands.get(commandName);
     }
 
@@ -72,18 +96,24 @@ public class SystemStorage {
         }
     }
 
-    public void setCustomCommand(String variableName, List<Command> commands){
+    public void setCustomCommand(String variableName, List<TurtleCommand> commands){
         myCustomCommands.putIfAbsent(variableName, commands);
         if (myCustomCommands.keySet().contains(variableName)){
             myCustomCommands.put(variableName, commands);
         }
     }
 
-    public void addToHistory(Command command){
+    public double getActiveId(){
+        int lastIndex = myCommandLog.size() - 1;
+        double id = myCommandLog.get(lastIndex).getTurtle().getAnimalID();
+        return id;
+    }
+
+    public void addToHistory(TurtleCommand command){
         myCommandLog.add(command);
     }
 
-    public List<Command> getMyCommandLog() {
+    public List<TurtleCommand> getMyCommandLog() {
         return myCommandLog;
     }
 }

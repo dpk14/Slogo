@@ -23,10 +23,16 @@ public class ScreenOptions {
 
         Menu backGroundColor = BackgroundMenu();
         Menu chooseAnimal = chooseAnimalMenu();
-
+        Menu makeNewScreen = makeNewScreen();
         options = new MenuBar();
         options.getMenus().addAll(backGroundColor, chooseAnimal);
         options.setPrefHeight(height_of_options);
+    }
+
+    private Menu makeNewScreen(){
+        Menu temp = new Menu("Make new screen");
+        temp.setOnAction(e->new Main());
+        return temp;
     }
 
     private Menu BackgroundMenu() {
@@ -67,8 +73,8 @@ public class ScreenOptions {
     }
 
     private void setAnimal(String animal) {
-        Set<String> animal_names = mySystemStorage.getAnimalNames();
-        for (String name : animal_names) {
+        Set<Integer> animal_names = mySystemStorage.getAnimalNames();
+        for (Integer name : animal_names) {
             Animal active_animal = mySystemStorage.getAnimal(name);
             active_animal.setImage(String.format("%s.png", animal));
         }
