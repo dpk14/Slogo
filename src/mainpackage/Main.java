@@ -8,11 +8,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Stack;
+import java.util.Map.Entry;
+
+import java.lang.reflect.Array;
 
 public class  Main extends Application {
 
@@ -24,6 +25,8 @@ public class  Main extends Application {
     final private int HEIGHT_OF_OPTIONS = 20;
     final private int HEIGHT_OF_ANIMAL_SCREEN = 620;
     final private int WIDTH_OF_ANIMAL_SCREEN = 1000;
+
+    private HashMap<String, Animal> myActiveTurtles=new HashMap<>();
 
     private Console myConsole;
     public ProgramParser myParser;
@@ -112,26 +115,33 @@ public class  Main extends Application {
             if(s.length()!=0) userInputList.add(s);
         }
 
-        int currentIndex = 0;
-        ArrayList<String> simplifiableInput=new ArrayList<>(userInputList);
-        while(currentIndex<simplifiableInput.size()) {
-            String currentEntry = simplifiableInput.get(currentIndex);
-            String currentEntrySymbol = myParser.getSymbol(currentEntry);
-            ControlStructure defaultStructure = myParser.getControlStructure(currentEntrySymbol);
-            ControlStructure currentControlStructure=defaultStructure.copy();
-            currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null);
-            double returnValue=currentControlStructure.executeCode();
-            //simplifiableInput=currentControlStructure.getMySimplifiableLine();
-            System.out.println("\n");
-            for (String s:simplifiableInput){
-                System.out.printf("%s ", s);
+            int currentIndex = 0;
+            ArrayList<String> simplifiableInput = new ArrayList<>(userInputList);
+            while (currentIndex < simplifiableInput.size()) {
+                List<Entry<String, Animal>> activeAnimals=mySystemStorage.getActveAnimals();
+                for(Entry entry : activeAnimals) {
+                    Animal currentAnimal = (Animal) entry.getValue();
+                    String currentInput = simplifiableInput.get(currentIndex);
+                    String currentInputSymbol = myParser.getSymbol(currentInput);
+                    ControlStructure defaultStructure = myParser.getControlStructure(currentInputSymbol);
+                    ControlStructure currentControlStructure = defaultStructure.copy();
+                    currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null, currentAnimal);
+                    double returnValue = currentControlStructure.executeCode();
+
+                    //simplifiableInput=currentControlStructure.getMySimplifiableLine();
+                    System.out.println("\n");
+                    for (String s : simplifiableInput) {
+                        System.out.printf("%s ", s);
+                    }
+                    currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
+                    System.out.println("\n");
+                    for (String s : simplifiableInput) {
+                        System.out.printf("%s ", s);
+                    }
+                    if(!currentControlStructure.repeatable()) break;
+                }
+                currentIndex++;
             }
-            currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
-            System.out.println("\n");
-            for (String s:simplifiableInput){
-                System.out.printf("%s ", s);
-            }
-            currentIndex++;
         }
     }
 

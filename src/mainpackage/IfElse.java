@@ -17,18 +17,18 @@ public class IfElse extends ControlStructure {
 
     @Override
     protected void simplifyAndExecuteStructure(){
-        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1);
+        simplifyAndEvaluate(mySimplifiableLine, myStartingIndex+1, myAnimal);
         double simplifiedExpression=Double.parseDouble(mySimplifiableLine.get(myStartingIndex+1));
         myIndexOfFirstList = myStartingIndex + 2;
         if (!mySimplifiableLine.get(myIndexOfFirstList).equals("[")) ; //throw error
-        myIndexOfSecondList = findIndexOfNextList(myIndexOfFirstList, mySimplifiableLine);
+        myIndexOfSecondList = findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine)+1;
         if (!mySimplifiableLine.get(myIndexOfSecondList).equals("[")) ; //throw error
 
         if (simplifiedExpression == 1) {
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myAnimal);
         }
         else {
-            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList);
+            simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, myAnimal);
         }
     }
 }

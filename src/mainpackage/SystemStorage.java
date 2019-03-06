@@ -24,6 +24,10 @@ public class SystemStorage {
     }
 
 
+    public Map<String, Animal> getAnimals(){
+        return habitat;
+    }
+
     public void setActiveAnimals(ArrayList<Integer> activateAnimal){
         for(Integer animalID : activateAnimal){
             myActiveAnimals.add(new AbstractMap.SimpleEntry<>(animalID, getAnimal(animalID)));
