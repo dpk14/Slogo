@@ -1,8 +1,8 @@
 package mainpackage;
 
 public class ExponentialOperation extends Operation {
-    public ExponentialOperation (String myType, int numArgs, SystemStorage storage){
-        super(myType, numArgs, storage);
+    public ExponentialOperation (String myType, int numArgs){
+        super(myType, numArgs);
     }
 
     @Override
@@ -19,7 +19,7 @@ public class ExponentialOperation extends Operation {
 
     @Override
     public Operation copy() {
-        Operation copy = new ExponentialOperation(myType, myNumArgs, mySystemStorage);
+        Operation copy = new ExponentialOperation(myType, myNumArgs);
         return copy;
     }
 }

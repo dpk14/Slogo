@@ -100,8 +100,8 @@ public class ProgramParser {
         myOperationsMap.put("Or", new BooleanOperator("or", 2, myStorage));
         myOperationsMap.put("Not", new BooleanOperator("not", 1, myStorage));
 
-        myOperationsMap.put("ID", new MultipleTurtleOperation("id", 0, myStorage));
-        myOperationsMap.put("Turtles", new MultipleTurtleOperation("turtles", 0, myStorage));
+        myOperationsMap.put("ID", new NumTurtles("id", 0, myStorage));
+        myOperationsMap.put("Turtles", new NumTurtles("turtles", 0, myStorage));
     }
 
     /**

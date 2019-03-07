@@ -1,6 +1,6 @@
 package mainpackage;
 
-public class  MovementCommand extends TurtleCommand {
+public class  MovementCommand extends TurtleOperation implements Command {
     private final int BACKWARD_MULTIPLIER = -1;
 
     public MovementCommand(String movementType, int numArgs, SystemStorage storage){
@@ -26,7 +26,8 @@ public class  MovementCommand extends TurtleCommand {
 
     @Override
     public Operation copy() {
-        Operation copy = new MovementCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new MovementCommand(myType, myNumArgs);
+        ((MovementCommand) copy).setAnimal(myTurtle);
         return copy;
     }
 }

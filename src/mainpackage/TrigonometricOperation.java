@@ -1,8 +1,8 @@
 package mainpackage;
 
 public class TrigonometricOperation extends Operation {
-    public TrigonometricOperation (String myType, int numArgs, SystemStorage storage){
-        super(myType, numArgs, storage);
+    public TrigonometricOperation (String myType, int numArgs){
+        super(myType, numArgs);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class TrigonometricOperation extends Operation {
 
     @Override
     public Operation copy() {
-        Operation copy = new TrigonometricOperation(myType, myNumArgs, mySystemStorage);
+        Operation copy = new TrigonometricOperation(myType, myNumArgs);
         return copy;
     }
 }

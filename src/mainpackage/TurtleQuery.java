@@ -1,13 +1,9 @@
 package mainpackage;
 
-public class TurtleQuery extends Operation {
-    private final double HOME_X = 0;
-    private final double HOME_Y = 0;
-    private Animal myTurtle;
+public class TurtleQuery extends TurtleOperation {
 
-    public TurtleQuery (String movementType, int numArgs, SystemStorage storage, Animal turtle) {
-        super(movementType, numArgs, storage);
-        myTurtle = turtle;
+    public TurtleQuery (String movementType, int numArgs) {
+        super(movementType, numArgs);
     }
 
     @Override
@@ -38,7 +34,8 @@ public class TurtleQuery extends Operation {
 
     @Override
     public Operation copy() {
-        Operation copy = new TurtleQuery(myType, myNumArgs, mySystemStorage, myTurtle);
+        Operation copy = new TurtleQuery(myType, myNumArgs);
+        ((TurtleQuery) copy).setAnimal(myTurtle);
         return copy;
     }
 }

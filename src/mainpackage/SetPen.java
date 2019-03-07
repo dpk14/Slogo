@@ -29,7 +29,7 @@ public class SetPen extends TurtleCommand {
 
     @Override
     public Operation copy() {
-        Operation copy = new SetPen(myType, myNumArgs, mySystemStorage);
+        Operation copy = new SetPen(myType, myNumArgs);
         return copy;
     }
 }

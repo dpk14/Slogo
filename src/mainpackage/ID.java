@@ -1,8 +1,8 @@
 package mainpackage;
 
-public class ID extends Operation {
-    public ID(String operationType, int numArgs, SystemStorage systemStorage) {
-        super(operationType, numArgs, systemStorage);
+public class ID extends TurtleOperation {
+    public ID(String operationType, int numArgs) {
+        super(operationType, numArgs);
     }
 
     @Override
@@ -12,6 +12,8 @@ public class ID extends Operation {
 
     @Override
     public Operation copy() {
-        return null;
+        Operation copy = new ID(myType, myNumArgs);
+        ((ID) copy).setAnimal(myTurtle);
+        return copy;
     }
 }

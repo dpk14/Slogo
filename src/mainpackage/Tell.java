@@ -2,9 +2,8 @@ package mainpackage;
 
 
 import java.util.AbstractMap.SimpleEntry;
-import java.util.Map.Entry;
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map.Entry;
 
 public class Tell extends ControlStructure{
     double myReturnVal;

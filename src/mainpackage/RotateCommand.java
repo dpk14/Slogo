@@ -1,6 +1,6 @@
 package mainpackage;
 
-public class RotateCommand extends TurtleCommand{
+public class RotateCommand extends TurtleOperation implements Command{
     private final int RIGHT_HEADING_MULTIPLIER = -1;
 
     public RotateCommand(String movementType, int numArgs, SystemStorage storage){
@@ -26,7 +26,8 @@ public class RotateCommand extends TurtleCommand{
 
     @Override
     public Operation copy() {
-        Operation copy = new RotateCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new RotateCommand(myType, myNumArgs);
+        ((RotateCommand) copy).setAnimal(myTurtle);
         return copy;
     }
 }

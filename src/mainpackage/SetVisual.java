@@ -1,8 +1,8 @@
 package mainpackage;
 
-public class SetVisual extends DisplayCommand {
-    public SetVisual(String commandType, int numArgs, SystemStorage storage) {
-        super(commandType, numArgs, storage);
+public class SetVisual extends DisplayOperation implements Command{
+    public SetVisual(String commandType, int numArgs) {
+        super(commandType, numArgs);
     }
 
     @Override
