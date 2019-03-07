@@ -142,9 +142,9 @@ public class ProgramParser {
         return regex.matcher(text).matches();
     }
 
-    public String parseVariable(String variable){
+    public double parseVariable(String variable){
         variable=removeColon(variable);
-        return Double.toString(myStorage.getVariableValue(variable));
+        return myStorage.getVariableValue(variable);
     }
 
     public String removeColon(String variable){
