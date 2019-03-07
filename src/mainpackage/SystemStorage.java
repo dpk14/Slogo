@@ -3,17 +3,18 @@ package mainpackage;
 import javafx.scene.layout.Pane;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class SystemStorage {
 
-    private Map<Integer, Animal> habitat;
+    private Map<String, Animal> habitat;
     private Map<String, Double> userVariables;
     private Map<String, List<Command>> myCustomCommands;
     private List<Command> myCommandLog;
     private Pane animalCanvas;
     private double height_of_screen;
     private double width_of_screen;
-    private List<Map.Entry<Integer, Animal>> myActiveAnimals;
+    private List<Entry<String, Animal>> myActiveAnimals;
 
     public SystemStorage(){
         habitat = new HashMap<>();
@@ -23,22 +24,28 @@ public class SystemStorage {
         myActiveAnimals = new ArrayList<>();
     }
 
+    public Map<String, Animal> getAnimals(){
+        return habitat;
+    }
 
-    public void setActiveAnimals(ArrayList<Integer> activateAnimal){
-        for(Integer animalID : activateAnimal){
+    public void setActiveAnimals(ArrayList<String> activateAnimal){
+        for(String animalID : activateAnimal){
             myActiveAnimals.add(new AbstractMap.SimpleEntry<>(animalID, getAnimal(animalID)));
         }
     }
 
-    public List<Map.Entry<Integer, Animal>> getActiveAnimals(){
+    public List<Entry<String, Animal>> getActiveAnimals(){
         return myActiveAnimals;
     }
 
+    public double numTurtlesCreated(){
+        return habitat.keySet().size();
+    }
 
-    public Set<Integer> getAnimalNames(){
-        HashSet<Integer> names = new HashSet<>();
-        for (Integer integer: habitat.keySet()){
-            names.add(integer);
+    public Set<String> getAnimalNames(){
+        HashSet<String> names = new HashSet<>();
+        for (String name: habitat.keySet()){
+            names.add(name);
         }
         return names;
     }
@@ -61,8 +68,7 @@ public class SystemStorage {
         return names;
     }
 
-
-    public Animal getAnimal(Integer animalID){
+    public Animal getAnimal(String animalID){
         if(!habitat.containsKey(animalID)){
             Animal temp = new Animal(animalID, height_of_screen, width_of_screen, animalCanvas);
             habitat.put(animalID, temp);
@@ -78,21 +84,10 @@ public class SystemStorage {
         return userVariables.get(variable);
         }
 
-    public List<Command> getCustomCommand(String commandName){
-        return myCustomCommands.get(commandName);
-    }
-
     public void setVariableValue(String variableName, double value){
         userVariables.putIfAbsent(variableName, value);
         if (userVariables.keySet().contains(variableName)){
             userVariables.put(variableName, value);
-        }
-    }
-
-    public void setCustomCommand(String variableName, List<Command> commands){
-        myCustomCommands.putIfAbsent(variableName, commands);
-        if (myCustomCommands.keySet().contains(variableName)){
-            myCustomCommands.put(variableName, commands);
         }
     }
 

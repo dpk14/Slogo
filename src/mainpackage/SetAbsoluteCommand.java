@@ -1,32 +1,48 @@
 package mainpackage;
 
-public class SetAbsoluteCommand extends Command {
-    public SetAbsoluteCommand (String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+public class SetAbsoluteCommand extends TurtleOperation implements Command {
+    public SetAbsoluteCommand (String movementType, int numArgs){
+        super(movementType, numArgs);
+        evaluate();
     }
 
     @Override
-    public double execute() {
-        ret = -1;
+    public void execute() {
         if (myType.equals("heading")){
-            double angle = parseString(myArgs.get(0));
+            double angle = ret;
             myTurtle.setHeading(angle);
-            ret = angle;
         }
         else if (myType.equals("position")){
-            double x = parseString(myArgs.get(0));
-            double y = parseString(myArgs.get(1));
-            ret = myTurtle.setPosition(x, y);
+            double x = myArgs[0];
+            double y = myArgs[1];
+            myTurtle.setPosition(x, y);
         }
         else if (myType.equals("towards")){
-            ret = myTurtle.setToward(parseString(myArgs.get(0)), parseString(myArgs.get(1)));
+            myTurtle.setToward(myArgs[0], myArgs[1]);
+        }
+    }
+
+    public double evaluate(){
+        if (myType.equals("heading")){
+            ret = myArgs[0];
+        }
+        else if (myType.equals("position")){
+            double x = myArgs[0];
+            double y = myArgs[1];
+            double current_x = myTurtle.getCoordinates()[0];
+            double current_y = myTurtle.getCoordinates()[1];
+            ret = calcDistance(current_x, x, current_y, y);
+        }
+        else if (myType.equals("towards")){
+            ret = myTurtle.setToward(myArgs[0], myArgs[1]); //TODO: return change in heading
         }
         return ret;
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new SetAbsoluteCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new SetAbsoluteCommand(myType, myNumArgs);
+        ((SetAbsoluteCommand) copy).setAnimal(myTurtle);
         return copy;
     }
 }

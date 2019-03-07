@@ -67,11 +67,11 @@ public class ProgramParser {
         myOperationsMap.put("Home", new HomeCommand("home", 0, myStorage));
         myOperationsMap.put("ClearScreen", new HomeCommand("clear", 0, myStorage));
 
-        myOperationsMap.put("XCoordinate", new TurtleQuery("xcor", 0, myStorage));
-        myOperationsMap.put("YCoordinate", new TurtleQuery("ycor", 0, myStorage));
-        myOperationsMap.put("Heading", new TurtleQuery("heading", 0, myStorage));
-        myOperationsMap.put("IsPenDown", new TurtleQuery("pen", 0, myStorage));
-        myOperationsMap.put("IsShowing", new TurtleQuery("showing", 0, myStorage));
+        myOperationsMap.put("XCoordinate", new TurtleQuery("xcor", 0, myStorage, null));
+        myOperationsMap.put("YCoordinate", new TurtleQuery("ycor", 0, myStorage, null));
+        myOperationsMap.put("Heading", new TurtleQuery("heading", 0, myStorage, null));
+        myOperationsMap.put("IsPenDown", new TurtleQuery("pen", 0, myStorage, null));
+        myOperationsMap.put("IsShowing", new TurtleQuery("showing", 0, myStorage, null));
 
         myOperationsMap.put("Sum", new BasicMathOperation("sum", 2, myStorage));
         myOperationsMap.put("Difference", new BasicMathOperation("difference", 2, myStorage));
@@ -95,6 +95,9 @@ public class ProgramParser {
         myOperationsMap.put("And", new BooleanOperator("and", 2, myStorage));
         myOperationsMap.put("Or", new BooleanOperator("or", 2, myStorage));
         myOperationsMap.put("Not", new BooleanOperator("not", 1, myStorage));
+
+        myOperationsMap.put("ID", new NumTurtles("id", 0, myStorage));
+        myOperationsMap.put("Turtles", new NumTurtles("turtles", 0, myStorage));
     }
 
     /**
@@ -139,13 +142,16 @@ public class ProgramParser {
         return regex.matcher(text).matches();
     }
 
-    public String parseVariable(String variable){
+    public double parseVariable(String variable){
         variable=removeColon(variable);
-        return Double.toString(myStorage.getVariableValue(variable));
+        return myStorage.getVariableValue(variable);
     }
 
     public String removeColon(String variable){
         return variable.substring(1);
     }
 
+    public Map getControlMap(){
+        return myControlMap;
+    }
 }

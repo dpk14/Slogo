@@ -15,9 +15,9 @@ public class AnimalScreen {
         String style = String.format("-fx-background-color: %s;", STARTING_COLOR);
         canvas.setStyle(style);
         mySystemStorage.setScreenParameters(canvas, height, width);
-        mySystemStorage.getAnimal(0);
-        ArrayList<Integer> zeroth = new ArrayList<>();
-        zeroth.add(0);
+        mySystemStorage.getAnimal("0");
+        ArrayList<String> zeroth = new ArrayList<>();
+        zeroth.add("0");
         mySystemStorage.setActiveAnimals(zeroth);
 
     }

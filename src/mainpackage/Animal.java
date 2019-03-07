@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Animal {
 
     private ImageView node;
-    private Integer animal_ID;
+    private String animal_ID;
     private double[] direction_vector;
     private double current_angle;
     private boolean myPen;
@@ -21,7 +21,7 @@ public class Animal {
     private int WIDTH_OF_TURTLE = 25;
     private int HEIGHT_OF_TURTLE = 25;
 
-    public Animal(Integer name, double height_of_screen, double width_of_screen, Pane pane){
+    public Animal(String name, double height_of_screen, double width_of_screen, Pane pane){
         animal_ID = name;
         myPane = pane;
         current_angle = 90;
@@ -146,7 +146,7 @@ public class Animal {
         node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream(fileName)));
     }
 
-    public Integer getAnimalID(){
+    public String getAnimalID(){
         return animal_ID;
     }
 

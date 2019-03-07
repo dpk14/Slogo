@@ -1,25 +1,25 @@
 package mainpackage;
 
 public class BooleanExpression extends Operation{
-    public BooleanExpression(String myType, int numArgs, SystemStorage storage){
-        super(myType, numArgs, storage);
+    public BooleanExpression(String myType, int numArgs){
+        super(myType, numArgs);
     }
 
     @Override
-    public double execute() {
+    public double evaluate() {
         boolean booleanRet = false;
         ret = 0;
         if (myType.equals("less")){
-            booleanRet = parseString(myArgs.get(0)) < parseString(myArgs.get(1));
+            booleanRet = myArgs[0] < myArgs[1];
         }
         else if (myType.equals("greater")){
-            booleanRet = parseString(myArgs.get(0)) > parseString(myArgs.get(1));
+            booleanRet = myArgs[0] > myArgs[1];
         }
         else if (myType.equals("equal")){
-            booleanRet = parseString(myArgs.get(0)) == parseString(myArgs.get(1));
+            booleanRet = myArgs[0] == myArgs[1];
         }
         else if (myType.equals("notequal")){
-            booleanRet = parseString(myArgs.get(0)) != parseString(myArgs.get(1));
+            booleanRet = myArgs[0] != myArgs[1];
         }
         if (booleanRet == true){
             ret = 1;
@@ -29,7 +29,7 @@ public class BooleanExpression extends Operation{
 
     @Override
     public Operation copy() {
-        Operation copy = new BooleanExpression(myType, myNumArgs, mySystemStorage);
+        Operation copy = new BooleanExpression(myType, myNumArgs);
         return copy;
     }
 }

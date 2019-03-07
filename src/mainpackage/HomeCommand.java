@@ -1,16 +1,15 @@
 package mainpackage;
 
-public class HomeCommand extends Command {
+public class HomeCommand extends TurtleOperation implements Command {
     private final double HOME_X = 0;
     private final double HOME_Y = 0;
 
-    public HomeCommand (String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+    public HomeCommand (String movementType, int numArgs){
+        super(movementType, numArgs);
     }
 
     @Override
-    public double execute() {
-        ret = -1;
+    public void execute() {
         if (myType.equals("home")){
             ret = myTurtle.setPosition(HOME_X, HOME_Y);
         }
@@ -18,12 +17,21 @@ public class HomeCommand extends Command {
             ret = myTurtle.setPosition(HOME_X, HOME_Y);
             myTurtle.clearTrails();
         }
+    }
+
+    @Override
+    public double evaluate(){
+        ret = -1;
+        double current_x = myTurtle.getCoordinates()[0];
+        double current_y = myTurtle.getCoordinates()[1];
+        ret = calcDistance(current_x, HOME_X, current_y, HOME_Y);
         return ret;
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new HomeCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new HomeCommand(myType, myNumArgs);
+        ((HomeCommand) copy).setAnimal(myTurtle);
         return copy;
     }
 }

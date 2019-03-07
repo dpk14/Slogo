@@ -1,15 +1,13 @@
 package mainpackage;
 
-public class TurtleQuery extends Command {
-    private final double HOME_X = 0;
-    private final double HOME_Y = 0;
+public class TurtleQuery extends TurtleOperation {
 
-    public TurtleQuery (String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+    public TurtleQuery (String movementType, int numArgs) {
+        super(movementType, numArgs);
     }
 
     @Override
-    public double execute() {
+    public double evaluate(){
         ret = -1;
         if (myType.equals("xcor")){
             ret = myTurtle.getCoordinates()[0];
@@ -36,7 +34,8 @@ public class TurtleQuery extends Command {
 
     @Override
     public Operation copy() {
-        Operation copy = new TurtleQuery(myType, myNumArgs, mySystemStorage);
+        Operation copy = new TurtleQuery(myType, myNumArgs);
+        ((TurtleQuery) copy).setAnimal(myTurtle);
         return copy;
     }
 }

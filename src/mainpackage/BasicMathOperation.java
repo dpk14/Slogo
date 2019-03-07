@@ -3,33 +3,33 @@ package mainpackage;
 public class BasicMathOperation extends Operation {
     private final int MINUS_MULTIPLIER = -1;
 
-    public BasicMathOperation(String myType, int numArgs, SystemStorage storage){
-        super(myType, numArgs, storage);
+    public BasicMathOperation(String myType, int numArgs){
+        super(myType, numArgs);
     }
 
     @Override
-    public double execute() {
+    public double evaluate() {
         if (myType.equals("sum")){
-            double sum = Double.parseDouble(myArgs.get(0)) + Double.parseDouble(myArgs.get(1));
+            double sum = myArgs[0] + myArgs[1];
             ret = sum;
         }
         else if (myType.equals("difference")){
-            double difference = parseString(myArgs.get(0)) - parseString(myArgs.get(1));
+            double difference = myArgs[0] - myArgs[1];
             ret = difference;
         }
         else if (myType.equals("product")){
-            double product = parseString(myArgs.get(0)) * parseString(myArgs.get(1));
+            double product = myArgs[0] * myArgs[1];
             ret = product;
         }
         else if (myType.equals("quotient")){
-            double quotient = parseString(myArgs.get(0)) / parseString(myArgs.get(1));
+            double quotient = myArgs[0] / myArgs[1];
             ret = quotient;
         }
         else if (myType.equals("minus")){
-            ret = parseString(myArgs.get(0)) * MINUS_MULTIPLIER;
+            ret = myArgs[0] * MINUS_MULTIPLIER;
         }
         else if (myType.equals("remainder")){
-            double remainder = parseString(myArgs.get(0)) % parseString(myArgs.get(1));
+            double remainder = myArgs[0] % myArgs[1];
             ret = remainder;
         }
         return ret;
@@ -37,7 +37,7 @@ public class BasicMathOperation extends Operation {
 
     @Override
     public Operation copy() {
-        Operation copy = new BasicMathOperation(myType, myNumArgs, mySystemStorage);
+        Operation copy = new BasicMathOperation(myType, myNumArgs);
         return copy;
     }
 }
