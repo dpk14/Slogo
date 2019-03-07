@@ -1,2 +1,6 @@
-module $MODULE_NAME$ {
+module backEnd {
+
+
+    exports controlStructures;
+    exports operations;
 }

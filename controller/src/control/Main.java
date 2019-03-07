@@ -1,3 +1,5 @@
+package control;
+
 import controlStructures.ControlStructure;
 import frontend.AnimalScreen;
 import frontend.Console;

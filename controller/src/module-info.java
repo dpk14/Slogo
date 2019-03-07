@@ -1,2 +1,6 @@
-module $MODULE_NAME$ {
+module controller {
+    requires javafx.base;
+
+
+    exports control;
 }
