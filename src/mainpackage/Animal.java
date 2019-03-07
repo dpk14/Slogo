@@ -142,6 +142,7 @@ public class Animal {
     }
 
     public void setImage(String fileName){
+
         node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream(fileName)));
     }
 

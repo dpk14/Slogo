@@ -25,13 +25,15 @@ public class ScreenOptions {
         Menu chooseAnimal = chooseAnimalMenu();
         Menu makeNewScreen = makeNewScreen();
         options = new MenuBar();
-        options.getMenus().addAll(backGroundColor, chooseAnimal);
+        options.getMenus().addAll(backGroundColor, chooseAnimal, makeNewScreen);
         options.setPrefHeight(height_of_options);
     }
 
     private Menu makeNewScreen(){
         Menu temp = new Menu("Make new screen");
-        temp.setOnAction(e->new Main());
+        temp.setOnAction(e->{
+            new Main();
+        });
         return temp;
     }
 
