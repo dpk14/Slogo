@@ -3,9 +3,8 @@ package mainpackage;
 public class RotateCommand extends TurtleOperation implements Command{
     private final int RIGHT_HEADING_MULTIPLIER = -1;
 
-    public RotateCommand(String movementType, int numArgs){
-        super(movementType, numArgs);
-        evaluate();
+    public RotateCommand(String movementType, int numArgs, SystemStorage storage){
+        super(movementType, numArgs, storage);
     }
 
     @Override

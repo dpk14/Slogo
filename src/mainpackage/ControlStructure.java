@@ -89,7 +89,7 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected ArrayList<String> parseList(int startingIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
+    protected List<String> parseList(int startingIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
         startingIndex++;
         String currentEntry;
         int openBracketCount = 1;
@@ -110,7 +110,7 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected ArrayList<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
+    protected List<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
         ControlStructure defaultStructure = myParser.getControlStructure(controlType);
         ControlStructure nestedControlStructure=defaultStructure.copy();
         nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this, activeAnimal, myStage);
@@ -130,7 +130,7 @@ public abstract class ControlStructure {
     The operation is then removed from the line and replaced with its returnValue
     */
 
-    protected ArrayList<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
+    protected List<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
         Stack<OperationBuilder> builderStack = new Stack<>();
         OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiableLine, currentIndex, myParser, builderStack);
@@ -160,7 +160,7 @@ public abstract class ControlStructure {
         return returnVal;
     }
 
-    protected double replaceOperationWithReturnValue(Operation operation, int currentIndex, double returnVal, ArrayList<String> simplifiableLine) {
+    protected double replaceOperationWithReturnValue(Operation operation, int currentIndex, double returnVal, List<String> simplifiableLine) {
         for (int k = -1; k < operation.getNumArgs(); k++) {
             simplifiableLine.remove(currentIndex);
         }
@@ -168,7 +168,7 @@ public abstract class ControlStructure {
         return returnVal;
     }
 
-    protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> simplifiableLine){
+    protected List<String> replaceCodeWithReturnValue(double returnValue, List<String> simplifiableLine){
 
         simplifiableLine.remove(myStartingIndex); //removes control tag
 
@@ -195,17 +195,17 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected int findIndexOfEndBracket(int startingIndex, ArrayList<String> lineSection) {
+    protected int findIndexOfEndBracket(int startingIndex, List<String> lineSection) {
         int currentIndex = startingIndex;
         String currentInput;
         int openBracketCount=1;
         int closedBracketCount=0;
         while(openBracketCount!=closedBracketCount){
             currentIndex++;
+            if (currentIndex==lineSection.size()-startingIndex+1) return -1;
             currentInput=lineSection.get(currentIndex);
             if(currentInput.equals("[")) openBracketCount++;
             else if (currentInput.equals("]")) closedBracketCount++;
-            else if (currentIndex==lineSection.size()-startingIndex-1) return -1;
             if(closedBracketCount+3==openBracketCount); //throw bracket imbalance error
         }
         return currentIndex;
@@ -232,11 +232,13 @@ public abstract class ControlStructure {
     protected void simplifyAndExecuteStructure(){}
 
     public void printTest(int index, ArrayList<String> line){
-        for (String s:line){
-            System.out.printf("%s ", s);
+        if (myStage.equals("execute")) {
+            for (String s : line) {
+                System.out.printf("%s ", s);
+            }
+            System.out.printf("\n%d\n", index);
         }
-        System.out.printf("\n%d\n", index);
-    }
+        }
 
     public ArrayList<String> getMySimplifiableLine(){
         return mySimplifiableLine;
