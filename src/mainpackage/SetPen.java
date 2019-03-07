@@ -1,9 +1,8 @@
 package mainpackage;
 
-public class SetPen extends TurtleOperation implements Command {
-    public SetPen (String movementType, int numArgs){
-        super(movementType, numArgs);
-        evaluate();
+public class SetPen extends TurtleCommand {
+    public SetPen (String movementType, int numArgs, SystemStorage storage){
+        super(movementType, numArgs, storage);
     }
 
     @Override

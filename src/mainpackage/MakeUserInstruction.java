@@ -1,20 +1,19 @@
 package mainpackage;
 
 import java.util.ArrayList;
-import java.util.List;
 
-public class To extends ControlStructure {
+public class MakeUserInstruction extends ControlStructure {
     private int myIndexOfSecondList;
     boolean successful;
 
-    public To (int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
+    public MakeUserInstruction(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
         super(numOfExpressionArguments, numOfListArguments, parser, storage);
         successful=true;
     }
 
     @Override
     public ControlStructure copy() {
-        return new To(myNumOfExpressionArguments, myNumOfListArguments, myParser, myStorage);
+        return new MakeUserInstruction(myNumOfExpressionArguments, myNumOfListArguments, myParser, myStorage);
     }
 
     @Override
@@ -25,9 +24,11 @@ public class To extends ControlStructure {
         int currentIndex=myIndexOfFirstList;
         ArrayList<String> myVariableList=new ArrayList<>();
 
+        currentIndex++;
         while (!mySimplifiableLine.get(currentIndex).equals("]")){
             String currentEntry=mySimplifiableLine.get(currentIndex);
-            if (!currentEntry.contains(":")){
+            String symbol=myParser.getSymbol(currentEntry);
+            if (!symbol.equals("Variable")){
                 successful=false;
                 return;
             } //TODO: variable list must contain only variables
@@ -38,16 +39,18 @@ public class To extends ControlStructure {
         currentIndex++;
         myIndexOfSecondList = currentIndex;
         if (!mySimplifiableLine.get(myIndexOfSecondList).equals("[")) ; //throw error
-        if (findIndexOfEndBracket(myIndexOfSecondList, mySimplifiableLine)<0); //TODO no endbracket errors
+        int end=findIndexOfEndBracket(myIndexOfSecondList, mySimplifiableLine);
+        if (end<0);//TODO no endbracket errors
 
         ArrayList<String> myCommandList=new ArrayList<>();
-        while(!mySimplifiableLine.get(currentIndex).equals("]")){
+        for(currentIndex=myIndexOfSecondList+1; currentIndex<=end; currentIndex++){
             myCommandList.add(mySimplifiableLine.get(currentIndex));
-            currentIndex++;
         }
-        myCommandList.add(mySimplifiableLine.get(currentIndex));
-        myParser.getControlMap().put(commandName, new UserDefinedCommand(myVariableList.size(), 0, myParser, myStorage, myVariableList, myCommandList));
-    }
+        if (myStage.equals("execute")) {
+            myParser.getControlMap().put(commandName, new UserDefinedCommand(myVariableList.size(), 0, myParser, myStorage, myVariableList, myCommandList));
+            System.out.printf("SIZE: %d", myParser.getControlMap().size());
+        }
+        }
 
     @Override
     public double executeCode(){
