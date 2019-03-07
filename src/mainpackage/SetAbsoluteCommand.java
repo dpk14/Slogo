@@ -3,7 +3,6 @@ package mainpackage;
 public class SetAbsoluteCommand extends TurtleCommand {
     public SetAbsoluteCommand (String movementType, int numArgs, SystemStorage storage){
         super(movementType, numArgs, storage);
-        evaluate();
     }
 
     @Override

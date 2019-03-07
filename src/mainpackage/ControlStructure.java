@@ -202,10 +202,10 @@ public abstract class ControlStructure {
         int closedBracketCount=0;
         while(openBracketCount!=closedBracketCount){
             currentIndex++;
+            if (currentIndex==lineSection.size()-startingIndex+1) return -1;
             currentInput=lineSection.get(currentIndex);
             if(currentInput.equals("[")) openBracketCount++;
             else if (currentInput.equals("]")) closedBracketCount++;
-            else if (currentIndex==lineSection.size()-startingIndex-1) return -1;
             if(closedBracketCount+3==openBracketCount); //throw bracket imbalance error
         }
         return currentIndex;
@@ -232,11 +232,13 @@ public abstract class ControlStructure {
     protected void simplifyAndExecuteStructure(){}
 
     public void printTest(int index, ArrayList<String> line){
-        for (String s:line){
-            System.out.printf("%s ", s);
+        if (myStage.equals("execute")) {
+            for (String s : line) {
+                System.out.printf("%s ", s);
+            }
+            System.out.printf("\n%d\n", index);
         }
-        System.out.printf("\n%d\n", index);
-    }
+        }
 
     public ArrayList<String> getMySimplifiableLine(){
         return mySimplifiableLine;

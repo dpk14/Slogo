@@ -24,18 +24,22 @@ public class Tell extends ControlStructure{
         if (!mySimplifiableLine.get(myIndexOfFirstList).equals("["));
         List<Entry<String, Animal>> activeAnimals=myStorage.getActiveAnimals();
         simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myAnimal);
-        int end = findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine);
-        activeAnimals.clear();
-        String animalID="";
-        for(int k = myIndexOfFirstList+1; k<end; k++) {
-            animalID=mySimplifiableLine.get(k);
-            Animal animal=myStorage.getAnimal(animalID);
-            activeAnimals.add(new SimpleEntry<>(animalID, animal));
+            int end = findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine);
+            System.out.printf("%d %d", myIndexOfFirstList, end);
+            activeAnimals.clear();
+            String animalID = "";
+            for (int k = myIndexOfFirstList + 1; k < end; k++) {
+                System.out.println("marker");
+                animalID = mySimplifiableLine.get(k);
+                Animal animal = myStorage.getAnimal(animalID);
+                activeAnimals.add(new SimpleEntry<>(animalID, animal));
+            }
+            if (animalID.length() == 0) myReturnVal = 0;
+            else myReturnVal = Double.parseDouble(animalID);
+            declareUnrepeatable();
+            System.out.printf("SIZE: %d", activeAnimals.size());
+            myStorage.setActiveAnimals(activeAnimals);
         }
-        if (animalID.length()==0) myReturnVal=0;
-        else myReturnVal = Double.parseDouble(animalID);
-        declareUnrepeatable();
-    }
 
     @Override
     public double executeCode(){

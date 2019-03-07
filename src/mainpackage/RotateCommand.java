@@ -5,7 +5,6 @@ public class RotateCommand extends TurtleCommand{
 
     public RotateCommand(String movementType, int numArgs, SystemStorage storage){
         super(movementType, numArgs, storage);
-        evaluate();
     }
 
     @Override

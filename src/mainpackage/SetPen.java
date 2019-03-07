@@ -3,7 +3,6 @@ package mainpackage;
 public class SetPen extends TurtleCommand {
     public SetPen (String movementType, int numArgs, SystemStorage storage){
         super(movementType, numArgs, storage);
-        evaluate();
     }
 
     @Override

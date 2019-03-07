@@ -120,12 +120,14 @@ public class  Main extends Application {
             }
     }
 
-    public void processCode(String stage, ArrayList<String> userInputList){
+    public void processCode(String stage, ArrayList<String> userInputList) {
         int currentIndex = 0;
         ArrayList<String> simplifiableInput = new ArrayList<>(userInputList);
         while (currentIndex < simplifiableInput.size()) {
             List<Entry<String, Animal>> activeAnimals = mySystemStorage.getActiveAnimals();
+            int activeCount=0;
             for (Entry entry : activeAnimals) {
+                ArrayList<String> savedCopy=new ArrayList<>(simplifiableInput);
                 Animal currentAnimal = (Animal) entry.getValue();
                 String currentInput = simplifiableInput.get(currentIndex);
                 String currentInputSymbol = myParser.getSymbol(currentInput);
@@ -145,9 +147,14 @@ public class  Main extends Application {
                     System.out.printf("%s ", s);
                 }
                 if (!currentControlStructure.repeatable()) break;
+                activeCount++;
+                if (activeCount!=activeAnimals.size()){
+                    simplifiableInput=savedCopy;        // past instance of line is reinstated to operate on the rest of the turtles in the same ways
+                }
             }
             currentIndex++;
         }
+    }
 
 
     public static void main (String[] args) {

@@ -24,20 +24,12 @@ public class SystemStorage {
         myActiveAnimals = new ArrayList<>();
     }
 
-    public void setActiveAnimals(ArrayList<String> activateAnimal) {
-        for (String animalID : activateAnimal) {
-            myActiveAnimals.add(new AbstractMap.SimpleEntry<String, Animal>(animalID, getAnimal(animalID)));
-        }
-    }
-
     public Map<String, Animal> getAnimals(){
         return habitat;
     }
 
-    public void setActiveAnimals(ArrayList<String> activateAnimal){
-        for(String animalID : activateAnimal){
-            myActiveAnimals.add(new AbstractMap.SimpleEntry<>(animalID, getAnimal(animalID)));
-        }
+    public void setActiveAnimals(List<Entry<String, Animal>> activeAnimals){
+            myActiveAnimals=activeAnimals;
     }
 
     public List<Entry<String, Animal>> getActiveAnimals(){

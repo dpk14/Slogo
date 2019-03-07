@@ -5,7 +5,6 @@ public class  MovementCommand extends TurtleCommand {
 
     public MovementCommand(String movementType, int numArgs, SystemStorage storage){
         super(movementType, numArgs, storage);
-        evaluate();
     }
 
     @Override
