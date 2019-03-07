@@ -1,7 +1,6 @@
-package frontend;
+package mainpackage;
 
 import javafx.scene.layout.Pane;
-import mainpackage.SystemStorage;
 
 import java.util.ArrayList;
 
@@ -10,13 +9,13 @@ public class AnimalScreen {
     Pane canvas;
     String STARTING_COLOR = "azure";
     public AnimalScreen(SystemStorage mySystemStorage, int height, int width ){
+
         canvas = new Pane();
         canvas.prefHeight(height);
         canvas.prefWidth(width);
         String style = String.format("-fx-background-color: %s;", STARTING_COLOR);
         canvas.setStyle(style);
         mySystemStorage.setScreenParameters(canvas, height, width);
-
         mySystemStorage.getAnimal("0");
         ArrayList<String> zeroth = new ArrayList<>();
         zeroth.add("0");

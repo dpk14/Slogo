@@ -53,6 +53,10 @@ public class ProgramParser {
         myControlMap.put("For", new For(0,2, this, myStorage));
         myControlMap.put("If", new If(1,1, this, myStorage));
         myControlMap.put("IfElse", new IfElse(1, 2, this, myStorage));
+        myControlMap.put("MakeUserInstruction", new MakeUserInstruction(1, 2, this, myStorage));
+        myControlMap.put("Tell", new Tell(0, 1, this, myStorage));
+        myControlMap.put("Ask", new Ask(0, 2, this, myStorage));
+        myControlMap.put("AskWith ", new AskWith(0, 2, this, myStorage));
     }
 
     public void makeOperationsMap() {
@@ -114,10 +118,10 @@ public class ProgramParser {
             }
         }
         // FIXME: perhaps throw an exception instead
-        return ERROR;
+        return text;
     }
 
-    public HashMap<String, Operation> getOperationsMap() {
+    public Map<String, Operation> getOperationsMap() {
         return myOperationsMap;
     }
 

@@ -6,14 +6,11 @@ import mainpackage.SystemStorage;
  * @author Irene Qiao isq
  */
 abstract public class Operation {
-    protected String myType;
-    protected int myNumArgs;
-    protected double[] myArgs;
-    protected SystemStorage mySystemStorage;
-    protected double ret;
+    private int myNumArgs;
+    private double[] myArgs;
+    private double ret;
 
-    public Operation(String operationType, int numArgs) {
-        myType = operationType;
+    public Operation(int numArgs) {
         myNumArgs = numArgs;
     }
 
@@ -27,15 +24,18 @@ abstract public class Operation {
         myArgs = args;
     }
 
-    public void setSystemStorage(SystemStorage storage){
-        mySystemStorage = storage;
-    }
-
     abstract public Operation copy();
 
-    public void storeCommand(){
-        if (this instanceof Command) mySystemStorage.addToHistory((Command) this);
-        else; //TODO: throw error
+    protected void setReturnValue(double val){
+        ret = val;
+    }
+
+    protected double getReturnValue(){
+        return ret;
+    }
+
+    protected double getArgIndex(int index){
+        return myArgs[index];
     }
 }
 

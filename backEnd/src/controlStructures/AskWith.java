@@ -31,7 +31,6 @@ public class AskWith extends ControlStructure{
         Animal animalToBeChecked;
 
         for (String animalName: existingAnimals.keySet()){
-
             resetSimplification(mySavedLine);
             mySavedLine=new ArrayList<>(mySavedLine);
 
@@ -44,10 +43,15 @@ public class AskWith extends ControlStructure{
 
         myIndexOfSecondList=findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine)+1;
 
+        int counter=0;
         for(Entry entry: activeAnimals) {
             simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, (Animal) entry.getValue());
+            if (counter!=activeAnimals.size()-1) {
+                resetSimplification(mySavedLine);
+                mySavedLine = new ArrayList<>(mySavedLine);
+            }
+            counter++;
         }
-
         declareUnrepeatable();
     }
 }

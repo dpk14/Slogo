@@ -6,17 +6,17 @@ import mainpackage.Animal;
  * @author Irene Qiao isq
  */
 abstract public class TurtleOperation extends Operation {
-    protected Animal myTurtle;
+    private Animal myTurtle;
 
-    public TurtleOperation(String commandType, int numArgs){
-        super(commandType, numArgs);
+    public TurtleOperation(int numArgs){
+        super(numArgs);
     }
 
     public void setAnimal(Animal turtle){
         myTurtle = turtle;
     }
 
-    public Animal getTurtle(){
+    protected Animal getTurtle(){
         return myTurtle;
     }
 
