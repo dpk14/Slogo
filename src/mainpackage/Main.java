@@ -148,7 +148,6 @@ public class  Main extends Application {
             }
             currentIndex++;
         }
-    }
 
 
     public static void main (String[] args) {

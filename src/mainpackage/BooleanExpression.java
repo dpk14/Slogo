@@ -10,16 +10,16 @@ public class BooleanExpression extends Operation{
         boolean booleanRet = false;
         ret = 0;
         if (myType.equals("less")){
-            booleanRet = parseString(myArgs.get(0)) < parseString(myArgs.get(1));
+            booleanRet = myArgs.get(0) < myArgs.get(1);
         }
         else if (myType.equals("greater")){
-            booleanRet = parseString(myArgs.get(0)) > parseString(myArgs.get(1));
+            booleanRet = myArgs.get(0) > myArgs.get(1);
         }
         else if (myType.equals("equal")){
-            booleanRet = parseString(myArgs.get(0)) == parseString(myArgs.get(1));
+            booleanRet = myArgs.get(0) == myArgs.get(1);
         }
         else if (myType.equals("notequal")){
-            booleanRet = parseString(myArgs.get(0)) != parseString(myArgs.get(1));
+            booleanRet = myArgs.get(0) != myArgs.get(1);
         }
         if (booleanRet == true){
             ret = 1;

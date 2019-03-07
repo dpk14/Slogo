@@ -13,7 +13,7 @@ public class MultipleTurtleOperation extends Operation {
             ret = mySystemStorage.numTurtlesCreated();
         }
         else if (myType.equals("id")){
-            ret = mySystemStorage.getActiveId();
+            //TODO: make this into a TurtleCommand, return ID of turtle
         }
         return ret;
     }

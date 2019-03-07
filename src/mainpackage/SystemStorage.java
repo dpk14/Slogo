@@ -24,6 +24,11 @@ public class SystemStorage {
         myActiveAnimals = new ArrayList<>();
     }
 
+    public void setActiveAnimals(ArrayList<String> activateAnimal) {
+        for (String animalID : activateAnimal) {
+            myActiveAnimals.add(new AbstractMap.SimpleEntry<String, Animal>(animalID, getAnimal(animalID)));
+        }
+    }
 
     public Map<String, Animal> getAnimals(){
         return habitat;
@@ -85,28 +90,11 @@ public class SystemStorage {
         return userVariables.get(variable);
         }
 
-    public List<TurtleCommand> getCustomCommand(String commandName){
-        return myCustomCommands.get(commandName);
-    }
-
     public void setVariableValue(String variableName, double value){
         userVariables.putIfAbsent(variableName, value);
         if (userVariables.keySet().contains(variableName)){
             userVariables.put(variableName, value);
         }
-    }
-
-    public void setCustomCommand(String variableName, List<TurtleCommand> commands){
-        myCustomCommands.putIfAbsent(variableName, commands);
-        if (myCustomCommands.keySet().contains(variableName)){
-            myCustomCommands.put(variableName, commands);
-        }
-    }
-
-    public double getActiveId(){
-        int lastIndex = myCommandLog.size() - 1;
-        double id = Double.parseDouble(myCommandLog.get(lastIndex).getTurtle().getAnimalID());
-        return id;
     }
 
     public void addToHistory(TurtleCommand command){

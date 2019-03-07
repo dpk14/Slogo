@@ -10,26 +10,26 @@ public class BasicMathOperation extends Operation {
     @Override
     public double evaluate() {
         if (myType.equals("sum")){
-            double sum = Double.parseDouble(myArgs.get(0)) + Double.parseDouble(myArgs.get(1));
+            double sum = myArgs.get(0) + myArgs.get(1);
             ret = sum;
         }
         else if (myType.equals("difference")){
-            double difference = parseString(myArgs.get(0)) - parseString(myArgs.get(1));
+            double difference = myArgs.get(0) - myArgs.get(1);
             ret = difference;
         }
         else if (myType.equals("product")){
-            double product = parseString(myArgs.get(0)) * parseString(myArgs.get(1));
+            double product = myArgs.get(0) * myArgs.get(1);
             ret = product;
         }
         else if (myType.equals("quotient")){
-            double quotient = parseString(myArgs.get(0)) / parseString(myArgs.get(1));
+            double quotient = myArgs.get(0) / myArgs.get(1);
             ret = quotient;
         }
         else if (myType.equals("minus")){
-            ret = parseString(myArgs.get(0)) * MINUS_MULTIPLIER;
+            ret = myArgs.get(0) * MINUS_MULTIPLIER;
         }
         else if (myType.equals("remainder")){
-            double remainder = parseString(myArgs.get(0)) % parseString(myArgs.get(1));
+            double remainder = myArgs.get(0) % myArgs.get(1);
             ret = remainder;
         }
         return ret;
