@@ -9,8 +9,8 @@ public class SystemStorage {
 
     private Map<String, Animal> habitat;
     private Map<String, Double> userVariables;
-    private Map<String, List<TurtleCommand>> myCustomCommands;
-    private List<TurtleCommand> myCommandLog;
+    private Map<String, List<Command>> myCustomCommands;
+    private List<Command> myCommandLog;
     private Pane animalCanvas;
     private double height_of_screen;
     private double width_of_screen;
@@ -22,12 +22,6 @@ public class SystemStorage {
         myCustomCommands = new HashMap<>();
         myCommandLog = new ArrayList<>();
         myActiveAnimals = new ArrayList<>();
-    }
-
-    public void setActiveAnimals(ArrayList<String> activateAnimal) {
-        for (String animalID : activateAnimal) {
-            myActiveAnimals.add(new AbstractMap.SimpleEntry<String, Animal>(animalID, getAnimal(animalID)));
-        }
     }
 
     public Map<String, Animal> getAnimals(){
@@ -97,11 +91,11 @@ public class SystemStorage {
         }
     }
 
-    public void addToHistory(TurtleCommand command){
+    public void addToHistory(Command command){
         myCommandLog.add(command);
     }
 
-    public List<TurtleCommand> getMyCommandLog() {
+    public List<Command> getMyCommandLog() {
         return myCommandLog;
     }
 }

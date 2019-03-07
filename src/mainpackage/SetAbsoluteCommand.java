@@ -1,8 +1,8 @@
 package mainpackage;
 
-public class SetAbsoluteCommand extends TurtleCommand {
-    public SetAbsoluteCommand (String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+public class SetAbsoluteCommand extends TurtleOperation implements Command {
+    public SetAbsoluteCommand (String movementType, int numArgs){
+        super(movementType, numArgs);
         evaluate();
     }
 
@@ -31,7 +31,7 @@ public class SetAbsoluteCommand extends TurtleCommand {
             double y = myArgs[1];
             double current_x = myTurtle.getCoordinates()[0];
             double current_y = myTurtle.getCoordinates()[1];
-            ret = Math.sqrt(Math.pow(current_x - x,2) + Math.pow(current_y - y, 2));
+            ret = calcDistance(current_x, x, current_y, y);
         }
         else if (myType.equals("towards")){
             ret = myTurtle.setToward(myArgs[0], myArgs[1]); //TODO: return change in heading
@@ -41,7 +41,8 @@ public class SetAbsoluteCommand extends TurtleCommand {
 
     @Override
     public Operation copy() {
-        Operation copy = new SetAbsoluteCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new SetAbsoluteCommand(myType, myNumArgs);
+        ((SetAbsoluteCommand) copy).setAnimal(myTurtle);
         return copy;
     }
 }

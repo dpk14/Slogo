@@ -1,8 +1,8 @@
 package mainpackage;
 
 public class BooleanOperator extends Operation {
-    public BooleanOperator(String type, int numArgs, SystemStorage storage){
-        super(type, numArgs, storage);
+    public BooleanOperator(String type, int numArgs){
+        super(type, numArgs);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class BooleanOperator extends Operation {
 
     @Override
     public Operation copy() {
-        Operation copy = new BooleanOperator(myType, myNumArgs, mySystemStorage);
+        Operation copy = new BooleanOperator(myType, myNumArgs);
         return copy;
     }
 }

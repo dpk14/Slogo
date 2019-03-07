@@ -3,8 +3,8 @@ package mainpackage;
 public class BasicMathOperation extends Operation {
     private final int MINUS_MULTIPLIER = -1;
 
-    public BasicMathOperation(String myType, int numArgs, SystemStorage storage){
-        super(myType, numArgs, storage);
+    public BasicMathOperation(String myType, int numArgs){
+        super(myType, numArgs);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class BasicMathOperation extends Operation {
 
     @Override
     public Operation copy() {
-        Operation copy = new BasicMathOperation(myType, myNumArgs, mySystemStorage);
+        Operation copy = new BasicMathOperation(myType, myNumArgs);
         return copy;
     }
 }

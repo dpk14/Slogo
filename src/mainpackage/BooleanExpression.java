@@ -1,8 +1,8 @@
 package mainpackage;
 
 public class BooleanExpression extends Operation{
-    public BooleanExpression(String myType, int numArgs, SystemStorage storage){
-        super(myType, numArgs, storage);
+    public BooleanExpression(String myType, int numArgs){
+        super(myType, numArgs);
     }
 
     @Override
@@ -29,7 +29,7 @@ public class BooleanExpression extends Operation{
 
     @Override
     public Operation copy() {
-        Operation copy = new BooleanExpression(myType, myNumArgs, mySystemStorage);
+        Operation copy = new BooleanExpression(myType, myNumArgs);
         return copy;
     }
 }

@@ -1,8 +1,8 @@
 package mainpackage;
 
-public class SetPen extends TurtleCommand {
-    public SetPen (String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+public class SetPen extends TurtleOperation implements Command {
+    public SetPen (String movementType, int numArgs){
+        super(movementType, numArgs);
         evaluate();
     }
 
@@ -30,7 +30,7 @@ public class SetPen extends TurtleCommand {
 
     @Override
     public Operation copy() {
-        Operation copy = new SetPen(myType, myNumArgs, mySystemStorage);
+        Operation copy = new SetPen(myType, myNumArgs);
         return copy;
     }
 }

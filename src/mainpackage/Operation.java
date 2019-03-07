@@ -12,10 +12,9 @@ abstract public class Operation {
     protected SystemStorage mySystemStorage;
     protected double ret;
 
-    public Operation(String operationType, int numArgs, SystemStorage systemStorage) {
+    public Operation(String operationType, int numArgs) {
         myType = operationType;
         myNumArgs = numArgs;
-        mySystemStorage = systemStorage;
     }
 
     abstract public double evaluate();
@@ -28,28 +27,15 @@ abstract public class Operation {
         myArgs = args;
     }
 
-    abstract public Operation copy();
-
-    /*protected double parseString(String argument) {
-        if (argument != null){
-            if (argument.contains(":")) {
-                int variableIndex = argument.indexOf(":") + 1;
-                double val = mySystemStorage.getVariableValue(argument.substring(variableIndex));
-                return val;
-            } else {
-                return Double.parseDouble(argument);
-            }
-        }
-        throw new NullPointerException();
-    */
-
-    public void storeCommand(){
-        if (this instanceof TurtleCommand) mySystemStorage.addToHistory((TurtleCommand) this);
-        else; //throw error
+    public void setSystemStorage(SystemStorage storage){
+        mySystemStorage = storage;
     }
 
-    public double getReturnValue(){
-        return ret;
+    abstract public Operation copy();
+
+    public void storeCommand(){
+        if (this instanceof Command) mySystemStorage.addToHistory((Command) this);
+        else; //TODO: throw error
     }
 }
 

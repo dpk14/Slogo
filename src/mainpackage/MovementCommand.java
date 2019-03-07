@@ -3,8 +3,8 @@ package mainpackage;
 public class  MovementCommand extends TurtleCommand {
     private final int BACKWARD_MULTIPLIER = -1;
 
-    public MovementCommand(String movementType, int numArgs, SystemStorage storage){
-        super(movementType, numArgs, storage);
+    public MovementCommand(String movementType, int numArgs){
+        super(movementType, numArgs);
         evaluate();
     }
 
@@ -27,7 +27,8 @@ public class  MovementCommand extends TurtleCommand {
 
     @Override
     public Operation copy() {
-        Operation copy = new MovementCommand(myType, myNumArgs, mySystemStorage);
+        Operation copy = new MovementCommand(myType, myNumArgs);
+        ((MovementCommand) copy).setAnimal(myTurtle);
         return copy;
     }
 }
