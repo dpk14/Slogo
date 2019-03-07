@@ -3,41 +3,41 @@ package mainpackage;
 public class BasicMathOperation extends Operation {
     private final int MINUS_MULTIPLIER = -1;
 
-    public BasicMathOperation(String myType, int numArgs){
-        super(myType, numArgs);
+    public BasicMathOperation(int numArgs){
+        super(numArgs);
     }
 
     @Override
     public double evaluate() {
         if (myType.equals("sum")){
-            double sum = myArgs[0] + myArgs[1];
-            ret = sum;
+            double sum = getArgIndex(0) + getArgIndex(1);
+            setReturnValue(sum);
         }
         else if (myType.equals("difference")){
-            double difference = myArgs[0] - myArgs[1];
-            ret = difference;
+            double difference = getArgIndex(0) - getArgIndex(1);
+            setReturnValue(difference);
         }
         else if (myType.equals("product")){
-            double product = myArgs[0] * myArgs[1];
-            ret = product;
+            double product = getArgIndex(0) * getArgIndex(1);
+            setReturnValue(product);
         }
         else if (myType.equals("quotient")){
-            double quotient = myArgs[0] / myArgs[1];
-            ret = quotient;
+            double quotient = getArgIndex(0) / getArgIndex(1);
+            setReturnValue(quotient);
         }
         else if (myType.equals("minus")){
-            ret = myArgs[0] * MINUS_MULTIPLIER;
+            setReturnValue(getArgIndex(0) * MINUS_MULTIPLIER);
         }
         else if (myType.equals("remainder")){
-            double remainder = myArgs[0] % myArgs[1];
-            ret = remainder;
+            double remainder = getArgIndex(0) % getArgIndex(1);
+            setReturnValue(remainder);
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new BasicMathOperation(myType, myNumArgs);
+        Operation copy = new BasicMathOperation(getNumArgs());
         return copy;
     }
 }

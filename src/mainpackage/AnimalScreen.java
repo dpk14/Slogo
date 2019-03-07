@@ -32,10 +32,6 @@ public class AnimalScreen {
     }
 }
 
-
-
-
-
 /*
         for (String name : animal_names) {
                 Set<String> animal_names = mySystemStorage.getAnimalNames();

@@ -6,13 +6,11 @@ import java.util.List;
  * @author Irene Qiao isq
  */
 abstract public class Operation {
-    protected String myType;
-    protected int myNumArgs;
-    protected double[] myArgs;
-    protected double ret;
+    private int myNumArgs;
+    private double[] myArgs;
+    private double ret;
 
-    public Operation(String operationType, int numArgs) {
-        myType = operationType;
+    public Operation(int numArgs) {
         myNumArgs = numArgs;
     }
 
@@ -28,5 +26,16 @@ abstract public class Operation {
 
     abstract public Operation copy();
 
+    protected void setReturnValue(double val){
+        ret = val;
+    }
+
+    protected double getReturnValue(){
+        return ret;
+    }
+
+    protected double getArgIndex(int index){
+        return myArgs[index];
+    }
 }
 

@@ -1,8 +1,8 @@
 package mainpackage;
 
 public class BooleanExpression extends Operation{
-    public BooleanExpression(String myType, int numArgs){
-        super(myType, numArgs);
+    public BooleanExpression(int numArgs){
+        super(numArgs);
     }
 
     @Override
@@ -10,26 +10,26 @@ public class BooleanExpression extends Operation{
         boolean booleanRet = false;
         ret = 0;
         if (myType.equals("less")){
-            booleanRet = myArgs[0] < myArgs[1];
+            booleanRet = getArgIndex(0) < getArgIndex(1);
         }
         else if (myType.equals("greater")){
-            booleanRet = myArgs[0] > myArgs[1];
+            booleanRet = getArgIndex(0) > getArgIndex(1);
         }
         else if (myType.equals("equal")){
-            booleanRet = myArgs[0] == myArgs[1];
+            booleanRet = getArgIndex(0) == getArgIndex(1);
         }
         else if (myType.equals("notequal")){
-            booleanRet = myArgs[0] != myArgs[1];
+            booleanRet = getArgIndex(0) != getArgIndex(1);
         }
         if (booleanRet == true){
-            ret = 1;
+            setReturnValue(1);
         }
         return ret;
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new BooleanExpression(myType, myNumArgs);
+        Operation copy = new BooleanExpression(myNumArgs);
         return copy;
     }
 }
