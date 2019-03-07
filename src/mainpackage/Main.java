@@ -114,35 +114,41 @@ public class  Main extends Application {
         for(String s: splitString) {
             if(s.length()!=0) userInputList.add(s);
         }
-
-            int currentIndex = 0;
-            ArrayList<String> simplifiableInput = new ArrayList<>(userInputList);
-            while (currentIndex < simplifiableInput.size()) {
-                List<Entry<String, Animal>> activeAnimals=mySystemStorage.getActiveAnimals();
-                for(Entry entry : activeAnimals) {
-                    Animal currentAnimal = (Animal) entry.getValue();
-                    String currentInput = simplifiableInput.get(currentIndex);
-                    String currentInputSymbol = myParser.getSymbol(currentInput);
-                    ControlStructure defaultStructure = myParser.getControlStructure(currentInputSymbol);
-                    ControlStructure currentControlStructure = defaultStructure.copy();
-                    currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null, currentAnimal);
-                    double returnValue = currentControlStructure.executeCode();
-
-                    //simplifiableInput=currentControlStructure.getMySimplifiableLine();
-                    System.out.println("\n");
-                    for (String s : simplifiableInput) {
-                        System.out.printf("%s ", s);
-                    }
-                    currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
-                    System.out.println("\n");
-                    for (String s : simplifiableInput) {
-                        System.out.printf("%s ", s);
-                    }
-                    if(!currentControlStructure.repeatable()) break;
-                }
-                currentIndex++;
+        String[] stages= {"compile", "execute"};
+            for(String stage: stages) {
+                processCode(stage, userInputList);
             }
+    }
+
+    public void processCode(String stage, ArrayList<String> userInputList){
+        int currentIndex = 0;
+        ArrayList<String> simplifiableInput = new ArrayList<>(userInputList);
+        while (currentIndex < simplifiableInput.size()) {
+            List<Entry<String, Animal>> activeAnimals = mySystemStorage.getActiveAnimals();
+            for (Entry entry : activeAnimals) {
+                Animal currentAnimal = (Animal) entry.getValue();
+                String currentInput = simplifiableInput.get(currentIndex);
+                String currentInputSymbol = myParser.getSymbol(currentInput);
+                ControlStructure defaultStructure = myParser.getControlStructure(currentInputSymbol);
+                ControlStructure currentControlStructure = defaultStructure.copy();
+                currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null, currentAnimal, stage);
+                double returnValue = currentControlStructure.executeCode();
+
+                //simplifiableInput=currentControlStructure.getMySimplifiableLine();
+                System.out.println("\n");
+                for (String s : simplifiableInput) {
+                    System.out.printf("%s ", s);
+                }
+                currentControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableInput);
+                System.out.println("\n");
+                for (String s : simplifiableInput) {
+                    System.out.printf("%s ", s);
+                }
+                if (!currentControlStructure.repeatable()) break;
+            }
+            currentIndex++;
         }
+
 
     public static void main (String[] args) {
         launch(args);

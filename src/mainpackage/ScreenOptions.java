@@ -73,8 +73,8 @@ public class ScreenOptions {
     }
 
     private void setAnimal(String animal) {
-        Set<Integer> animal_names = mySystemStorage.getAnimalNames();
-        for (Integer name : animal_names) {
+        Set<String> animal_names = mySystemStorage.getAnimalNames();
+        for (String name : animal_names) {
             Animal active_animal = mySystemStorage.getAnimal(name);
             active_animal.setImage(String.format("%s.png", animal));
         }

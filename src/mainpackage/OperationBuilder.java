@@ -31,7 +31,6 @@ public class OperationBuilder {
     to understand how this is performed
      */
 
-
     public void continueBuildingOperation() {
         for (int k = 0; k < myNumOfArgsNeeded; k++) {
             String kthArgument = myUserInput.get(myStartingIndex + 1 + k);
@@ -53,7 +52,17 @@ public class OperationBuilder {
     //retain the most simplified version of the operation, which will exist when there is only one operationBuilder left in the stack. Then advance the current index to the end of the command
     //if the stack is bigger than 1, it can still be simplified further, so simplify the currentLine by removing the current expression from the list and replacing it with a simplified value.
     public Operation createOperation() {
-        myOperation.setArgs(new ArrayList<>(Arrays.asList(myOperationArguments)));
+        double[] args=new double[myNumOfArgsNeeded];
+        for(int k=0; k<myNumOfArgsNeeded; k++){
+            String kthArgumentSymbol = myParser.getSymbol(myOperationArguments[k]);
+            if(kthArgumentSymbol.equals("Variable")) {
+                args[k] = myParser.parseVariable(myOperationArguments[k]);
+            }
+            else if(kthArgumentSymbol.equals("Constant")) {
+                args[k] = Double.parseDouble(myOperationArguments[k]);
+            }
+            myOperation.setArgs(args);
+        }
         return myOperation;
     }
 

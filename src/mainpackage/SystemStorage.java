@@ -3,6 +3,7 @@ package mainpackage;
 import javafx.scene.layout.Pane;
 
 import java.util.*;
+import java.util.Map.Entry;
 
 public class SystemStorage {
 
@@ -13,7 +14,7 @@ public class SystemStorage {
     private Pane animalCanvas;
     private double height_of_screen;
     private double width_of_screen;
-    private List<Map.Entry<String, Animal>> myActiveAnimals;
+    private List<Entry<String, Animal>> myActiveAnimals;
 
     public SystemStorage(){
         habitat = new HashMap<>();
@@ -33,7 +34,13 @@ public class SystemStorage {
         return habitat;
     }
 
-    public List<Map.Entry<String, Animal>> getActiveAnimals(){
+    public void setActiveAnimals(ArrayList<String> activateAnimal){
+        for(String animalID : activateAnimal){
+            myActiveAnimals.add(new AbstractMap.SimpleEntry<>(animalID, getAnimal(animalID)));
+        }
+    }
+
+    public List<Entry<String, Animal>> getActiveAnimals(){
         return myActiveAnimals;
     }
 
@@ -43,8 +50,8 @@ public class SystemStorage {
 
     public Set<String> getAnimalNames(){
         HashSet<String> names = new HashSet<>();
-        for (String id: habitat.keySet()){
-            names.add(id);
+        for (String name: habitat.keySet()){
+            names.add(name);
         }
         return names;
     }
@@ -66,7 +73,6 @@ public class SystemStorage {
         }
         return names;
     }
-
 
     public Animal getAnimal(String animalID){
         if(!habitat.containsKey(animalID)){
