@@ -21,7 +21,7 @@ public class RotateCommand extends TurtleCommand{
 
     @Override
     public double evaluate(){
-        ret = myArgs.get(0);
+        ret = myArgs[0];
         return ret;
     }
 

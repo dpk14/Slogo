@@ -9,10 +9,10 @@ public class ExponentialOperation extends Operation {
     public double evaluate() {
         ret = -1;
         if (myType.equals("pow")){
-            ret = Math.pow(myArgs.get(0), myArgs.get(1));
+            ret = Math.pow(myArgs[0], myArgs[1]);
         }
         else if (myType.equals("log")){
-            ret = Math.log(myArgs.get(0));
+            ret = Math.log(myArgs[0]);
         }
         return ret;
     }

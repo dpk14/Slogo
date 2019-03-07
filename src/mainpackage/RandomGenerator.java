@@ -9,7 +9,7 @@ public class RandomGenerator extends Operation {
     public double evaluate() {
         ret = -1;
         if (myType.equals("random")){
-            ret = Math.random() * myArgs.get(0);
+            ret = Math.random() * myArgs[0];
         }
         return ret;
     }
