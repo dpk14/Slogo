@@ -22,17 +22,15 @@ public class Tell extends ControlStructure{
     public void simplifyAndExecuteStructure(){
         myIndexOfFirstList=myStartingIndex+1;
         if (!mySimplifiableLine.get(myIndexOfFirstList).equals("["));
-        List<Entry<String, Animal>> activeAnimals=myStorage.getActiveAnimals();
         simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myAnimal);
             int end = findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine);
             System.out.printf("%d %d", myIndexOfFirstList, end);
-            activeAnimals.clear();
+            ArrayList<String> activeAnimals=new ArrayList<>();
             String animalID = "";
             for (int k = myIndexOfFirstList + 1; k < end; k++) {
                 System.out.println("marker");
                 animalID = mySimplifiableLine.get(k);
-                Animal animal = myStorage.getAnimal(animalID);
-                activeAnimals.add(new SimpleEntry<>(animalID, animal));
+                activeAnimals.add(animalID);
             }
             if (animalID.length() == 0) myReturnVal = 0;
             else myReturnVal = Double.parseDouble(animalID);

@@ -46,8 +46,11 @@ public class MakeUserInstruction extends ControlStructure {
         for(currentIndex=myIndexOfSecondList+1; currentIndex<=end; currentIndex++){
             myCommandList.add(mySimplifiableLine.get(currentIndex));
         }
-        myParser.getControlMap().put(commandName, new UserDefinedCommand(myVariableList.size(), 0, myParser, myStorage, myVariableList, myCommandList));
-    }
+        if (myStage.equals("execute")) {
+            myParser.getControlMap().put(commandName, new UserDefinedCommand(myVariableList.size(), 0, myParser, myStorage, myVariableList, myCommandList));
+            System.out.printf("SIZE: %d", myParser.getControlMap().size());
+        }
+        }
 
     @Override
     public double executeCode(){

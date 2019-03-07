@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import java.lang.reflect.Array;
@@ -25,8 +26,6 @@ public class  Main extends Application {
     final private int HEIGHT_OF_OPTIONS = 20;
     final private int HEIGHT_OF_ANIMAL_SCREEN = 620;
     final private int WIDTH_OF_ANIMAL_SCREEN = 1000;
-
-    private HashMap<String, Animal> myActiveTurtles=new HashMap<>();
 
     private Console myConsole;
     public ProgramParser myParser;
