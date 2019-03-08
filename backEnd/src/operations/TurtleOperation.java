@@ -1,6 +1,6 @@
 package operations;
 
-import mainpackage.Animal;
+import control.Animal;
 
 /**
  * @author Irene Qiao isq
@@ -8,8 +8,8 @@ import mainpackage.Animal;
 abstract public class TurtleOperation extends Operation {
     private Animal myTurtle;
 
-    public TurtleOperation(String type, int numArgs){
-        super(type, numArgs);
+    public TurtleOperation(){
+        super();
     }
 
     public void setAnimal(Animal turtle){
@@ -26,9 +26,6 @@ abstract public class TurtleOperation extends Operation {
 
     @Override
     abstract public double evaluate();
-
-    @Override
-    abstract public Operation copy();
 
 }
 
