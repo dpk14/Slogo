@@ -1,6 +1,7 @@
 package operations;
 
-import mainpackage.SystemStorage;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * @author Irene Qiao isq
@@ -8,14 +9,13 @@ import mainpackage.SystemStorage;
 abstract public class Operation {
     private int myNumArgs;
     private double[] myArgs;
-    private double ret;
-    protected String myType;
 
-    public Operation(String type, int numArgs) {
-        myNumArgs = numArgs;
-        myType = type;
+    public Operation() {
     }
 
+    protected void setNumArgs(int num){
+        myNumArgs = num;
+    }
     abstract public double evaluate();
 
     public int getNumArgs() {
@@ -26,14 +26,25 @@ abstract public class Operation {
         myArgs = args;
     }
 
-    abstract public Operation copy();
+    public Operation copy(){
+        try{
+            Constructor constructor = this.getClass().getConstructor();
+            Operation copy = (Operation) constructor.newInstance();
+            return copy;
+        }
+        catch (NoSuchMethodException nsm){
+            System.out.println("no such method");
+        }
+        catch (InstantiationException ie){
 
-    protected void setReturnValue(double val){
-        ret = val;
-    }
+        }
+        catch (IllegalAccessException iae){
 
-    protected double getReturnValue(){
-        return ret;
+        }
+        catch (InvocationTargetException ite){
+
+        }
+        return null;
     }
 
     protected double getArgIndex(int index){
