@@ -5,6 +5,9 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
+import mainpackage.Animal;
+import mainpackage.Main;
+import mainpackage.SystemStorage;
 
 import java.util.Set;
 

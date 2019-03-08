@@ -16,8 +16,8 @@ public class ProgramParser {
     // "types" and the regular expression patterns that recognize those types
     // note, it is a list because order matters (some patterns may be more generic)
     private List<Entry<String, Pattern>> mySymbols;
-    private HashMap<String, Operation> myOperationsMap;
-    private HashMap<String, ControlStructure> myControlMap;
+    private Map<String, Operation> myOperationsMap;
+    private Map<String, ControlStructure> myControlMap;
     private SystemStorage myStorage;
     /**
      * Create an empty parser.

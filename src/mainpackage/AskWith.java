@@ -1,7 +1,6 @@
 package mainpackage;
 
 import java.util.AbstractMap.SimpleEntry;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.List;

@@ -1,8 +1,6 @@
 package mainpackage;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
 
 public class UserDefinedCommand extends ControlStructure {
     ArrayList<String> myVariables;

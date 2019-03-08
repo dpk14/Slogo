@@ -1,7 +1,5 @@
 package mainpackage;
 
-import java.util.ArrayList;
-
 public class MakeVariable extends ControlStructure {
     private double myVariableValue;
     private String myVariableName;

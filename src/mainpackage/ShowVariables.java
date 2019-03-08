@@ -2,6 +2,7 @@ package mainpackage;
 
 import javafx.scene.Node;
 import javafx.scene.control.TextArea;
+import mainpackage.SystemStorage;
 
 import java.util.Map;
 

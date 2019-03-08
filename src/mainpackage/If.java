@@ -1,8 +1,5 @@
 package mainpackage;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class If extends ControlStructure {
 
     public If(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){

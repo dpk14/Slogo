@@ -3,7 +3,7 @@ package mainpackage;
 import java.util.*;
 
 public class OperationBuilder {
-    ArrayList<String> myUserInput;
+    List<String> myUserInput;
     Operation myOperation;
     int myStartingIndex;
     int myNumOfArgsNeeded;
@@ -11,8 +11,9 @@ public class OperationBuilder {
     String[] myOperationArguments;
     ProgramParser myParser;
     Stack myBuilderStack;
+    ControlStructure myControlStructure;
 
-    public OperationBuilder(Operation defaultOperation, ArrayList<String> userInput, int startingIndex, ProgramParser parser, Stack builderStack){
+    public OperationBuilder(Operation defaultOperation, List<String> userInput, int startingIndex, ProgramParser parser, Stack builderStack){
         myUserInput=userInput;
         myOperation=defaultOperation.copy();
         myStartingIndex=startingIndex;
@@ -31,13 +32,16 @@ public class OperationBuilder {
     to understand how this is performed
      */
 
-    public void continueBuildingOperation() {
+    public void continueBuildingOperation(ControlStructure controlStructure, List<String> simplifiableLine, Animal animal) {
         for (int k = 0; k < myNumOfArgsNeeded; k++) {
             String kthArgument = myUserInput.get(myStartingIndex + 1 + k);
             String kthArgumentSymbol = myParser.getSymbol(kthArgument);
             if (kthArgumentSymbol.equals("Variable") || kthArgumentSymbol.equals("Constant")) {
                 if (myOperationArguments[k] == null) myNumOfArgsFilled++;
                 myOperationArguments[k] = kthArgument;
+            }
+            else if(kthArgument.equals("(")){
+                controlStructure.parseParenthesis(myStartingIndex+1+k, simplifiableLine, animal);
             }
             else {
                 Operation defaultOperation = myParser.getOperation(kthArgumentSymbol);
@@ -51,6 +55,7 @@ public class OperationBuilder {
 
     //retain the most simplified version of the operation, which will exist when there is only one operationBuilder left in the stack. Then advance the current index to the end of the command
     //if the stack is bigger than 1, it can still be simplified further, so simplify the currentLine by removing the current expression from the list and replacing it with a simplified value.
+
     public Operation createOperation() {
         double[] args=new double[myNumOfArgsNeeded];
         for(int k=0; k<myNumOfArgsNeeded; k++){
@@ -65,15 +70,6 @@ public class OperationBuilder {
         }
         return myOperation;
     }
-
-    /*
-        if(builderStack.size()==1) currentIndex+=myNumOfArgsFilled;
-        else{
-            for (int k = 1; k < myOperation.getNumArgs(); k++) {
-                myUserInput.remove(currentIndex);
-            }
-        }
-        */
 
     public int getMyNumOfArgsFilled() {
         return myNumOfArgsFilled;

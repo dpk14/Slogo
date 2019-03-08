@@ -1,7 +1,5 @@
 package mainpackage;
 
-import java.util.List;
-
 /**
  * @author Irene Qiao isq
  */
@@ -27,6 +25,10 @@ abstract public class Operation {
     }
 
     abstract public Operation copy();
+
+    public double getReturnValue(){
+        return ret;
+    }
 
 }
 

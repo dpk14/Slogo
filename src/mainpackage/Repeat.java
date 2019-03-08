@@ -1,7 +1,6 @@
 package mainpackage;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Repeat extends ControlStructure {
     double myTimesToRepeat;

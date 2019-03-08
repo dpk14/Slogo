@@ -1,11 +1,10 @@
 package mainpackage;
 
 
-import java.util.AbstractMap.SimpleEntry;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
 
-public class Tell extends ControlStructure{
+public class Tell extends ControlStructure {
     double myReturnVal;
 
     public Tell(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
@@ -24,7 +23,7 @@ public class Tell extends ControlStructure{
         simplifyAndEvaluate(mySimplifiableLine, myIndexOfFirstList, myAnimal);
             int end = findIndexOfEndBracket(myIndexOfFirstList, mySimplifiableLine);
             System.out.printf("%d %d", myIndexOfFirstList, end);
-            ArrayList<String> activeAnimals=new ArrayList<>();
+            List<String> activeAnimals=new ArrayList<>();
             String animalID = "";
             for (int k = myIndexOfFirstList + 1; k < end; k++) {
                 System.out.println("marker");
