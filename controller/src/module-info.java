@@ -1,5 +1,5 @@
 module controller {
-    requires javafx.base;
+    //requires javafx.base;
 
 
     exports control;

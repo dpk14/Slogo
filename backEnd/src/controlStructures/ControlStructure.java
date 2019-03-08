@@ -1,8 +1,8 @@
 package controlStructures;
 
-import mainpackage.Animal;
-import mainpackage.ProgramParser;
-import mainpackage.SystemStorage;
+import control.Animal;
+import control.ProgramParser;
+import control.SystemStorage;
 import operations.Command;
 import operations.Operation;
 

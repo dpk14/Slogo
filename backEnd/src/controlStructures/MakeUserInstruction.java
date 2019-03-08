@@ -1,4 +1,4 @@
-package mainpackage;
+package controlStructures;
 
 import java.util.ArrayList;
 
