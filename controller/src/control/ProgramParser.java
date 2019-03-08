@@ -3,6 +3,7 @@ package control;
 import controlStructures.*;
 import operations.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;
@@ -59,54 +60,6 @@ public class ProgramParser {
         myControlMap.put("AskWith ", new AskWith(0, 2, this, myStorage));
     }
 
-    public void makeOperationsMap() {
-        myOperationsMap.put("Forward", new MovementCommand("forward", 1, myStorage));
-        myOperationsMap.put("Backward", new MovementCommand("backward", 1, myStorage));
-        myOperationsMap.put("Left", new RotateCommand("left", 1, myStorage));
-        myOperationsMap.put("Right", new RotateCommand("right", 1, myStorage));
-        myOperationsMap.put("SetHeading", new SetAbsoluteCommand("heading", 1, myStorage));
-        myOperationsMap.put("SetTowards", new SetAbsoluteCommand("towards", 2, myStorage));
-        myOperationsMap.put("SetPosition", new SetAbsoluteCommand("position", 2, myStorage));
-        myOperationsMap.put("PenDown", new SetPen("down", 0, myStorage));
-        myOperationsMap.put("PenUp", new SetPen("up", 0, myStorage));
-        myOperationsMap.put("ShowTurtle", new VisibilityCommand("show", 0, myStorage));
-        myOperationsMap.put("HideTurtle", new VisibilityCommand("hide", 0, myStorage));
-        myOperationsMap.put("Home", new HomeCommand("home", 0, myStorage));
-        myOperationsMap.put("ClearScreen", new HomeCommand("clear", 0, myStorage));
-
-        myOperationsMap.put("XCoordinate", new TurtleQuery("xcor", 0, myStorage, null));
-        myOperationsMap.put("YCoordinate", new TurtleQuery("ycor", 0, myStorage, null));
-        myOperationsMap.put("Heading", new TurtleQuery("heading", 0, myStorage, null));
-        myOperationsMap.put("IsPenDown", new TurtleQuery("pen", 0, myStorage, null));
-        myOperationsMap.put("IsShowing", new TurtleQuery("showing", 0, myStorage, null));
-
-        myOperationsMap.put("Sum", new BasicMathOperation("sum", 2, myStorage));
-        myOperationsMap.put("Difference", new BasicMathOperation("difference", 2, myStorage));
-        myOperationsMap.put("Product", new BasicMathOperation("product", 2, myStorage));
-        myOperationsMap.put("Quotient", new BasicMathOperation("quotient", 2, myStorage));
-        myOperationsMap.put("Remainder", new BasicMathOperation("remainder", 2, myStorage));
-        myOperationsMap.put("Minus", new BasicMathOperation("minus", 1, myStorage));
-        myOperationsMap.put("Random", new RandomGenerator("random", 1, myStorage));
-        myOperationsMap.put("Sine", new TrigonometricOperation("sin", 1, myStorage));
-        myOperationsMap.put("Cosine", new TrigonometricOperation("cos", 1, myStorage));
-        myOperationsMap.put("Tangent", new TrigonometricOperation("tan", 1, myStorage));
-        myOperationsMap.put("ArcTangent", new TrigonometricOperation("atan", 1, myStorage));
-        myOperationsMap.put("NaturalLog", new ExponentialOperation("log", 1, myStorage));
-        myOperationsMap.put("Power", new ExponentialOperation("pow", 2, myStorage));
-        myOperationsMap.put("Pi", new TrigonometricOperation("pi", 0, myStorage));
-
-        myOperationsMap.put("LessThan", new BooleanExpression("less", 2, myStorage));
-        myOperationsMap.put("GreaterThan", new BooleanExpression("greater", 2, myStorage));
-        myOperationsMap.put("Equal", new BooleanExpression("equal", 2, myStorage));
-        myOperationsMap.put("NotEqual", new BooleanExpression("notequal", 2, myStorage));
-        myOperationsMap.put("And", new BooleanOperator("and", 2, myStorage));
-        myOperationsMap.put("Or", new BooleanOperator("or", 2, myStorage));
-        myOperationsMap.put("Not", new BooleanOperator("not", 1, myStorage));
-
-        myOperationsMap.put("ID", new NumTurtles("id", 0, myStorage));
-        myOperationsMap.put("Turtles", new NumTurtles("turtles", 0, myStorage));
-    }
-
     /**
      * Returns language's type associated with the given text if one exists 
      */
@@ -131,18 +84,37 @@ public class ProgramParser {
     }
 
     public Operation getOperation(String operationType){
-        if (!myOperationsMap.containsKey(operationType)) {
+        var resource = ResourceBundle.getBundle("Operations");
+        if (resource.containsKey(operationType)){
+            String className = resource.getString(operationType);
+            try {
+                Operation operation = (Operation) Class.forName(className).getConstructor().newInstance();
+                return operation;
+            }
+            catch (ClassNotFoundException e){
+                System.out.println("Operation not found");
+            }
+            catch (NoSuchMethodException e){
+                System.out.println("Operation constructor not found");
+            }
+            catch (InstantiationException e){
+                System.out.println("Operation instantiation exception");
+            }
+            catch (IllegalAccessException e){
+                System.out.println("Illegal access exception");
+            }
+            catch (InvocationTargetException e){
+                System.out.println("Invocation target exception");
+            }
+        }
+        else {
             //throw new Error("Illegal Operation");
         }
-        return (myOperationsMap.get(operationType));
+        return null;
     }
 
     public boolean isControl(String candidate){
         return myControlMap.containsKey(candidate);
-    }
-
-    public boolean isOperation(String candidate){
-        return myOperationsMap.containsKey(candidate);
     }
 
     private boolean match (String text, Pattern regex) {
