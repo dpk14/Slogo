@@ -9,9 +9,11 @@ abstract public class Operation {
     private int myNumArgs;
     private double[] myArgs;
     private double ret;
+    protected String myType;
 
-    public Operation(int numArgs) {
+    public Operation(String type, int numArgs) {
         myNumArgs = numArgs;
+        myType = type;
     }
 
     abstract public double evaluate();

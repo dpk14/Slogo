@@ -7,26 +7,26 @@ public class BooleanOperator extends Operation {
 
     @Override
     public double evaluate() {
+        setReturnValue(0);
         boolean booleanRet = false;
-        ret = 0;
         if (myType.equals("and")){
-            booleanRet = (myArgs[0] != 0) && (myArgs[1] != 0);
+            booleanRet = (getArgIndex(0) != 0) && (getArgIndex(1) != 0);
         }
         else if (myType.equals("or")){
-            booleanRet = (myArgs[0] != 0) || (myArgs[1] != 0);
+            booleanRet = (getArgIndex(0) != 0) || (getArgIndex(1) != 0);
         }
         else if (myType.equals("not")){
-            booleanRet = myArgs[0] == 0;
+            booleanRet = getArgIndex(0) == 0;
         }
         if (booleanRet == true){
-            ret = 1;
+            setReturnValue(1);
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new BooleanOperator(myType, myNumArgs);
+        Operation copy = new BooleanOperator(myType, getNumArgs());
         return copy;
     }
 }

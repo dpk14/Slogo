@@ -3,22 +3,21 @@ package operations;
 import mainpackage.SystemStorage;
 
 public class RandomGenerator extends Operation {
-    public RandomGenerator (String myType, int numArgs, SystemStorage storage){
-        super(myType, numArgs, storage);
+    public RandomGenerator (String myType, int numArgs){
+        super(myType, numArgs);
     }
 
     @Override
     public double evaluate() {
-        ret = -1;
         if (myType.equals("random")){
-            ret = Math.random() * myArgs[0];
+            setReturnValue(Math.random() * getArgIndex(0));
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new RandomGenerator(myType, myNumArgs, mySystemStorage);
+        Operation copy = new RandomGenerator(myType, getNumArgs());
         return copy;
     }
 }

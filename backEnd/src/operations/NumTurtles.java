@@ -8,15 +8,14 @@ public class NumTurtles extends Operation {
 
     @Override
     public double evaluate() {
-        ret = -1;
         if (myType.equals("turtles")){
-            ret = mySystemStorage.numTurtlesCreated();
+            //setReturnValue(mySystemStorage.numTurtlesCreated()); TODO: create SystemStorage operation superclass
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        return new NumTurtles(myType, myNumArgs);
+        return new NumTurtles(myType, getNumArgs());
     }
 }

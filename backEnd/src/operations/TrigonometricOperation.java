@@ -7,28 +7,27 @@ public class TrigonometricOperation extends Operation {
 
     @Override
     public double evaluate() {
-        ret = -1;
         if (myType.equals("sin")){
-            ret = Math.sin(myArgs[0]);
+            setReturnValue(Math.sin(getArgIndex(0)));
         }
         else if (myType.equals("cos")){
-            ret = Math.cos(myArgs[0]);
+            setReturnValue(Math.cos(getArgIndex(0)));
         }
         else if (myType.equals("tan")){
-            ret = Math.tan(myArgs[0]);
+            setReturnValue(Math.tan(getArgIndex(0)));
         }
         else if (myType.equals("atan")){
-            ret = Math.atan(myArgs[0]);
+            setReturnValue(Math.atan(getArgIndex(0)));
         }
         else if (myType.equals("pi")){
-            ret = Math.PI;
+            setReturnValue(Math.PI);
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new TrigonometricOperation(myType, myNumArgs);
+        Operation copy = new TrigonometricOperation(myType, getNumArgs());
         return copy;
     }
 }

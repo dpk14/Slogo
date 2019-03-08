@@ -9,25 +9,25 @@ public class RotateCommand extends TurtleOperation implements Command{
 
     @Override
     public void execute() {
-        double angle = ret;
+        double angle = getArgIndex(0);
         if (myType.equals("right")){
-            myTurtle.adjustHeading(angle);
+            getTurtle().adjustHeading(angle);
         }
         else if (myType.equals("left")){
-            myTurtle.adjustHeading(angle * RIGHT_HEADING_MULTIPLIER);
+            getTurtle().adjustHeading(angle * RIGHT_HEADING_MULTIPLIER);
         }
     }
 
     @Override
     public double evaluate(){
-        ret = myArgs[0];
-        return ret;
+        getArgIndex(0);
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new RotateCommand(myType, myNumArgs);
-        ((RotateCommand) copy).setAnimal(myTurtle);
+        Operation copy = new RotateCommand(myType, getNumArgs());
+        ((RotateCommand) copy).setAnimal(getTurtle());
         return copy;
     }
 }

@@ -7,19 +7,18 @@ public class ExponentialOperation extends Operation {
 
     @Override
     public double evaluate() {
-        ret = -1;
         if (myType.equals("pow")){
-            ret = Math.pow(myArgs[0], myArgs[1]);
+            setReturnValue(Math.pow(getArgIndex(0), getArgIndex(1)));
         }
         else if (myType.equals("log")){
-            ret = Math.log(myArgs[0]);
+            setReturnValue(Math.log(getArgIndex(0)));
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new ExponentialOperation(myType, myNumArgs);
+        Operation copy = new ExponentialOperation(myType, getNumArgs());
         return copy;
     }
 }
