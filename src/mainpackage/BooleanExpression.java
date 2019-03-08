@@ -1,14 +1,14 @@
 package mainpackage;
 
 public class BooleanExpression extends Operation{
-    public BooleanExpression(int numArgs){
-        super(numArgs);
+    public BooleanExpression(String type, int numArgs){
+        super(type, numArgs);
     }
 
     @Override
     public double evaluate() {
         boolean booleanRet = false;
-        ret = 0;
+        setReturnValue(0);
         if (myType.equals("less")){
             booleanRet = getArgIndex(0) < getArgIndex(1);
         }
@@ -24,12 +24,12 @@ public class BooleanExpression extends Operation{
         if (booleanRet == true){
             setReturnValue(1);
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new BooleanExpression(myNumArgs);
+        Operation copy = new BooleanExpression(myType, getNumArgs());
         return copy;
     }
 }

@@ -9,28 +9,27 @@ public class SetPen extends TurtleOperation implements Command {
     @Override
     public void execute() {
         if (myType.equals("up")){
-            myTurtle.penUp();
+            getTurtle().penUp();
         }
         else if (myType.equals("down")){
-            myTurtle.penDown();
+            getTurtle().penDown();
         }
     }
 
     @Override
     public double evaluate(){
-        ret = -1;
         if (myType.equals("up")){
-            ret = 0;
+            setReturnValue(0);
         }
         else if (myType.equals("down")){
-            ret = 1;
+            setReturnValue(1);
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new SetPen(myType, myNumArgs);
+        Operation copy = new SetPen(myType, getNumArgs());
         return copy;
     }
 }

@@ -3,13 +3,13 @@ package mainpackage;
 public class  MovementCommand extends TurtleOperation implements Command {
     private final int BACKWARD_MULTIPLIER = -1;
 
-    public MovementCommand(int numArgs){
-        super(numArgs);
+    public MovementCommand(String type, int numArgs){
+        super(type, numArgs);
     }
 
     @Override
     public void execute() {
-        double stepSize = ret;
+        double stepSize = getArgIndex(0);
         if (myType.equals("forward")){
             getTurtle().changePosition(stepSize);
         }
@@ -26,7 +26,7 @@ public class  MovementCommand extends TurtleOperation implements Command {
 
     @Override
     public Operation copy() {
-        Operation copy = new MovementCommand(getNumArgs());
+        Operation copy = new MovementCommand(myType, getNumArgs());
         ((MovementCommand) copy).setAnimal(getTurtle());
         return copy;
     }

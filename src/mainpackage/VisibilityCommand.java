@@ -9,29 +9,28 @@ public class VisibilityCommand extends TurtleOperation implements Command{
     @Override
     public void execute() {
         if (myType.equals("show")){
-            myTurtle.setVisibility(true);
+            getTurtle().setVisibility(true);
         }
         else if (myType.equals("hide")){
-            myTurtle.setVisibility(false);
+            getTurtle().setVisibility(false);
         }
     }
 
     @Override
     public double evaluate(){
-        ret = -1;
         if (myType.equals("show")){
-            ret = 1;
+            setReturnValue(1);
         }
         else if (myType.equals("hide")){
-            ret = 0;
+            setReturnValue(0);
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new VisibilityCommand(myType, myNumArgs);
-        ((VisibilityCommand) copy).setAnimal(myTurtle);
+        Operation copy = new VisibilityCommand(myType, getNumArgs());
+        ((VisibilityCommand) copy).setAnimal(getTurtle());
         return copy;
     }
 }

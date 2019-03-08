@@ -11,27 +11,26 @@ public class HomeCommand extends TurtleOperation implements Command {
     @Override
     public void execute() {
         if (myType.equals("home")){
-            ret = myTurtle.setPosition(HOME_X, HOME_Y);
+            setReturnValue(getTurtle().setPosition(HOME_X, HOME_Y));
         }
         else if (myType.equals("clear")){
-            ret = myTurtle.setPosition(HOME_X, HOME_Y);
-            myTurtle.clearTrails();
+            setReturnValue(getTurtle().setPosition(HOME_X, HOME_Y));
+            getTurtle().clearTrails();
         }
     }
 
     @Override
     public double evaluate(){
-        ret = -1;
-        double current_x = myTurtle.getCoordinates()[0];
-        double current_y = myTurtle.getCoordinates()[1];
-        ret = calcDistance(current_x, HOME_X, current_y, HOME_Y);
-        return ret;
+        double current_x = getTurtle().getCoordinates()[0];
+        double current_y = getTurtle().getCoordinates()[1];
+        setReturnValue(calcDistance(current_x, HOME_X, current_y, HOME_Y));
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new HomeCommand(myType, myNumArgs);
-        ((HomeCommand) copy).setAnimal(myTurtle);
+        Operation copy = new HomeCommand(myType, getNumArgs());
+        ((HomeCommand) copy).setAnimal(getTurtle());
         return copy;
     }
 }

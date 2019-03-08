@@ -6,8 +6,8 @@ package mainpackage;
 abstract public class TurtleOperation extends Operation {
     private Animal myTurtle;
 
-    public TurtleOperation(int numArgs){
-        super(numArgs);
+    public TurtleOperation(String type, int numArgs){
+        super(type, numArgs);
     }
 
     public void setAnimal(Animal turtle){

@@ -12,8 +12,8 @@ public class ID extends TurtleOperation {
 
     @Override
     public Operation copy() {
-        Operation copy = new ID(myType, myNumArgs);
-        ((ID) copy).setAnimal(myTurtle);
+        Operation copy = new ID(myType, getNumArgs());
+        ((ID) copy).setAnimal(getTurtle());
         return copy;
     }
 }

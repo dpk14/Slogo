@@ -8,34 +8,33 @@ public class TurtleQuery extends TurtleOperation {
 
     @Override
     public double evaluate(){
-        ret = -1;
         if (myType.equals("xcor")){
-            ret = myTurtle.getCoordinates()[0];
+            setReturnValue(getTurtle().getCoordinates()[0]);
         }
         else if (myType.equals("ycor")){
-            ret = myTurtle.getCoordinates()[1];
+            setReturnValue(getTurtle().getCoordinates()[1]);
         }
         else if (myType.equals("heading")){
-            ret = myTurtle.getHeading();
+            setReturnValue(getTurtle().getHeading());
         }
         else if (myType.equals("pen")){
-            if (myTurtle.getPenStatus()){
-                ret = 0;
+            if (getTurtle().getPenStatus()){
+                setReturnValue(0);
             }
             else {
-                ret = 1;
+                setReturnValue(1);
             }
         }
         else if (myType.equals("showing")){
-            myTurtle.setVisibility(true);
+            getTurtle().setVisibility(true);
         }
-        return ret;
+        return getReturnValue();
     }
 
     @Override
     public Operation copy() {
-        Operation copy = new TurtleQuery(myType, myNumArgs);
-        ((TurtleQuery) copy).setAnimal(myTurtle);
+        Operation copy = new TurtleQuery(myType, getNumArgs());
+        ((TurtleQuery) copy).setAnimal(getTurtle());
         return copy;
     }
 }
