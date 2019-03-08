@@ -3,8 +3,6 @@ package controlStructures;
 import mainpackage.ProgramParser;
 import mainpackage.SystemStorage;
 
-import java.util.ArrayList;
-
 public class NoControlStructure extends ControlStructure {
 
         public NoControlStructure(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){
@@ -28,7 +26,7 @@ public class NoControlStructure extends ControlStructure {
         }
 
         @Override
-        protected ArrayList<String> replaceCodeWithReturnValue(double returnValue, ArrayList<String> mySimplifiableLine){
+        protected List<String> replaceCodeWithReturnValue(double returnValue, List<String> mySimplifiableLine){
             return mySimplifiableLine;
         }
     }

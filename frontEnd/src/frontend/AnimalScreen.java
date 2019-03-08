@@ -1,6 +1,8 @@
 package mainpackage;
 
 import javafx.scene.layout.Pane;
+import mainpackage.Animal;
+import mainpackage.SystemStorage;
 
 import java.util.ArrayList;
 
