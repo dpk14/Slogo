@@ -1,6 +1,4 @@
 module controller {
-    //requires javafx.base;
-
-
+    requires backEnd;
     exports control;
 }
