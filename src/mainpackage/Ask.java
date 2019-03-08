@@ -31,10 +31,18 @@ public class Ask extends ControlStructure{
             Animal animal=myStorage.getAnimal(animalID);
             activeAnimals.add(new SimpleEntry<>(animalID, animal));
         }
+        System.out.printf("active A size %d", activeAnimals.size());
+
         myIndexOfSecondList=end+1;
 
+        int counter=0;
         for(Entry entry: activeAnimals) {
             simplifyAndEvaluate(mySimplifiableLine, myIndexOfSecondList, (Animal) entry.getValue());
+            if (counter!=activeAnimals.size()-1) {
+                resetSimplification(mySavedLine);
+                mySavedLine = new ArrayList<>(mySavedLine);
+            }
+            counter++;
         }
 
         declareUnrepeatable();

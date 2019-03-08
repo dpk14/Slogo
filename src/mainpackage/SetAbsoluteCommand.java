@@ -1,9 +1,8 @@
 package mainpackage;
 
-public class SetAbsoluteCommand extends TurtleOperation implements Command {
-    public SetAbsoluteCommand (String movementType, int numArgs){
-        super(movementType, numArgs);
-        evaluate();
+public class SetAbsoluteCommand extends TurtleCommand {
+    public SetAbsoluteCommand (String movementType, int numArgs, SystemStorage storage){
+        super(movementType, numArgs, storage);
     }
 
     @Override

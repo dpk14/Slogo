@@ -3,6 +3,10 @@ package mainpackage;
 import javafx.scene.layout.Pane;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.AbstractMap.SimpleEntry;
 
 public class AnimalScreen {
 
@@ -16,10 +20,10 @@ public class AnimalScreen {
         String style = String.format("-fx-background-color: %s;", STARTING_COLOR);
         canvas.setStyle(style);
         mySystemStorage.setScreenParameters(canvas, height, width);
-        mySystemStorage.getAnimal("0");
-        ArrayList<String> zeroth = new ArrayList<>();
-        zeroth.add("0");
-        mySystemStorage.setActiveAnimals(zeroth);
+        Animal zeroth=mySystemStorage.getAnimal("0");
+        List<Entry<String, Animal>> activeAnimals = new ArrayList<>();
+        activeAnimals.add(new SimpleEntry<>("0", zeroth));
+        mySystemStorage.setActiveAnimals(activeAnimals);
 
     }
 
