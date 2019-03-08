@@ -1,8 +1,5 @@
 package controlStructures;
 
-import mainpackage.ProgramParser;
-import mainpackage.SystemStorage;
-
 public class IfElse extends ControlStructure {
     private int myIndexOfSecondList;
 

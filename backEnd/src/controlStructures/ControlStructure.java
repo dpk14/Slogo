@@ -14,8 +14,8 @@ public abstract class ControlStructure {
     ProgramParser myParser;
     SystemStorage myStorage;
     int myStartingIndex;
-    ArrayList<String> mySimplifiableLine;
-    ArrayList<String> mySavedLine;
+    List<String> mySimplifiableLine;
+    List<String> mySavedLine;
     ControlStructure myOuterStructure;
     Animal myAnimal;
     int myNumOfExpressionArguments;
@@ -42,7 +42,7 @@ public abstract class ControlStructure {
     a saved, past version of themselves to be modified again by the outer structures. See resetSimplification for an example.
      */
 
-    public void initializeStructure(int startingIndex, ArrayList<String> currentLineSection, ControlStructure OuterStructure, Animal animal, String stage){
+    public void initializeStructure(int startingIndex, List<String> currentLineSection, ControlStructure OuterStructure, Animal animal, String stage){
         myStartingIndex=startingIndex;
         mySimplifiableLine=currentLineSection;
         mySavedLine=new ArrayList<>(currentLineSection);
@@ -53,7 +53,7 @@ public abstract class ControlStructure {
         System.out.println("yeet");
     }
 
-    protected void resetSimplification(ArrayList<String> savedLine){
+    protected void resetSimplification(List<String> savedLine){
         mySimplifiableLine=savedLine;
         if(myOuterStructure==null) return;
         myOuterStructure.resetSimplification(savedLine);
@@ -77,7 +77,7 @@ public abstract class ControlStructure {
 
     //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
 
-    protected ArrayList<String> simplifyAndEvaluate(ArrayList<String> simplifiableLine, int startingIndex, Animal activeAnimal) {
+    protected List<String> simplifyAndEvaluate(List<String> simplifiableLine, int startingIndex, Animal activeAnimal) {
         printTest(startingIndex, simplifiableLine);
 
         String firstEntry = simplifiableLine.get(startingIndex);
@@ -85,13 +85,16 @@ public abstract class ControlStructure {
         if (firstEntry.equals("[")) {
             parseList(startingIndex, simplifiableLine, activeAnimal);
         }
+        else if (firstEntry.equals("(")){
+            parseParinthetical(startingIndex, simplifiableLine, activeAnimal);
+        }
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
             parseOperation(firstEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
         }
         return simplifiableLine;
     }
 
-    protected List<String> parseList(int startingIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
+    protected List<String> parseList(int startingIndex, List<String> simplifiableLine, Animal activeAnimal) {
         startingIndex++;
         String currentEntry;
         int openBracketCount = 1;
@@ -112,13 +115,33 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected List<String> parseNestedControl(String controlType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
+    protected List<String> parseParenthesis(int startingIndex, List<String> simplifiableLine, Animal activeAnimal) {
+        simplifiableLine.remove(startingIndex); //removes first parentheses
+        String operationName = simplifiableLine.get(startingIndex);
+        String operationSymbol = myParser.getSymbol(operationName);
+        if (myParser.isOperation(operationSymbol)) {
+            Operation parsedOperation;
+            while (true) {
+                parsedOperation = parseOperation(operationSymbol, startingIndex, simplifiableLine, activeAnimal);
+                if (!argumentsStillLeft(startingIndex, simplifiableLine, parsedOperation)) break;
+                if (!parsedOperation.hasUnlimitedArgs()) { // if operation takes unlimited arguments, don't remove the return value; incorporate it into the next operation
+                    simplifiableLine.remove(startingIndex); //removes return value
+                }
+                simplifiableLine.add(startingIndex, operationSymbol); // replaces return value with operation name so that it can be performed on next set of arguments
+            }
+        }
+        else ; //error
+        simplifiableLine.remove(startingIndex+1); //removes outer parentheses
+        return simplifiableLine;
+        }
+
+    protected ControlStructure parseNestedControl(String controlType, int currentIndex, List<String> simplifiableLine, Animal activeAnimal) {
         ControlStructure defaultStructure = myParser.getControlStructure(controlType);
         ControlStructure nestedControlStructure=defaultStructure.copy();
         nestedControlStructure.initializeStructure(currentIndex, simplifiableLine, this, activeAnimal, myStage);
         double returnValue=nestedControlStructure.executeCode();
         nestedControlStructure.replaceCodeWithReturnValue(returnValue, simplifiableLine);
-        return simplifiableLine;
+        return nestedControlStructure;
     }
 
 
@@ -132,8 +155,9 @@ public abstract class ControlStructure {
     The operation is then removed from the line and replaced with its returnValue
     */
 
-    protected List<String> parseOperation(String operationType, int currentIndex, ArrayList<String> simplifiableLine, Animal activeAnimal) {
+    protected Operation parseOperation(String operationType, int currentIndex, List<String> simplifiableLine, Animal activeAnimal) {
         Operation defaultOperation = myParser.getOperation(operationType); //will automatically throw error if doesn't work
+        Operation parsedOperation=defaultOperation;
         Stack<OperationBuilder> builderStack = new Stack<>();
         OperationBuilder builder = new OperationBuilder(defaultOperation, simplifiableLine, currentIndex, myParser, builderStack);
         builderStack.push(builder);
@@ -141,23 +165,23 @@ public abstract class ControlStructure {
             builder = builderStack.peek();
             currentIndex = builder.getStartingIndex();
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
-                Operation parsedOperation=builder.createOperation();
+                parsedOperation=builder.createOperation();
                 double returnVal=evaluateOrExecute(parsedOperation, activeAnimal);
                 replaceOperationWithReturnValue(parsedOperation, currentIndex, returnVal, simplifiableLine);
                 builderStack.pop();
-            } else builder.continueBuildingOperation();
+            } else builder.continueBuildingOperation(this, simplifiableLine, activeAnimal);
         }
-        return simplifiableLine;
+        return parsedOperation;
     }
 
     public double evaluateOrExecute(Operation parsedOperation, Animal activeAnimal) {
         double returnVal = parsedOperation.evaluate();
-        if (parsedOperation instanceof TurtleCommand && myStage.equals("execute")) {
-            ((TurtleCommand) parsedOperation).setAnimal(activeAnimal);
-            parsedOperation.storeCommand();
+        if (parsedOperation instanceof TurtleOperation && myStage.equals("execute")) {
+            ((TurtleOperation) parsedOperation).setAnimal(activeAnimal);
         }
         if (parsedOperation instanceof Command && myStage.equals("execute")) {
             ((Command) parsedOperation).execute();
+            myStorage.addToHistory((Command) parsedOperation);
         }
         return returnVal;
     }
@@ -220,20 +244,21 @@ public abstract class ControlStructure {
     */
 
     public double executeCode(){
-        List<TurtleCommand> previousCommandLog=myStorage.getMyCommandLog();
+        List<Command> previousCommandLog=myStorage.getMyCommandLog();
         int previousSize=previousCommandLog.size();
         simplifyAndExecuteStructure();
-        List<TurtleCommand> currentCommandLog=myStorage.getMyCommandLog();
+        List<Command> currentCommandLog=myStorage.getMyCommandLog();
         int currentSize=currentCommandLog.size();
         if(previousSize!=currentSize){
-            return currentCommandLog.get(currentCommandLog.size()-1).getReturnValue();
+            Operation mostRecentCommand=(Operation) currentCommandLog.get(currentCommandLog.size()-1);
+            return mostRecentCommand.getReturnValue();
         }
         return 0;
     }
 
     protected void simplifyAndExecuteStructure(){}
 
-    public void printTest(int index, ArrayList<String> line){
+    public void printTest(int index, List<String> line){
         if (myStage.equals("execute")) {
             for (String s : line) {
                 System.out.printf("%s ", s);
@@ -242,7 +267,15 @@ public abstract class ControlStructure {
         }
         }
 
-    public ArrayList<String> getMySimplifiableLine(){
+    protected boolean argumentsStillLeft(int currentIndex, List<String> simplifiableLine, Operation operation){
+        int argsNeeded=operation.getNumArgs();
+        for(int k=0; k<argsNeeded; k++){
+           if(simplifiableLine.get(currentIndex+k).equals(")")) return false;
+        }
+        return true;
+    }
+
+    public List<String> getMySimplifiableLine(){
         return mySimplifiableLine;
     }
 

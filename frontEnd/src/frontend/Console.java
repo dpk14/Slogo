@@ -4,7 +4,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import mainpackage.SystemStorage;
 
 public class Console {
     private TextArea userInput;

@@ -1,8 +1,5 @@
 package controlStructures;
 
-import mainpackage.ProgramParser;
-import mainpackage.SystemStorage;
-
 public class If extends ControlStructure {
 
     public If(int numOfExpressionArguments, int numOfListArguments, ProgramParser parser, SystemStorage storage){

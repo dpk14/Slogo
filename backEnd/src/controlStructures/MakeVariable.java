@@ -1,8 +1,11 @@
 package controlStructures;
 
+<<<<<<< HEAD:backEnd/src/controlStructures/MakeVariable.java
 import mainpackage.ProgramParser;
 import mainpackage.SystemStorage;
 
+=======
+>>>>>>> daniel:src/mainpackage/MakeVariable.java
 public class MakeVariable extends ControlStructure {
     private double myVariableValue;
     private String myVariableName;
