@@ -3,11 +3,13 @@ package interpreters;
 import general.DisplayModel;
 import general.ErrorMessage;
 import general.SystemStorage;
+import visualization.ScreenOptions;
 
 public class DisplayInterpreter {
     private SystemStorage myStorage;
     private DisplayModel currentDisplay;
-    private DisplayModel updatedDisplay;
+    private ScreenOptions currentScreen;
+    private ScreenOptions updatedScreen;
 
     public DisplayInterpreter(SystemStorage storage){
         myStorage = storage;
@@ -15,4 +17,11 @@ public class DisplayInterpreter {
         currentDisplay = myStorage.getDisplay();
     }
 
+    public void updateDisplay(){
+
+    }
+
+    private ScreenOptions updateScreen(){
+
+    }
 }
