@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 abstract public class Operation {
     private int myNumArgs;
     private double[] myArgs;
-    private double ret;
+    private boolean hasUnlimitedArgs;
 
     public Operation() {
     }
@@ -27,31 +27,17 @@ abstract public class Operation {
         myArgs = args;
     }
 
-    public Operation copy(){
-        try{
-            Constructor constructor = this.getClass().getConstructor();
-            Operation copy = (Operation) constructor.newInstance();
-            return copy;
-        }
-        catch (NoSuchMethodException nsm){
-            System.out.println("no such method");
-        }
-        catch (InstantiationException ie){
+    public boolean hasUnlimitedArgs(){
+        return hasUnlimitedArgs;
+    }
 
-        }
-        catch (IllegalAccessException iae){
-
-        }
-        catch (InvocationTargetException ite){
-
-        }
-        return null;
+    protected void setUnlimitedArgs(boolean isUnlimited){
+        hasUnlimitedArgs = isUnlimited;
     }
 
     protected double getArgIndex(int index){
         return myArgs[index];
     }
 
-    public double getReturnValue(){return ret;}
 }
 

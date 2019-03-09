@@ -1,6 +1,9 @@
-package operations;
+package operations.display_operations;
 
-public class SetBackgroundCommand extends DisplayOperation implements Command {
+import operations.Command;
+import operations.SystemStorageOperation;
+
+public class SetBackgroundCommand extends SystemStorageOperation implements Command {
     private final int SET_BACKGROUND_NUM_ARGS = 1;
 
     public SetBackgroundCommand(){
@@ -15,6 +18,6 @@ public class SetBackgroundCommand extends DisplayOperation implements Command {
 
     @Override
     public void execute(){
-        getMyDisplay().setBackgroundColor((int) getArgIndex(0));
+        getSystemStorage().getDisplay().setBackgroundColor((int) getArgIndex(0));
     }
 }
