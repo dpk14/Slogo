@@ -1,10 +1,13 @@
 package controlStructures;
 
-import control.Animal;
-import control.ProgramParser;
-import control.SystemStorage;
+import builders.OperationBuilder;
+import general.Animal;
+import general.ProgramParser;
+import general.SystemStorage;
+
 import operations.Command;
 import operations.Operation;
+import operations.TurtleOperation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +41,7 @@ public abstract class ControlStructure {
     /*
     This secondary constructor tells the specific ControlStructure-- which has been copied from its default case -- the specific
     location on the UserInput line it begins, what animal it is operating on, and a pointer to the ControlStructure it is nested inside.
-    This pointer allows nested structures to give a simplified version of themselves back to all of their outer control structures, as well as restore
+    This pointer allows nested structures to give a simplified version of themselves back to all of their outer general structures, as well as restore
     a saved, past version of themselves to be modified again by the outer structures. See resetSimplification for an example.
      */
 
@@ -60,7 +63,7 @@ public abstract class ControlStructure {
     }
 
     /*
-     The method evaluateInput in Main repeats the current control structure over and over again for all turtles the "Tell" command declared active.
+     The method evaluateInput in mainpackage.Main repeats the current general structure over and over again for all turtles the "Tell" command declared active.
      "Tell," which modifies the amount of turtles active, should not be repeated for all turtles, because it is declaring a new
      set of active turtles to be repeated. Ask and AskWith should also not be repeated for the main active turtles, because
      they are operating on a different set of turtles. Because these structures are not repeatable, they call the below method
@@ -75,7 +78,7 @@ public abstract class ControlStructure {
         myOuterStructure.declareUnrepeatable();
     }
 
-    //gives the textBlock in which to apply the control structure, as well as the index and line of the control structure key
+    //gives the textBlock in which to apply the general structure, as well as the index and line of the general structure key
 
     protected List<String> simplifyAndEvaluate(List<String> simplifiableLine, int startingIndex, Animal activeAnimal) {
         printTest(startingIndex, simplifiableLine);
@@ -86,7 +89,7 @@ public abstract class ControlStructure {
             parseList(startingIndex, simplifiableLine, activeAnimal);
         }
         else if (firstEntry.equals("(")){
-            parseParinthetical(startingIndex, simplifiableLine, activeAnimal);
+            parseParenthesis(startingIndex, simplifiableLine, activeAnimal);
         }
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
             parseOperation(firstEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
@@ -103,9 +106,10 @@ public abstract class ControlStructure {
             currentEntry = simplifiableLine.get(startingIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
             if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
-            else if (myParser.isOperation(currentEntrySymbol)) {
+            else {
+                myParser.getOperation(currentEntrySymbol);
                 parseOperation(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
-            } else ; //error
+            }
             startingIndex++;
             String updatedEntry = simplifiableLine.get(startingIndex);
             if (updatedEntry.equals("[")) openBracketCount++;
@@ -115,11 +119,11 @@ public abstract class ControlStructure {
         return simplifiableLine;
     }
 
-    protected List<String> parseParenthesis(int startingIndex, List<String> simplifiableLine, Animal activeAnimal) {
+    public List<String> parseParenthesis(int startingIndex, List<String> simplifiableLine, Animal activeAnimal) {
         simplifiableLine.remove(startingIndex); //removes first parentheses
         String operationName = simplifiableLine.get(startingIndex);
         String operationSymbol = myParser.getSymbol(operationName);
-        if (myParser.isOperation(operationSymbol)) {
+        myParser.getOperation(operationName);
             Operation parsedOperation;
             while (true) {
                 parsedOperation = parseOperation(operationSymbol, startingIndex, simplifiableLine, activeAnimal);
@@ -129,8 +133,6 @@ public abstract class ControlStructure {
                 }
                 simplifiableLine.add(startingIndex, operationSymbol); // replaces return value with operation name so that it can be performed on next set of arguments
             }
-        }
-        else ; //error
         simplifiableLine.remove(startingIndex+1); //removes outer parentheses
         return simplifiableLine;
         }
@@ -186,7 +188,7 @@ public abstract class ControlStructure {
         return returnVal;
     }
 
-    protected double replaceOperationWithReturnValue(Operation operation, int currentIndex, double returnVal, List<String> simplifiableLine) {
+    private double replaceOperationWithReturnValue(Operation operation, int currentIndex, double returnVal, List<String> simplifiableLine) {
         for (int k = -1; k < operation.getNumArgs(); k++) {
             simplifiableLine.remove(currentIndex);
         }
@@ -194,9 +196,15 @@ public abstract class ControlStructure {
         return returnVal;
     }
 
-    protected List<String> replaceCodeWithReturnValue(double returnValue, List<String> simplifiableLine){
+    /*
+    removes an entire control structure from the line, replacing it with its return value. First removes control name, then
+    all the expressions the argument takes, then all the lists the argument takes, using the number of expressions and lists
+    unique to each function structure
+     */
 
-        simplifiableLine.remove(myStartingIndex); //removes control tag
+    public List<String> replaceCodeWithReturnValue(double returnValue, List<String> simplifiableLine){
+
+        simplifiableLine.remove(myStartingIndex); //removes general tag
 
         for (int k=0; k<myNumOfExpressionArguments; k++){
             simplifiableLine.remove(myStartingIndex);
@@ -279,7 +287,7 @@ public abstract class ControlStructure {
         return mySimplifiableLine;
     }
 
-    protected boolean repeatable(){
+    public boolean repeatable(){
         return isRepeatable;
     }
 

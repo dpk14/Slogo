@@ -9,6 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 abstract public class Operation {
     private int myNumArgs;
     private double[] myArgs;
+    private double ret;
 
     public Operation() {
     }
@@ -50,5 +51,7 @@ abstract public class Operation {
     protected double getArgIndex(int index){
         return myArgs[index];
     }
+
+    public double getReturnValue(){return ret;}
 }
 

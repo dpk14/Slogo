@@ -20,7 +20,7 @@ Errors may arise if the number of arguements to any given expression does not ma
 # Part 2
 ## How do you think Design Patterns are currently represented in the design or could be used to help improve the design?
 
-Factories are used to create new expressions. The open-closed principle is used to make sure that encapsulation is thoroughly followed. Polymorphism could help more in order to control duplicate behavior.
+Factories are used to create new expressions. The open-closed principle is used to make sure that encapsulation is thoroughly followed. Polymorphism could help more in order to general duplicate behavior.
 
 ## What feature/design problem are you most excited to work on?
 

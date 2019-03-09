@@ -1,8 +1,8 @@
 package controlStructures;
 
-import mainpackage.Animal;
-import mainpackage.ProgramParser;
-import mainpackage.SystemStorage;
+import general.Animal;
+import general.ProgramParser;
+import general.SystemStorage;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Map.Entry;

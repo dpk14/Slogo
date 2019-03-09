@@ -6,21 +6,21 @@ NetIDs: isq, dpk14, dfc15
 * We realized that this was bad design because all classes could access each other, even when access was not necessary
 * Modules:
     * backend
-    * frontend
+    * visualization
     * controller
 * backend content:
     * Animal class
     * controlStructures package
     * operations package
-* frontend content:
+* visualization content:
     * visualization package
 * controller content:
     * ProgramParser class
-    * Main class
+    * mainpackage.Main class
     * OperationBuilder class
 * controller module requires:
     * all backend packages
-    * all frontend packages
+    * all visualization packages
 
 ### Splitting up Commands
 * One of the longest methods is .evaluate within MathOperation class because it contained multiple conditional statements

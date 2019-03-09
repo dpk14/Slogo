@@ -1,13 +1,13 @@
-package frontend;
+package visualization;
 
+import mainpackage.Main;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
-import mainpackage.Animal;
-import mainpackage.Main;
-import mainpackage.SystemStorage;
+import general.Animal;
+import general.SystemStorage;
 
 import java.util.Set;
 
@@ -33,7 +33,7 @@ public class ScreenOptions {
     }
 
     private Menu makeNewScreen(){
-        Menu temp = new Menu("Make new screen");
+         Menu temp = new Menu("Make new screen");
         temp.setOnAction(e->{
             new Main();
         });
