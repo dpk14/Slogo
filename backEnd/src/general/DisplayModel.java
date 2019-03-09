@@ -58,7 +58,7 @@ public class DisplayModel {
             backgroundColor = colorsList.get(index);
         }
         else {
-            errorMessage.addError("IndexOutOfBounds");
+            //errorMessage.addError("IndexOutOfBounds");
         }
     }
 

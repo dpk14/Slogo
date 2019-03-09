@@ -12,10 +12,10 @@ public class SystemStorage {
     private Map<String, Double> userVariables;
     private Map<String, List<Command>> myCustomCommands;
     private List<Command> myCommandLog;
-    private Pane animalCanvas;
     private double height_of_screen;
     private double width_of_screen;
     private List<Entry<String, Animal>> myActiveAnimals;
+    private DisplayModel myDisplayModel;
 
     public SystemStorage(){
         habitat = new HashMap<>();
@@ -23,6 +23,12 @@ public class SystemStorage {
         myCustomCommands = new HashMap<>();
         myCommandLog = new ArrayList<>();
         myActiveAnimals = new ArrayList<>();
+        myDisplayModel=new DisplayModel();
+    }
+
+    public void setScreenParameters(double height, double width){
+        height_of_screen = height;
+        width_of_screen = width;
     }
 
     public Map<String, Animal> getAnimals(){
@@ -48,12 +54,6 @@ public class SystemStorage {
         return names;
     }
 
-    public void setScreenParameters(Pane canvas, double height, double width){
-        animalCanvas = canvas;
-        height_of_screen = height;
-        width_of_screen = width;
-    }
-
     public Map<String, Double> getVariableMap(){
         return userVariables;
     }
@@ -68,9 +68,8 @@ public class SystemStorage {
 
     public Animal getAnimal(String animalID){
         if(!habitat.containsKey(animalID)){
-            Animal temp = new Animal(animalID, height_of_screen, width_of_screen, animalCanvas);
+            Animal temp = new Animal(animalID, height_of_screen, width_of_screen);
             habitat.put(animalID, temp);
-            animalCanvas.getChildren().add(temp.getImageView());
         }
         return habitat.get(animalID);
     }

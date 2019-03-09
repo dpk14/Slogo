@@ -88,9 +88,11 @@ public abstract class ControlStructure {
         if (firstEntry.equals("[")) {
             parseList(startingIndex, simplifiableLine, activeAnimal);
         }
+        /*
         else if (firstEntry.equals("(")){
             parseParenthesis(startingIndex, simplifiableLine, activeAnimal);
         }
+        */
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
             parseOperation(firstEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
         }
@@ -118,7 +120,7 @@ public abstract class ControlStructure {
         }
         return simplifiableLine;
     }
-
+/*
     public List<String> parseParenthesis(int startingIndex, List<String> simplifiableLine, Animal activeAnimal) {
         simplifiableLine.remove(startingIndex); //removes first parentheses
         String operationName = simplifiableLine.get(startingIndex);
@@ -136,7 +138,7 @@ public abstract class ControlStructure {
         simplifiableLine.remove(startingIndex+1); //removes outer parentheses
         return simplifiableLine;
         }
-
+*/
     protected ControlStructure parseNestedControl(String controlType, int currentIndex, List<String> simplifiableLine, Animal activeAnimal) {
         ControlStructure defaultStructure = myParser.getControlStructure(controlType);
         ControlStructure nestedControlStructure=defaultStructure.copy();
