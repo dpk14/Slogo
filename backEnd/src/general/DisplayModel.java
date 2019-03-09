@@ -11,10 +11,11 @@ public class DisplayModel {
     //private ErrorMessage errorMessage;
     private List<String> animalShapesList;
 
-    public DisplayModel(){
+    public DisplayModel(ErrorMessage error){
         makeColorsList();
+        makeAnimalShapesList();
         setDefaultBackgroundColor();
-        //errorMessage = error;
+        errorMessage = error;
     }
 
     public List<String> getColorsList(){
@@ -31,7 +32,7 @@ public class DisplayModel {
 
     private void makeColorsList(){
         colorsList = new ArrayList<>();
-        var resource = ResourceBundle.getBundle("/resources/default_visual_items/DefaultColors.properties");
+        var resource = ResourceBundle.getBundle("resources/default_visual_items/DefaultColors");
         for (String key: resource.keySet()){
             colorsList.add(resource.getString(key));
         }
@@ -39,7 +40,7 @@ public class DisplayModel {
 
     private void makeAnimalShapesList(){
         animalShapesList = new ArrayList<>();
-        var resource = ResourceBundle.getBundle("/resources/default_visual_items/DefaultAnimalShapes.properties");
+        var resource = ResourceBundle.getBundle("resources/default_visual_items/DefaultAnimalShapes");
         for (String key: resource.keySet()){
             animalShapesList.add(resource.getString(key));
         }
@@ -58,7 +59,7 @@ public class DisplayModel {
             backgroundColor = colorsList.get(index);
         }
         else {
-            //errorMessage.addError("IndexOutOfBounds");
+            errorMessage.addError("IndexOutOfBounds");
         }
     }
 

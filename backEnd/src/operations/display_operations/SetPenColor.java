@@ -1,5 +1,6 @@
 package operations.display_operations;
 
+import general.SystemStorage;
 import operations.Command;
 
 public class SetPenColor extends PenOperation implements Command {

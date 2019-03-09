@@ -69,7 +69,7 @@ public class Animal {
         return current_angle;
     }
 
-    public String getLineColor(){
+    public String getColor(){
         return myLineColor;
     }
 
@@ -201,6 +201,7 @@ public class Animal {
     public String getShape() {
         return myShape;
     }
+
 
     /*
     private Animation makeAnimation (Node agent) {

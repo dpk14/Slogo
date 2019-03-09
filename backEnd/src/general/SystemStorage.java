@@ -17,13 +17,13 @@ public class SystemStorage {
     private List<Entry<String, Animal>> myActiveAnimals;
     private DisplayModel myDisplayModel;
 
-    public SystemStorage(){
+    public SystemStorage(ErrorMessage error){
         habitat = new HashMap<>();
         userVariables = new HashMap<>();
         myCustomCommands = new HashMap<>();
         myCommandLog = new ArrayList<>();
         myActiveAnimals = new ArrayList<>();
-        myDisplayModel=new DisplayModel();
+        myDisplayModel=new DisplayModel(error);
     }
 
     public void setScreenParameters(double height, double width){
@@ -99,4 +99,6 @@ public class SystemStorage {
     public List<Command> getMyCommandLog() {
         return myCommandLog;
     }
+
+    public DisplayModel getDisplay() {return myDisplayModel;}
 }
