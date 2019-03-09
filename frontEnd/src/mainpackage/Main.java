@@ -5,7 +5,9 @@ import general.SystemStorage;
 import general.Animal;
 import general.ProgramParser;
 
+import interpreters.AnimalInterpreter;
 import javafx.animation.Timeline;
+import javafx.scene.layout.Pane;
 import visualization.AnimalScreen;
 import visualization.Console;
 import visualization.ScreenOptions;
@@ -36,6 +38,8 @@ public class  Main extends Application {
     public ProgramParser myParser;
     public SystemStorage mySystemStorage;
     private AnimalScreen animal_screen;
+    private AnimalInterpreter myAnimalInterpreter;
+    private Pane myPane;
 
     @Override
     public void start(Stage stage) {
@@ -71,7 +75,8 @@ public class  Main extends Application {
 
     private void createSLOGO(String language, Stage stage){
         mySystemStorage = new SystemStorage();
-        animal_screen = new AnimalScreen(mySystemStorage, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
+        myAnimalInterpreter=new AnimalInterpreter(mySystemStorage);
+        animal_screen = new AnimalScreen(mySystemStorage, myAnimalInterpreter, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         myParser = new ProgramParser(mySystemStorage);
         myParser.addPatterns("resources/languages/" + language);
         myParser.addPatterns("resources/languages/Syntax");
@@ -121,6 +126,7 @@ public class  Main extends Application {
             for(String stage: stages) {
                 processCode(stage, userInputList);
             }
+        myAnimalInterpreter.updateAnimals();
     }
 
     public void processCode(String stage, ArrayList<String> userInputList) {
