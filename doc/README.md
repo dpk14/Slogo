@@ -10,6 +10,9 @@
 * date finished: 3/9
 * estimate of the number of hours worked on the project:
     * Irene: 20 hours
+    * Daniel: 20+ hours, definitely more than anybody else in the group
+    * Amanda: ???
+    * Diego: ???
     
 * each person's role in developing the project:
     * Irene: 
