@@ -26,7 +26,7 @@ public class ScreenOptions {
         mySystemStorage = storage;
         centerScreen = canvas;
         menuResource = ResourceBundle.getBundle("resources/menu_names/MenuNames");
-        errorMessage=error;
+        //errorMessage=error;
         myDisplayModel = storage.getDisplay();
         errorMessageResource = ResourceBundle.getBundle("ErrorMessages");
         Menu backGroundColor = BackgroundMenu();
