@@ -100,5 +100,4 @@ public class SystemStorage {
         return myCommandLog;
     }
 
-    public DisplayModel getDisplay() {return myDisplayModel;}
 }

@@ -78,7 +78,7 @@ public class ProgramParser {
     }
 
     public Operation getOperation(String operationType){
-        var resource = ResourceBundle.getBundle("Operations");
+        var resource = ResourceBundle.getBundle("resources/operation_defaults/Operations");
         if (resource.containsKey(operationType)){
             String className = resource.getString(operationType);
             try {

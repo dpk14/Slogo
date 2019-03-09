@@ -1,6 +1,7 @@
 package interpreters;
 
 import general.DisplayModel;
+import general.ErrorMessage;
 import general.SystemStorage;
 
 public class DisplayInterpreter {
@@ -10,7 +11,7 @@ public class DisplayInterpreter {
 
     public DisplayInterpreter(SystemStorage storage){
         myStorage = storage;
-        updatedDisplay = new DisplayModel();
+        updatedDisplay = new DisplayModel(new ErrorMessage());
         currentDisplay = myStorage.getDisplay();
     }
 
