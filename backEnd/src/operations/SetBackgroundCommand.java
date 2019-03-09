@@ -17,5 +17,4 @@ public class SetBackgroundCommand extends DisplayOperation implements Command {
     public void execute(){
         getMyDisplay().setBackgroundColor((int) getArgIndex(0));
     }
-
 }

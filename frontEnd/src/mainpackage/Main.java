@@ -5,6 +5,7 @@ import general.SystemStorage;
 import general.Animal;
 import general.ProgramParser;
 
+import javafx.animation.Timeline;
 import visualization.AnimalScreen;
 import visualization.Console;
 import visualization.ScreenOptions;
@@ -39,7 +40,6 @@ public class  Main extends Application {
     @Override
     public void start(Stage stage) {
         askForLanguages(stage);
-
     }
 
     private void askForLanguages(Stage stage){

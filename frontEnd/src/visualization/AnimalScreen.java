@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class AnimalScreen {
 
-    Pane canvas;
+    private Pane canvas;
     String STARTING_COLOR = "azure";
     public AnimalScreen(SystemStorage mySystemStorage, int height, int width ){
 

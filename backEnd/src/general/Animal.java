@@ -20,12 +20,18 @@ public class Animal {
     private boolean isVisible;
     private int WIDTH_OF_TURTLE = 25;
     private int HEIGHT_OF_TURTLE = 25;
+    private final String DEFAULT_LINE_COLOR = "black";
+    private final int DEFAULT_LINE_WIDTH = 10;
+    private String lineColor;
+    private int lineWidth;
 
     public Animal(String name, double height_of_screen, double width_of_screen, Pane pane){
         animal_ID = name;
         myPane = pane;
         current_angle = 90;
-        trail = new ArrayList<>();
+        trail = new ArrayList<Line>();
+        lineColor = DEFAULT_LINE_COLOR;
+        lineWidth = DEFAULT_LINE_WIDTH;
         double radian = Math.toRadians(current_angle);
         direction_vector = new double[2];
         direction_vector[0] = Math.cos(radian);
@@ -45,6 +51,14 @@ public class Animal {
         myPen = true;
     }
 
+    public void setPenColor(String color){
+        lineColor = color;
+    }
+
+    public void setPenSize(int pixels){
+        lineWidth = pixels;
+    }
+
     public boolean getPenStatus(){
         return myPen;
     }
@@ -53,6 +67,9 @@ public class Animal {
         return current_angle;
     }
 
+    public String getColor(){
+        return lineColor;
+    }
 
     public double[] getCoordinates(){
         double[] coords = new double[2];
@@ -105,6 +122,8 @@ public class Animal {
 
         if(myPen && delta != 0){
             Line path = new Line();
+            path.setStroke("-fx-stroke:" + lineColor);
+            path.setStrokeWidth(lineWidth);
             path.setStartX(current_x + WIDTH_OF_TURTLE);
             path.setStartY(current_y + HEIGHT_OF_TURTLE);
             path.setEndX(next_x + WIDTH_OF_TURTLE);

@@ -1,29 +1,34 @@
 package visualization;
 
+import general.DisplayModel;
+import general.ErrorMessage;
+import javafx.scene.control.*;
 import mainpackage.Main;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
-import javafx.scene.control.RadioMenuItem;
-import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.Pane;
 import general.Animal;
 import general.SystemStorage;
 
+import java.util.ResourceBundle;
 import java.util.Set;
-
 
 public class ScreenOptions {
 
-    MenuBar options;
-    Pane centerScreen;
-    SystemStorage mySystemStorage;
+    private MenuBar options;
+    private Pane centerScreen;
+    private SystemStorage mySystemStorage;
+    private ResourceBundle menuResource;
+    private ResourceBundle errorMessageResource;
+    private DisplayModel myDisplayModel;
+    private ErrorMessage errorMessage;
+    private String color;
 
-
-    public ScreenOptions(Pane canvas, SystemStorage storage, double height_of_options) {
+    public ScreenOptions(Pane canvas, SystemStorage storage, DisplayModel display, ErrorMessage error, double height_of_options) {
         mySystemStorage = storage;
-
         centerScreen = canvas;
-
+        menuResource = ResourceBundle.getBundle("MenuNames");
+        myDisplayModel = display;
+        errorMessageResource = ResourceBundle.getBundle("ErrorMessages");
+        errorMessage = error;
         Menu backGroundColor = BackgroundMenu();
         Menu chooseAnimal = chooseAnimalMenu();
         Menu makeNewScreen = makeNewScreen();
@@ -33,7 +38,7 @@ public class ScreenOptions {
     }
 
     private Menu makeNewScreen(){
-         Menu temp = new Menu("Make new screen");
+        Menu temp = new Menu(menuResource.getString("MakeNewString"));
         temp.setOnAction(e->{
             new Main();
         });
@@ -41,22 +46,16 @@ public class ScreenOptions {
     }
 
     private Menu BackgroundMenu() {
-        Menu temp = new Menu("Choose Color");
+        Menu temp = new Menu(menuResource.getString("ChooseColor"));
         ToggleGroup group = new ToggleGroup();
-        RadioMenuItem azure  = new RadioMenuItem("Azure");
-        azure.setOnAction(e->setBackground("azure"));
-        azure.setToggleGroup(group);
-        azure.setSelected(true);
-        RadioMenuItem blue = new RadioMenuItem("Blue");
-        blue.setToggleGroup(group);
-        blue.setOnAction(e->setBackground("lightblue"));
-        RadioMenuItem yellow = new RadioMenuItem("Yellow");
-        yellow.setToggleGroup(group);
-        yellow.setOnAction(e->setBackground("lightyellow"));
-        RadioMenuItem green  = new RadioMenuItem("Green");
-        green.setToggleGroup(group);
-        green.setOnAction(e->setBackground("lightgreen"));
-        temp.getItems().addAll(azure, blue, yellow, green);
+        var resource = ResourceBundle.getBundle("DefaultColors");
+        for (String key: resource.keySet()){
+            RadioMenuItem color = new RadioMenuItem(key);
+            color.setOnAction(e->setBackground(resource.getString(key)));
+            color.setToggleGroup(group);
+            color.setSelected(true);
+            temp.getItems().add(color);
+        }
         return temp;
     }
 
@@ -83,7 +82,6 @@ public class ScreenOptions {
             Animal active_animal = mySystemStorage.getAnimal(name);
             active_animal.setImage(String.format("%s.png", animal));
         }
-
     }
 
     private void setBackground(String color) {
@@ -91,11 +89,25 @@ public class ScreenOptions {
         centerScreen.setStyle(style);
     }
 
+    public void setErrorDisplay(){
+        if (errorMessage.getErrorsList().size() > 0){
+            for (String error: errorMessage.getErrorsList()){
+                String message = errorMessageResource.getString(error);
+                makeAlertBox(message);
+                errorMessage.removeError(error);
+            }
+        }
+    }
+
+    private void makeAlertBox(String message){
+        Alert alertBox = new Alert(Alert.AlertType.ERROR);
+        alertBox.setTitle(errorMessageResource.getString("AlertBoxTitle"));
+        alertBox.setContentText(message);
+        alertBox.showAndWait();
+    }
 
     public MenuBar getOptions() {
         return options;
     }
-
-
 
 }
