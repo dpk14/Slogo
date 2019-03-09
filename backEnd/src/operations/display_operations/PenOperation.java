@@ -1,9 +1,6 @@
 package operations.display_operations;
 
 import general.Animal;
-import general.DisplayModel;
-import general.SystemStorage;
-import operations.Operation;
 import operations.SystemStorageOperation;
 
 abstract public class PenOperation extends SystemStorageOperation {

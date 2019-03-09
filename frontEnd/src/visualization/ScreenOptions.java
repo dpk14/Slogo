@@ -18,10 +18,11 @@ public class ScreenOptions {
     private SystemStorage mySystemStorage;
     private ResourceBundle menuResource;
     private ResourceBundle errorMessageResource;
+    private DisplayModel myDisplayModel;
     //private ErrorMessage errorMessage;
     private String color;
 
-    public ScreenOptions(Pane canvas, SystemStorage storage, ErrorMessage error, double height_of_options) {
+    public ScreenOptions(Pane canvas, SystemStorage storage, double height_of_options) {
         mySystemStorage = storage;
         centerScreen = canvas;
         menuResource = ResourceBundle.getBundle("MenuNames");
