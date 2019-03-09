@@ -1,28 +1,34 @@
 package visualization;
 
+import interpreters.AnimalInterpreter;
 import javafx.scene.layout.Pane;
 import general.SystemStorage;
 
 import java.util.ArrayList;
 
 public class AnimalScreen {
-
+    AnimalInterpreter myAnimalInterpreter;
+    SystemStorage mySystemStorage;
     private Pane canvas;
     String STARTING_COLOR = "azure";
-    public AnimalScreen(SystemStorage mySystemStorage, int height, int width ){
 
+    public AnimalScreen(SystemStorage systemStorage, AnimalInterpreter interp, int height, int width ){
+        mySystemStorage=systemStorage;
+        myAnimalInterpreter=interp;
         canvas = new Pane();
         canvas.prefHeight(height);
         canvas.prefWidth(width);
         String style = String.format("-fx-background-color: %s;", STARTING_COLOR);
         canvas.setStyle(style);
-        mySystemStorage.setScreenParameters(canvas, height, width);
+        myAnimalInterpreter.setCanvas(canvas);
+        mySystemStorage.setScreenParameters(height, width);
         mySystemStorage.getAnimal("0");
         ArrayList<String> zeroth = new ArrayList<>();
         zeroth.add("0");
         mySystemStorage.setActiveAnimals(zeroth);
 
     }
+
 
     public Pane getAnimalPane() {
         return canvas;

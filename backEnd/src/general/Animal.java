@@ -1,48 +1,50 @@
 package general;
 
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
-import javafx.scene.shape.Line;
-
 import java.lang.Math;
 import java.util.ArrayList;
 
 public class Animal {
 
-    private ImageView node;
     private String animal_ID;
     private double[] direction_vector;
     private double current_angle;
     private boolean myPen;
-    private Pane myPane;
-    private ArrayList<Line> trail;
     private boolean isVisible;
-    private int WIDTH_OF_TURTLE = 25;
-    private int HEIGHT_OF_TURTLE = 25;
+    private final int WIDTH_OF_TURTLE = 25;
+    private final int HEIGHT_OF_TURTLE = 25;
     private final String DEFAULT_LINE_COLOR = "black";
+    private final String DEFAULT_SHAPE = "frog.png";
     private final int DEFAULT_LINE_WIDTH = 10;
-    private String lineColor;
-    private int lineWidth;
+    private int myLineWidth;
+    private double myX;
+    private double myY;
+    private double myNextX;
+    private double myNextY;
+    private boolean clearTrails;
+    private String myShape;
+    private String myLineColor;
+    private double myRotateBy;
 
-    public Animal(String name, double height_of_screen, double width_of_screen, Pane pane){
+
+
+    public Animal(String name, double height_of_screen, double width_of_screen){
         animal_ID = name;
-        myPane = pane;
         current_angle = 90;
-        trail = new ArrayList<Line>();
-        lineColor = DEFAULT_LINE_COLOR;
-        lineWidth = DEFAULT_LINE_WIDTH;
+        myShape=DEFAULT_SHAPE;
+        myLineColor = DEFAULT_LINE_COLOR;
+        myLineWidth = DEFAULT_LINE_WIDTH;
         double radian = Math.toRadians(current_angle);
         direction_vector = new double[2];
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
         isVisible = true;
-        node = new ImageView();
-        node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream("turtle.png")));
-        node.setX(width_of_screen/2 - WIDTH_OF_TURTLE);
-        node.setY(height_of_screen/2 - HEIGHT_OF_TURTLE);
+        myX=width_of_screen/2 - WIDTH_OF_TURTLE;
+        myY=height_of_screen/2 - HEIGHT_OF_TURTLE;
+        myNextX=myX;
+        myNextY=myY;
+        clearTrails=false;
+        myPen=false;
     }
-
 
     public void penUp(){
         myPen = false;
@@ -52,11 +54,11 @@ public class Animal {
     }
 
     public void setPenColor(String color){
-        lineColor = color;
+        myLineColor = color;
     }
 
     public void setPenSize(int pixels){
-        lineWidth = pixels;
+        myLineWidth = pixels;
     }
 
     public boolean getPenStatus(){
@@ -67,25 +69,21 @@ public class Animal {
         return current_angle;
     }
 
-    public String getColor(){
-        return lineColor;
+    public String getLineColor(){
+        return myLineColor;
     }
 
     public double[] getCoordinates(){
         double[] coords = new double[2];
-        coords[0] = node.getX();
-        coords[1] = node.getY();
+        coords[0] = myX;
+        coords[1] = myY;
         return coords;
     }
 
     public double setPosition(double x, double y){
-        double current_x = node.getX();
-        double current_y = node.getY();
-        node.setX(x); //TODO FIX in relation to (0,0)
-        node.setY(y);
-        return Math.sqrt(Math.pow(current_x-x,2) + Math.pow(current_y-y, 2));
-
-
+        myNextX = x;
+        myNextY = y;
+        return Math.sqrt(Math.pow(myX-x,2) + Math.pow(myY-y, 2));
     }
 
     public boolean isVisible(){
@@ -94,7 +92,7 @@ public class Animal {
 
     public void setVisibility(Boolean visible){
         isVisible = visible;
-        node.setVisible(visible);
+        //node.setVisible(visible);
     }
 
     public double setToward(double x, double y){
@@ -109,38 +107,13 @@ public class Animal {
         double x_delta = delta * direction_vector[0];
         double y_delta = delta * direction_vector[1];
 
-
-        double current_x = node.getX();
-        double current_y = node.getY();
-
-        double next_x = current_x + x_delta;
-        double next_y = current_y - y_delta;
-
-
-        node.setX(next_x);
-        node.setY(next_y);
-
-        if(myPen && delta != 0){
-            Line path = new Line();
-            path.setStroke("-fx-stroke:" + lineColor);
-            path.setStrokeWidth(lineWidth);
-            path.setStartX(current_x + WIDTH_OF_TURTLE);
-            path.setStartY(current_y + HEIGHT_OF_TURTLE);
-            path.setEndX(next_x + WIDTH_OF_TURTLE);
-            path.setEndY(next_y +  HEIGHT_OF_TURTLE);
-            trail.add(path);
-            myPane.getChildren().add(path);
-        }
-    }
-
-    public void clearTrails(){
-        for(Line path : trail){
-            myPane.getChildren().remove(path);
-        }
+        myNextX = myX + x_delta;
+        myNextY = myY - y_delta;
     }
 
     public void adjustHeading(double angle){
 
+        myRotateBy=angle;
         current_angle -= angle;
 
         double radian = Math.toRadians(current_angle);
@@ -148,7 +121,6 @@ public class Animal {
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
 
-        node.setRotate(node.getRotate() + angle);
     }
 
     public void setHeading(double angle){
@@ -156,23 +128,79 @@ public class Animal {
         double radian = Math.toRadians(current_angle);
         direction_vector[0] = Math.cos(radian);
         direction_vector[1] = Math.sin(radian);
-
-        node.setRotate(current_angle);
     }
 
     public void setImage(String fileName){
-
-        node.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream(fileName)));
+        myShape=fileName;
     }
 
     public String getAnimalID(){
         return animal_ID;
     }
 
-    public ImageView getImageView(){
-        return node;
+    public boolean getVisibility() {
+        return isVisible;
     }
 
+    public double getCurrentAngle() {
+        return current_angle;
+    }
+
+    public double getRotateBy() {
+        return myRotateBy;
+    }
+
+    public void setRotateBy(double by) {
+        myRotateBy=by;
+    }
+
+    public double getX() {
+        return myX;
+    }
+
+    public double getNewX() {
+        return myNextX;
+    }
+
+    public double getNewY() {
+        return myNextY;
+    }
+
+    public double getLineWidth() {
+        return myLineWidth;
+    }
+
+    public double getWidth() {
+        return WIDTH_OF_TURTLE;
+    }
+
+    public double getHeight() {
+        return HEIGHT_OF_TURTLE;
+    }
+
+    public void setX(double newX) {
+        myX=newX;
+    }
+
+    public void setY(double newY) {
+        myY=newY;
+    }
+
+    public boolean isPenDown() {
+        return myPen;
+    }
+
+    public boolean clearTrail() {
+        return clearTrails;
+    }
+
+    public void setClearTrail(boolean b) {
+        clearTrails=b;
+    }
+
+    public String getShape() {
+        return myShape;
+    }
 
     /*
     private Animation makeAnimation (Node agent) {
