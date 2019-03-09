@@ -6,10 +6,12 @@ import java.util.ResourceBundle;
 public class DisplayModel {
     private String backgroundColor;
     private List<String> colorsList;
+    private ErrorMessage errorMessage;
 
-    public DisplayModel(){
+    public DisplayModel(ErrorMessage erorr){
         makeColorsList();
         setDefaultBackgroundColor();
+        errorMessage = erorr;
     }
 
     private void makeColorsList(){
@@ -32,9 +34,11 @@ public class DisplayModel {
             backgroundColor = colorsList.get(index);
         }
         else {
-            throw new NullPointerException();
+            errorMessage.addError("IndexOutOfBounds");
         }
     }
 
-
+    public String getColor(int index){
+        return colorsList.get(index);
+    }
 }
