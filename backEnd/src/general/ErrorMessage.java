@@ -6,6 +6,7 @@ public class ErrorMessage {
     private ResourceBundle resource;
     private List<String> errors;
 
+
     public ErrorMessage(){
         resource = ResourceBundle.getBundle("ErrorMessages");
         errors = new ArrayList<>();

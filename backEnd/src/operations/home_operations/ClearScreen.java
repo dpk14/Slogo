@@ -7,7 +7,7 @@ public class ClearScreen extends HomeOperation implements Command {
     @Override
     public void execute() {
         getTurtle().setPosition(getHomeX(), getHomeY());
-        getTurtle().clearTrails();
+        getTurtle().clearTrail();
     }
 
     @Override

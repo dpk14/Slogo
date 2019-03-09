@@ -18,13 +18,15 @@ public class ScreenOptions {
     private SystemStorage mySystemStorage;
     private ResourceBundle menuResource;
     private ResourceBundle errorMessageResource;
-    //private ErrorMessage errorMessage;
+    private DisplayModel myDisplayModel;
+    private ErrorMessage errorMessage;
     private String color;
 
     public ScreenOptions(Pane canvas, SystemStorage storage, ErrorMessage error, double height_of_options) {
         mySystemStorage = storage;
         centerScreen = canvas;
-        menuResource = ResourceBundle.getBundle("MenuNames");
+        menuResource = ResourceBundle.getBundle("resources/menu_names/MenuNames");
+        errorMessage=error;
         myDisplayModel = storage.getDisplay();
         errorMessageResource = ResourceBundle.getBundle("ErrorMessages");
         Menu backGroundColor = BackgroundMenu();
@@ -73,7 +75,7 @@ public class ScreenOptions {
         centerScreen.setStyle(style);
     }
 
-    /*
+
     public void setErrorDisplay(){
         if (errorMessage.getErrorsList().size() > 0){
             for (String error: errorMessage.getErrorsList()){
@@ -83,7 +85,6 @@ public class ScreenOptions {
             }
         }
     }
-    */
 
     private void makeAlertBox(String message){
         Alert alertBox = new Alert(Alert.AlertType.ERROR);

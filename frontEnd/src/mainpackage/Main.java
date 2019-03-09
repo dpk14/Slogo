@@ -1,6 +1,7 @@
 package mainpackage;
 
 import controlStructures.ControlStructure;
+import general.ErrorMessage;
 import general.SystemStorage;
 import general.Animal;
 import general.ProgramParser;
@@ -39,7 +40,7 @@ public class  Main extends Application {
     public SystemStorage mySystemStorage;
     private AnimalScreen animal_screen;
     private AnimalInterpreter myAnimalInterpreter;
-    private Pane myPane;
+    private ErrorMessage myErrorMessage;
 
     @Override
     public void start(Stage stage) {
@@ -74,7 +75,8 @@ public class  Main extends Application {
     }
 
     private void createSLOGO(String language, Stage stage){
-        mySystemStorage = new SystemStorage();
+        myErrorMessage=new ErrorMessage();
+        mySystemStorage = new SystemStorage(myErrorMessage);
         myAnimalInterpreter=new AnimalInterpreter(mySystemStorage);
         animal_screen = new AnimalScreen(mySystemStorage, myAnimalInterpreter, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         myParser = new ProgramParser(mySystemStorage);
@@ -97,7 +99,7 @@ public class  Main extends Application {
     private Scene createScene() {
         var main_pane = new BorderPane();
 
-        var options = new ScreenOptions(animal_screen.getAnimalPane(), mySystemStorage, HEIGHT_OF_OPTIONS);
+        var options = new ScreenOptions(animal_screen.getAnimalPane(), mySystemStorage, myErrorMessage, HEIGHT_OF_OPTIONS);
 
         main_pane.setCenter(animal_screen.getAnimalPane());
         main_pane.setTop(options.getOptions());

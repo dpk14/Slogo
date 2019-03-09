@@ -20,7 +20,7 @@ public class OperationBuilder {
 
     public OperationBuilder(Operation defaultOperation, List<String> userInput, int startingIndex, ProgramParser parser, Stack builderStack){
         myUserInput=userInput;
-        myOperation=defaultOperation.copy();
+        myOperation=defaultOperation;
         myStartingIndex=startingIndex;
         myNumOfArgsNeeded=myOperation.getNumArgs();
         myOperationArguments=new String[myNumOfArgsNeeded];

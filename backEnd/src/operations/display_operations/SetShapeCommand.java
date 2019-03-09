@@ -18,7 +18,7 @@ public class SetShapeCommand extends SystemStorageOperation implements Command {
     public void execute() {
         int index = (int) getArgIndex(0);
         String shapeFile = myDisplay.getAnimalShapesList().get(index);
-        getTurtle().setShape(shapeFile);
+        getTurtle().setImage(shapeFile);
     }
 
     @Override

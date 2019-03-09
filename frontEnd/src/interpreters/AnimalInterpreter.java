@@ -74,7 +74,7 @@ public class AnimalInterpreter {
 
         if(animal.isPenDown() && (x!=newX || y!=newY)){
             Line path = new Line();
-            path.setStroke(Paint.valueOf("-fx-stroke:" + animal.getLineColor()));
+            path.setStroke(Paint.valueOf("-fx-stroke: " + animal.getColor()));
             path.setStrokeWidth(animal.getLineWidth());
             path.setStartX(x + animal.getWidth());
             path.setStartY(y + animal.getHeight());
