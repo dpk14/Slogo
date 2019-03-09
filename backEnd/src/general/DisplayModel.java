@@ -31,7 +31,7 @@ public class DisplayModel {
 
     private void makeColorsList(){
         colorsList = new ArrayList<>();
-        var resource = ResourceBundle.getBundle("DefaultColors");
+        var resource = ResourceBundle.getBundle("/resources/default_visual_items/DefaultColors.properties");
         for (String key: resource.keySet()){
             colorsList.add(resource.getString(key));
         }
@@ -39,7 +39,7 @@ public class DisplayModel {
 
     private void makeAnimalShapesList(){
         animalShapesList = new ArrayList<>();
-        var resource = ResourceBundle.getBundle("DefaultAnimalShapes");
+        var resource = ResourceBundle.getBundle("/resources/default_visual_items/DefaultAnimalShapes.properties");
         for (String key: resource.keySet()){
             animalShapesList.add(resource.getString(key));
         }

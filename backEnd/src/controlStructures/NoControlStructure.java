@@ -28,7 +28,7 @@ public class NoControlStructure extends ControlStructure {
         }
 
         @Override
-        protected List<String> replaceCodeWithReturnValue(double returnValue, List<String> mySimplifiableLine){
+        public List<String> replaceCodeWithReturnValue(double returnValue, List<String> mySimplifiableLine){
             return mySimplifiableLine;
         }
     }
