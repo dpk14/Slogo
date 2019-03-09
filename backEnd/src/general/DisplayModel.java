@@ -8,7 +8,7 @@ import java.util.ResourceBundle;
 public class DisplayModel {
     private String backgroundColor;
     private List<String> colorsList;
-    //private ErrorMessage errorMessage;
+    private ErrorMessage errorMessage;
     private List<String> animalShapesList;
 
     public DisplayModel(){

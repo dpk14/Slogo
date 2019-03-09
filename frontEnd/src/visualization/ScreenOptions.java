@@ -22,7 +22,7 @@ public class ScreenOptions {
     private ErrorMessage errorMessage;
     private String color;
 
-    public ScreenOptions(Pane canvas, SystemStorage storage, double height_of_options) {
+    public ScreenOptions(Pane canvas, ErrorMessage error, SystemStorage storage, double height_of_options) {
         mySystemStorage = storage;
         centerScreen = canvas;
         menuResource = ResourceBundle.getBundle("resources/menu_names/MenuNames");

@@ -12,7 +12,7 @@ public class PenColorQuery extends SystemStorageOperation {
 
     @Override
     public double evaluate(){
-        String color = getTurtle().getLineColor();
+        String color = getTurtle().getColor();
         int index = getMyDisplay().getColorsList().indexOf(color);
         return (double) index;
     }

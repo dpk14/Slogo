@@ -108,8 +108,7 @@ public abstract class ControlStructure {
             currentEntry = simplifiableLine.get(startingIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
             if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
-            else {
-                myParser.getOperation(currentEntrySymbol);
+            else if (!(currentEntrySymbol.equals("Variable") || currentEntrySymbol.equals("Constant"))){
                 parseOperation(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
             }
             startingIndex++;
