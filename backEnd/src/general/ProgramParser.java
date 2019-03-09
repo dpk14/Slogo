@@ -1,4 +1,4 @@
-package control;
+package general;
 
 import controlStructures.*;
 import operations.*;
@@ -20,7 +20,6 @@ public class ProgramParser {
     // "types" and the regular expression patterns that recognize those types
     // note, it is a list because order matters (some patterns may be more generic)
     private List<Entry<String, Pattern>> mySymbols;
-    private Map<String, Operation> myOperationsMap;
     private Map<String, ControlStructure> myControlMap;
     private SystemStorage myStorage;
     /**
@@ -28,7 +27,6 @@ public class ProgramParser {
      */
     public ProgramParser(SystemStorage storage) {
         mySymbols = new ArrayList<>();
-        myOperationsMap=new HashMap<>();
         myControlMap=new HashMap<>();
         myStorage=storage;
         //initialize mySymbols and myOperations with the given values
@@ -72,10 +70,6 @@ public class ProgramParser {
         }
         // FIXME: perhaps throw an exception instead
         return text;
-    }
-
-    public Map<String, Operation> getOperationsMap() {
-        return myOperationsMap;
     }
 
     public ControlStructure getControlStructure(String controlType){

@@ -1,10 +1,10 @@
-package control;
+package general;
 
-import javafx.scene.layout.Pane;
 import operations.Command;
 
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.AbstractMap.SimpleEntry;
 
 public class SystemStorage {
 
@@ -29,16 +29,15 @@ public class SystemStorage {
         return habitat;
     }
 
-    public void setActiveAnimals(List<Entry<String, Animal>> activeAnimals){
-            myActiveAnimals=activeAnimals;
+    public void setActiveAnimals(List<String> activeList){
+        myActiveAnimals.clear();
+        for(String animalID: activeList){
+            myActiveAnimals.add(new SimpleEntry(animalID, getAnimal(animalID)));
+        }
     }
 
     public List<Entry<String, Animal>> getActiveAnimals(){
         return myActiveAnimals;
-    }
-
-    public double numTurtlesCreated(){
-        return habitat.keySet().size();
     }
 
     public Set<String> getAnimalNames(){

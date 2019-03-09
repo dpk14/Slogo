@@ -1,8 +1,7 @@
-package frontend;
+package visualization;
 
+import general.SystemStorage;
 import javafx.scene.control.TextArea;
-import mainpackage.SystemStorage;
-
 import java.util.Map;
 
 public class ShowVariables {

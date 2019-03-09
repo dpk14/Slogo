@@ -1,9 +1,13 @@
-package control;
+package mainpackage;
 
 import controlStructures.ControlStructure;
-import frontend.AnimalScreen;
-import frontend.Console;
-import frontend.ScreenOptions;
+import general.SystemStorage;
+import general.Animal;
+import general.ProgramParser;
+
+import visualization.AnimalScreen;
+import visualization.Console;
+import visualization.ScreenOptions;
 import javafx.application.Application;
 
 import javafx.scene.Scene;
@@ -31,6 +35,7 @@ public class  Main extends Application {
     public ProgramParser myParser;
     public SystemStorage mySystemStorage;
     private AnimalScreen animal_screen;
+
     @Override
     public void start(Stage stage) {
         askForLanguages(stage);
@@ -70,7 +75,6 @@ public class  Main extends Application {
         myParser = new ProgramParser(mySystemStorage);
         myParser.addPatterns("resources/languages/" + language);
         myParser.addPatterns("resources/languages/Syntax");
-        myParser.makeOperationsMap();
         myParser.makeControlMap();
         myConsole = new Console(mySystemStorage, HEIGHT_OF_CONSOLE_AREA);
         Button myRun = myConsole.getButton();

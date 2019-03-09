@@ -1,6 +1,8 @@
-package controlStructures;
+package builders;
 
-import mainpackage.ProgramParser;
+import controlStructures.ControlStructure;
+import general.Animal;
+import general.ProgramParser;
 import operations.Operation;
 
 import java.util.*;

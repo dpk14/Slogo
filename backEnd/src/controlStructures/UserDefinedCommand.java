@@ -1,7 +1,7 @@
 package controlStructures;
 
-import mainpackage.ProgramParser;
-import mainpackage.SystemStorage;
+import general.ProgramParser;
+import general.SystemStorage;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,6 @@
 package operations;
 
-import control.Animal;
+import general.Animal;
 
 /**
  * @author Irene Qiao isq

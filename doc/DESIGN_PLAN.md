@@ -3,7 +3,7 @@
 ## Introduction
 
 - Our team is trying to make programming accesible to children by creating a friendly programming language. Our goal is to make this project visually appealing and create an interface with the ability to execute complex instructions. Primarily, we want the backend to be flexible so we can add the most functionality to our program. 
-- Our program has three main parts: Visualization, Parser, and the Commands. The Visualization portion communicates directly with the Parser (the inputted text), and then the Parser calls upon the commands depending on the input. The Parser is basically what links the front-end with the back-end.
+- Our program has three main parts: visualization, Parser, and the Commands. The visualization portion communicates directly with the Parser (the inputted text), and then the Parser calls upon the commands depending on the input. The Parser is basically what links the front-end with the back-end.
 
 
 ## Design Overview 
@@ -89,7 +89,7 @@
 * Behavior:
     * reads String input passed from UI and checks for key words
     * instantiates correct Command objects for each user command
-    * processes each string command to determine variable values, perform math/boolean operations, control structure, etc. before feeding in values into Command constructor as parameter values
+    * processes each string command to determine variable values, perform math/boolean operations, general structure, etc. before feeding in values into Command constructor as parameter values
     * Throws errors if no key words are detected/incorrect syntax - call on UI to display errors to user
 * Public methods:
     * read()
@@ -157,11 +157,11 @@ This section describes any issues which need to be addressed or resolved before 
 * Ambiguity: keeping track of the original string command input by user or adding the Command object to the HistoricalCommands collection
     * Pros of storing string: contains full information to re-display if necessary - ex: fd vs. forward are the same command but different strings
     * Pros of storing command itself: storing method call can be called by Parser or Command itself - in other words, the UI would not need to call SystemStorage method to store the command
-* Visualization to Parser handling info - consider using queues vs. lists to keep track of past Commands and order of interpretation for each line
+* visualization to Parser handling info - consider using queues vs. lists to keep track of past Commands and order of interpretation for each line
     * How best to preserve order of commands in the execution? Deferred to later discussion
 
 ## Team Responsibilities
 * Daniel: Parser, Commands
 * Irene: Parser, Commands
-* Diego: Visualization
+* Diego: visualization
 * Amanda: Parser, Commands

@@ -1,6 +1,6 @@
 package operations;
 
-import frontend.AnimalScreen;
+import visualization.AnimalScreen;
 
 abstract public class DisplayOperation extends Operation{
     protected AnimalScreen myScreen;
