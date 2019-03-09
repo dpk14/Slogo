@@ -14,7 +14,7 @@ public class SetPenColor extends PenOperation implements Command {
 
     @Override
     public void execute(){
-        String color = getDisplay().getColor((int) getArgIndex(0));
+        String color = getSystemStorage().getDisplay().getColor((int) getArgIndex(0));
         getTurtle().setPenColor(color);
     }
 }

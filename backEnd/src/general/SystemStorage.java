@@ -42,6 +42,10 @@ public class SystemStorage {
         }
     }
 
+    public DisplayModel getDisplay(){
+        return myDisplayModel;
+    }
+
     public List<Entry<String, Animal>> getActiveAnimals(){
         return myActiveAnimals;
     }
