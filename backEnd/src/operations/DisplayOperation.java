@@ -1,21 +1,22 @@
 package operations;
 
-import visualization.AnimalScreen;
+import general.DisplayModel;
 
 abstract public class DisplayOperation extends Operation{
-    protected AnimalScreen myScreen;
+    private DisplayModel myDisplay;
 
-    public DisplayOperation(String commandType, int numArgs) {
-        super(commandType, numArgs);
-    }
-
-    public void setAnimalScreen(AnimalScreen screen){
-        myScreen = screen;
+    public DisplayOperation() {
+        super();
     }
 
     @Override
     abstract public double evaluate();
 
-    @Override
-    abstract public Operation copy();
+    public void setDisplay(DisplayModel display){
+        myDisplay = display;
+    }
+
+    protected DisplayModel getMyDisplay(){
+        return myDisplay;
+    }
 }
