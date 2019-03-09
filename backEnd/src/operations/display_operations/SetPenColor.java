@@ -1,4 +1,6 @@
-package operations;
+package operations.display_operations;
+
+import operations.Command;
 
 public class SetPenColor extends PenOperation implements Command {
     public SetPenColor(){

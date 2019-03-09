@@ -22,11 +22,11 @@ public class ScreenOptions {
     private ErrorMessage errorMessage;
     private String color;
 
-    public ScreenOptions(Pane canvas, SystemStorage storage, DisplayModel display, ErrorMessage error, double height_of_options) {
+    public ScreenOptions(Pane canvas, SystemStorage storage, ErrorMessage error, double height_of_options) {
         mySystemStorage = storage;
         centerScreen = canvas;
         menuResource = ResourceBundle.getBundle("MenuNames");
-        myDisplayModel = display;
+        myDisplayModel = storage.getDisplay();
         errorMessageResource = ResourceBundle.getBundle("ErrorMessages");
         errorMessage = error;
         Menu backGroundColor = BackgroundMenu();
@@ -48,10 +48,9 @@ public class ScreenOptions {
     private Menu BackgroundMenu() {
         Menu temp = new Menu(menuResource.getString("ChooseColor"));
         ToggleGroup group = new ToggleGroup();
-        var resource = ResourceBundle.getBundle("DefaultColors");
-        for (String key: resource.keySet()){
-            RadioMenuItem color = new RadioMenuItem(key);
-            color.setOnAction(e->setBackground(resource.getString(key)));
+        for (String listColor: myDisplayModel.getColorsList()){
+            RadioMenuItem color = new RadioMenuItem(listColor);
+            color.setOnAction(e->setBackground(listColor));
             color.setToggleGroup(group);
             color.setSelected(true);
             temp.getItems().add(color);
@@ -60,19 +59,15 @@ public class ScreenOptions {
     }
 
     private Menu chooseAnimalMenu(){
-        Menu temp = new Menu("Choose Animal Type");
+        Menu temp = new Menu(menuResource.getString("ChooseAnimalType"));
         ToggleGroup group = new ToggleGroup();
-        RadioMenuItem turtle  = new RadioMenuItem("Turtle");
-        turtle.setOnAction(e->setAnimal("turtle"));
-        turtle.setToggleGroup(group);
-        turtle.setSelected(true);
-        RadioMenuItem frog  = new RadioMenuItem("Frog");
-        frog.setOnAction(e->setAnimal("frog"));
-        frog.setToggleGroup(group);
-        RadioMenuItem horse  = new RadioMenuItem("Horse");
-        horse.setOnAction(e->setAnimal("horse"));
-        horse.setToggleGroup(group);
-        temp.getItems().addAll(turtle, frog, horse);
+        for (String imageFile: myDisplayModel.getAnimalShapesList()){
+            RadioMenuItem shape = new RadioMenuItem(imageFile);
+            shape.setOnAction(e->setAnimal(imageFile));
+            shape.setToggleGroup(group);
+            shape.setSelected(true);
+            temp.getItems().add(shape);
+        }
         return temp;
     }
 
@@ -80,7 +75,7 @@ public class ScreenOptions {
         Set<String> animal_names = mySystemStorage.getAnimalNames();
         for (String name : animal_names) {
             Animal active_animal = mySystemStorage.getAnimal(name);
-            active_animal.setImage(String.format("%s.png", animal));
+            active_animal.setImage(animal);
         }
     }
 

@@ -1,4 +1,6 @@
-package operations;
+package operations.display_operations;
+
+import operations.Command;
 
 public class SetPenSize extends PenOperation implements Command {
 
