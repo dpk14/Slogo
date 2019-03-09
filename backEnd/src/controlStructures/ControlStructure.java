@@ -261,7 +261,7 @@ public abstract class ControlStructure {
         int currentSize=currentCommandLog.size();
         if(previousSize!=currentSize){
             Operation mostRecentCommand=(Operation) currentCommandLog.get(currentCommandLog.size()-1);
-            return mostRecentCommand.getReturnValue();
+            return mostRecentCommand.evaluate();
         }
         return 0;
     }
