@@ -11,13 +11,12 @@ public class DisplayInterpreter {
     private ScreenOptions currentScreen;
     private ScreenOptions updatedScreen;
 
-    public DisplayInterpreter(SystemStorage storage){
+    public DisplayInterpreter(SystemStorage storage) {
         myStorage = storage;
-//        updatedDisplay = new DisplayModel(new ErrorMessage());
-        currentDisplay = myStorage.getDisplay();
+//        updatedDisplay = new DisplayModel(new ErrorMessage());currentDisplay = myStorage.getDisplay();
     }
 
-    public void updateDisplay(){
+    public void updateDisplay() {
 
     }
 

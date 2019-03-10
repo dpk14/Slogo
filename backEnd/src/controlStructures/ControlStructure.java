@@ -88,11 +88,9 @@ public abstract class ControlStructure {
         if (firstEntry.equals("[")) {
             parseList(startingIndex, simplifiableLine, activeAnimal);
         }
-        /*
         else if (firstEntry.equals("(")){
             parseParenthesis(startingIndex, simplifiableLine, activeAnimal);
         }
-        */
         else if(!(firstEntrySymbol.equals("Variable") || firstEntrySymbol.equals("Constant"))) {
             parseOperation(firstEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
         }
@@ -119,7 +117,7 @@ public abstract class ControlStructure {
         }
         return simplifiableLine;
     }
-/*
+
     public List<String> parseParenthesis(int startingIndex, List<String> simplifiableLine, Animal activeAnimal) {
         simplifiableLine.remove(startingIndex); //removes first parentheses
         String operationName = simplifiableLine.get(startingIndex);
@@ -127,6 +125,7 @@ public abstract class ControlStructure {
         myParser.getOperation(operationName);
             Operation parsedOperation;
             while (true) {
+                printTest(startingIndex, simplifiableLine);
                 parsedOperation = parseOperation(operationSymbol, startingIndex, simplifiableLine, activeAnimal);
                 if (!argumentsStillLeft(startingIndex, simplifiableLine, parsedOperation)) break;
                 if (!parsedOperation.hasUnlimitedArgs()) { // if operation takes unlimited arguments, don't remove the return value; incorporate it into the next operation
@@ -137,7 +136,7 @@ public abstract class ControlStructure {
         simplifiableLine.remove(startingIndex+1); //removes outer parentheses
         return simplifiableLine;
         }
-*/
+
     protected ControlStructure parseNestedControl(String controlType, int currentIndex, List<String> simplifiableLine, Animal activeAnimal) {
         ControlStructure defaultStructure = myParser.getControlStructure(controlType);
         ControlStructure nestedControlStructure=defaultStructure.copy();
@@ -268,18 +267,18 @@ public abstract class ControlStructure {
     protected void simplifyAndExecuteStructure(){}
 
     public void printTest(int index, List<String> line){
-        if (myStage.equals("execute")) {
+        //if (myStage.equals("evaluate")) {
             for (String s : line) {
                 System.out.printf("%s ", s);
             }
             System.out.printf("\n%d\n", index);
-        }
+        //}
         }
 
     protected boolean argumentsStillLeft(int currentIndex, List<String> simplifiableLine, Operation operation){
         int argsNeeded=operation.getNumArgs();
         for(int k=0; k<argsNeeded; k++){
-           if(simplifiableLine.get(currentIndex+k).equals(")")) return false;
+           if(simplifiableLine.get(currentIndex+k+1).equals(")")) return false;
         }
         return true;
     }

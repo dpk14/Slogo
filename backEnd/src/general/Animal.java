@@ -158,6 +158,10 @@ public class Animal {
         return myX;
     }
 
+    public double getY() {
+        return myY;
+    }
+
     public double getNewX() {
         return myNextX;
     }

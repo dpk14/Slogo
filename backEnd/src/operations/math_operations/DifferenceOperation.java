@@ -4,9 +4,11 @@ import operations.Operation;
 
 public class DifferenceOperation extends Operation {
     private final int DIFFERENCE_NUM_ARGS = 2;
+    boolean UnlimitedArgs;
+
     public DifferenceOperation() {
         super();
-        setNumArgs(DIFFERENCE_NUM_ARGS);
+        setUnlimitedArgs(true);
     }
 
     @Override

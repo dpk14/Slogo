@@ -19,6 +19,7 @@ public class ShowVariables {
     public void updateVariables(){
         Map<String, Double> variables = myStorage.getVariableMap();
         variableDisplay.clear();
+        variableDisplay.appendText("VARIABLES:\n");
         for(String variable : myStorage.getVariableNames()){
             String variablePair = String.format("%s : %.2f \n", variable, variables.get(variable));
             variableDisplay.appendText(variablePair);
