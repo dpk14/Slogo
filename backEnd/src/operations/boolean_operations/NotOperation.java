@@ -6,6 +6,7 @@ public class NotOperation extends BooleanOperation {
         super();
         setNumArgs(NOT_NUM_ARGS);
     }
+
     @Override
     public double evaluate() {
         boolean ret = getArgIndex(0) == 0;

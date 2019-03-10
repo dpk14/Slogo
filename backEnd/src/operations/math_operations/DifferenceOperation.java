@@ -8,7 +8,7 @@ public class DifferenceOperation extends Operation {
 
     public DifferenceOperation() {
         super();
-        setUnlimitedArgs(true);
+        setUnlimitedArgs();
     }
 
     @Override

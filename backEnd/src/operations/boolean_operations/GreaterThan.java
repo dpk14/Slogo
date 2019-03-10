@@ -4,6 +4,7 @@ public class GreaterThan extends BooleanOperation {
 
     public GreaterThan(){
         super();
+        setUnlimitedArgs();
     }
 
     @Override

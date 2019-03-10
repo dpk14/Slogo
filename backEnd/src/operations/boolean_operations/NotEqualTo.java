@@ -4,7 +4,9 @@ public class NotEqualTo extends BooleanOperation {
 
     public NotEqualTo(){
         super();
+        setUnlimitedArgs();
     }
+
     @Override
     public double evaluate() {
         boolean ret = getArgIndex(0) != getArgIndex(1);

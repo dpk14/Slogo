@@ -8,6 +8,7 @@ public class SumOperation extends Operation {
     public SumOperation() {
         super();
         setNumArgs(SUM_NUM_ARGS);
+        setUnlimitedArgs();
     }
 
     @Override

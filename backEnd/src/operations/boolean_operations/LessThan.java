@@ -4,6 +4,7 @@ public class LessThan extends BooleanOperation {
 
     public LessThan(){
         super();
+        setUnlimitedArgs();
     }
 
     @Override

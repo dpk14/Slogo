@@ -4,7 +4,6 @@ import general.Animal;
 import operations.SystemStorageOperation;
 
 abstract public class PenOperation extends SystemStorageOperation {
-    private Animal myTurtle;
     private final int SET_PEN_NUM_ARGS = 1;
 
     public PenOperation(){
