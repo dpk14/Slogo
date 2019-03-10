@@ -9,7 +9,7 @@ import java.lang.reflect.InvocationTargetException;
 abstract public class Operation {
     private int myNumArgs;
     private double[] myArgs;
-    private boolean hasUnlimitedArgs;
+    private boolean hasUnlimitedArgs=false;
 
     public Operation() {
     }
@@ -34,7 +34,7 @@ abstract public class Operation {
     protected void setUnlimitedArgs(boolean isUnlimited){
         hasUnlimitedArgs = isUnlimited;
     }
-
+    
     protected double getArgIndex(int index){
         return myArgs[index];
     }
