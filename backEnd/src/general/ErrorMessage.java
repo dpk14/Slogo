@@ -8,7 +8,7 @@ public class ErrorMessage {
 
 
     public ErrorMessage(){
-        resource = ResourceBundle.getBundle("data/ErrorMessages");
+        resource = ResourceBundle.getBundle("ErrorMessages");
         errors = new ArrayList<>();
     }
 

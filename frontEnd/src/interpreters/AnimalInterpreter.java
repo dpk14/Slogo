@@ -107,5 +107,4 @@ public class AnimalInterpreter {
     private void setImage(Animal animal, ImageView turtle){
         turtle.setImage(new Image(this.getClass().getClassLoader().getResourceAsStream(animal.getShape())));
     }
-
 }

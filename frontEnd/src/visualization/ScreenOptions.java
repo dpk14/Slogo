@@ -2,6 +2,7 @@ package visualization;
 
 import general.DisplayModel;
 import general.ErrorMessage;
+import interpreters.AnimalInterpreter;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
 import general.Animal;
@@ -22,7 +23,7 @@ public class ScreenOptions {
     private Menu animalMenu;
     private ErrorMessage errorMessage;
 
-    public ScreenOptions(Pane canvas, SystemStorage storage, ErrorMessage error, double height_of_options) {
+    public ScreenOptions(Pane canvas, SystemStorage storage, AnimalInterpreter animalInterpreter, ErrorMessage error, double height_of_options) {
         mySystemStorage = storage;
         centerScreen = canvas;
         menuResource = ResourceBundle.getBundle("resources/menu_names/MenuNames");
