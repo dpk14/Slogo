@@ -17,8 +17,6 @@ public class AnimalInterpreter {
     private Map<String, ArrayList<Line>> myTrails;
     private Map<String, ImageView> myTurtles;
     private SystemStorage myStorage;
-    double height_of_screen;
-    double width_of_screen;
 
     public AnimalInterpreter(SystemStorage storage){
         myStorage=storage;
@@ -47,19 +45,13 @@ public class AnimalInterpreter {
         }
         else turtle=myTurtles.get(animalID);
 
-        adjustHeading(animal, turtle);
+        setImage(animal, turtle);
         setHeading(animal, turtle);
         move(animalID, animal, turtle);
         clearTrails(animal, animalID);
         setVisibility(animal, turtle);
-        setImage(animal, turtle);
 
         return turtle;
-    }
-
-    private void adjustHeading(Animal animal, ImageView turtle){
-        turtle.setRotate(turtle.getRotate() + animal.getRotateBy());
-        animal.setRotateBy(0);
     }
 
     private void setHeading(Animal animal, ImageView turtle){
@@ -74,12 +66,15 @@ public class AnimalInterpreter {
 
         if(animal.isPenDown() && (x!=newX || y!=newY)){
             Line path = new Line();
-            path.setStroke(Paint.valueOf("-fx-stroke: " + animal.getColor()));
+            path.setStroke(Paint.valueOf(animal.getColor()));               //(String.format("-fx-stroke: %s", animal.getColor()));
             path.setStrokeWidth(animal.getLineWidth());
             path.setStartX(x + animal.getWidth());
             path.setStartY(y + animal.getHeight());
             path.setEndX(newX + animal.getWidth());
             path.setEndY(newY + animal.getHeight());
+            if(!myTrails.containsKey(animalID)){
+                myTrails.put(animalID, new ArrayList<>());
+            }
             myTrails.get(animalID).add(path);
             myCanvas.getChildren().add(path);
         }

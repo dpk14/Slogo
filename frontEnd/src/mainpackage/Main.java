@@ -76,7 +76,7 @@ public class  Main extends Application {
     private void createSLOGO(String language, Stage stage){
         myErrorMessage=new ErrorMessage();
         mySystemStorage = new SystemStorage(myErrorMessage);
-        myAnimalInterpreter=new AnimalInterpreter(mySystemStorage);
+        myDisplayInterpreter=new DisplayInterpreter(animal_screen.getAnimalPane(), mySystemStorage, myAnimalInterpreter, myErrorMessage, HEIGHT_OF_OPTIONS);
         animal_screen = new AnimalScreen(mySystemStorage, myAnimalInterpreter, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         myParser = new ProgramParser(mySystemStorage);
         myParser.addPatterns("resources/languages/" + language);
@@ -100,9 +100,9 @@ public class  Main extends Application {
     }
 
     private Scene createScene() {
-        var main_pane = new BorderPane();
 
         myDisplayInterpreter = new DisplayInterpreter(animal_screen.getAnimalPane(), mySystemStorage, myAnimalInterpreter, myErrorMessage, HEIGHT_OF_OPTIONS);
+        var main_pane = new BorderPane();;
 
         main_pane.setCenter(animal_screen.getAnimalPane());
         main_pane.setTop(myDisplayInterpreter.getOptions());
