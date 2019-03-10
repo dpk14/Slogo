@@ -7,6 +7,7 @@ public class QuotientOperation extends Operation {
     public QuotientOperation(){
         super();
         setNumArgs(QUOTIENT_NUM_ARGS);
+        setUnlimitedArgs(true);
     }
     @Override
     public double evaluate() {
