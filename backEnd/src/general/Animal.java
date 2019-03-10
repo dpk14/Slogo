@@ -92,7 +92,6 @@ public class Animal {
 
     public void setVisibility(Boolean visible){
         isVisible = visible;
-        //node.setVisible(visible);
     }
 
     public double setToward(double x, double y){
@@ -107,13 +106,13 @@ public class Animal {
         double x_delta = delta * direction_vector[0];
         double y_delta = delta * direction_vector[1];
 
-        myNextX = myX + x_delta;
-        myNextY = myY - y_delta;
+        myNextX = myNextX + x_delta;
+        myNextY = myNextY - y_delta;
     }
 
     public void adjustHeading(double angle){
 
-        myRotateBy=angle;
+        myRotateBy+=angle;
         current_angle -= angle;
 
         double radian = Math.toRadians(current_angle);

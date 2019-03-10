@@ -122,18 +122,19 @@ public abstract class ControlStructure {
         simplifiableLine.remove(startingIndex); //removes first parentheses
         String operationName = simplifiableLine.get(startingIndex);
         String operationSymbol = myParser.getSymbol(operationName);
-        myParser.getOperation(operationName);
-            Operation parsedOperation;
+        Operation repeatableOperation;
             while (true) {
                 printTest(startingIndex, simplifiableLine);
-                parsedOperation = parseOperation(operationSymbol, startingIndex, simplifiableLine, activeAnimal);
-                if (!argumentsStillLeft(startingIndex, simplifiableLine, parsedOperation)) break;
-                if (!parsedOperation.hasUnlimitedArgs()) { // if operation takes unlimited arguments, don't remove the return value; incorporate it into the next operation
+                repeatableOperation = parseOperation(operationSymbol, startingIndex, simplifiableLine, activeAnimal);
+                if (!argumentsStillLeft(startingIndex, simplifiableLine, repeatableOperation, repeatableOperation.hasUnlimitedArgs())) break;
+                if (!repeatableOperation.hasUnlimitedArgs()) { // if operation takes unlimited arguments, don't remove the return value; incorporate it into the next operation
                     simplifiableLine.remove(startingIndex); //removes return value
                 }
                 simplifiableLine.add(startingIndex, operationSymbol); // replaces return value with operation name so that it can be performed on next set of arguments
             }
+            System.out.println("STOP");
         simplifiableLine.remove(startingIndex+1); //removes outer parentheses
+        printTest(startingIndex, simplifiableLine);
         return simplifiableLine;
         }
 
@@ -173,6 +174,8 @@ public abstract class ControlStructure {
                 builderStack.pop();
             } else builder.continueBuildingOperation(this, simplifiableLine, activeAnimal);
         }
+        System.out.println("STACkEND");
+        printTest(currentIndex, simplifiableLine);
         return parsedOperation;
     }
 
@@ -275,10 +278,14 @@ public abstract class ControlStructure {
         //}
         }
 
-    protected boolean argumentsStillLeft(int currentIndex, List<String> simplifiableLine, Operation operation){
+    protected boolean argumentsStillLeft(int currentIndex, List<String> simplifiableLine, Operation operation, boolean unlimitedArgs){
+        printTest(currentIndex, simplifiableLine);
+        int i=1;
+        if(unlimitedArgs) i=0;
+        System.out.println("IUEHDUYHDEUDG");
         int argsNeeded=operation.getNumArgs();
         for(int k=0; k<argsNeeded; k++){
-           if(simplifiableLine.get(currentIndex+k+1).equals(")")) return false;
+           if(simplifiableLine.get(currentIndex+k+i).equals(")")) return false;
         }
         return true;
     }
