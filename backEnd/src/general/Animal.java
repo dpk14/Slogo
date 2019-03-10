@@ -14,7 +14,7 @@ public class Animal {
     private final int HEIGHT_OF_TURTLE = 25;
     private final String DEFAULT_LINE_COLOR = "black";
     private final String DEFAULT_SHAPE = "frog.png";
-    private final int DEFAULT_LINE_WIDTH = 10;
+    private final int DEFAULT_LINE_WIDTH = 2;
     private int myLineWidth;
     private double myX;
     private double myY;
@@ -23,20 +23,19 @@ public class Animal {
     private boolean clearTrails;
     private String myShape;
     private String myLineColor;
-    private double myRotateBy;
 
 
 
     public Animal(String name, double height_of_screen, double width_of_screen){
         animal_ID = name;
-        current_angle = 90;
+        current_angle = 0;
         myShape=DEFAULT_SHAPE;
         myLineColor = DEFAULT_LINE_COLOR;
         myLineWidth = DEFAULT_LINE_WIDTH;
         double radian = Math.toRadians(current_angle);
         direction_vector = new double[2];
-        direction_vector[0] = Math.cos(radian);
-        direction_vector[1] = Math.sin(radian);
+        direction_vector[0] = Math.sin(radian);
+        direction_vector[1] = Math.cos(radian);
         isVisible = true;
         myX=width_of_screen/2 - WIDTH_OF_TURTLE;
         myY=height_of_screen/2 - HEIGHT_OF_TURTLE;
@@ -112,7 +111,6 @@ public class Animal {
 
     public void adjustHeading(double angle){
 
-        myRotateBy+=angle;
         current_angle -= angle;
 
         double radian = Math.toRadians(current_angle);
@@ -143,14 +141,6 @@ public class Animal {
 
     public double getCurrentAngle() {
         return current_angle;
-    }
-
-    public double getRotateBy() {
-        return myRotateBy;
-    }
-
-    public void setRotateBy(double by) {
-        myRotateBy=by;
     }
 
     public double getX() {

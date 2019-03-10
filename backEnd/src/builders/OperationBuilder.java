@@ -47,7 +47,6 @@ public class OperationBuilder {
             }
             else if(kthArgument.equals("(")){
                 controlStructure.parseParenthesis(myStartingIndex+1+k, simplifiableLine, animal);
-                System.out.println("AUYEUDYAE");
             }
             else {
                 Operation defaultOperation = myParser.getOperation(kthArgumentSymbol);
