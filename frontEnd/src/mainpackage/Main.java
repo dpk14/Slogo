@@ -80,8 +80,8 @@ public class  Main extends Application {
         myAnimalInterpreter=new AnimalInterpreter(mySystemStorage);
         animal_screen = new AnimalScreen(mySystemStorage, myAnimalInterpreter, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         myParser = new ProgramParser(mySystemStorage);
-        myParser.addPatterns("resources/languages/" + language);
-        myParser.addPatterns("resources/languages/Syntax");
+        myParser.addPatterns("data/resources/languages/" + language);
+        myParser.addPatterns("data/resources/languages/Syntax");
         myParser.makeControlMap();
         myConsole = new Console(mySystemStorage, HEIGHT_OF_CONSOLE_AREA);
 
