@@ -31,7 +31,7 @@ public class AnimalInterpreter {
     }
 
     public void updateAnimals(){
-        HashMap<String, Animal> animals= new HashMap<>(myStorage.getAnimals());
+        HashMap<String, Animal> animals= (HashMap) myStorage.getAnimals();
         for(String animalID: animals.keySet()){
             ImageView turtle=interpret(animalID, animals);
             myTurtles.put(animalID, turtle);
@@ -68,7 +68,7 @@ public class AnimalInterpreter {
 
     private void move(String animalID, Animal animal, ImageView turtle){
         double x=animal.getX();
-        double y=animal.getX();
+        double y=animal.getY();
         double newX=animal.getNewX();
         double newY=animal.getNewY();
 
@@ -83,8 +83,10 @@ public class AnimalInterpreter {
             myTrails.get(animalID).add(path);
             myCanvas.getChildren().add(path);
         }
-        animal.setX(animal.getNewX());
-        animal.setY(animal.getNewY());
+        animal.setX(newX);
+        animal.setY(newY);
+        turtle.setX(newX);
+        turtle.setY(newY);
     }
 
     private void clearTrails(Animal animal, String animalID){
