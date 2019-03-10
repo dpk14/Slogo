@@ -7,7 +7,7 @@ public class ProductOperation extends Operation {
     public ProductOperation(){
         super();
         setNumArgs(PRODUCT_NUM_ARGS);
-        setUnlimitedArgs(true);
+        setUnlimitedArgs();
     }
 
     @Override
