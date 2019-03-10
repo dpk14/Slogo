@@ -13,15 +13,16 @@ public class DisplayInterpreter {
 
     public DisplayInterpreter(SystemStorage storage){
         myStorage = storage;
-        updatedDisplay = new DisplayModel(new ErrorMessage());
+        //updatedDisplay = new DisplayModel(new ErrorMessage());
         currentDisplay = myStorage.getDisplay();
     }
 
     public void updateDisplay(){
 
     }
-
+/*
     private ScreenOptions updateScreen(){
 
     }
+*/
 }
