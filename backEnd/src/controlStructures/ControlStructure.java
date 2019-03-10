@@ -7,7 +7,9 @@ import general.SystemStorage;
 
 import operations.Command;
 import operations.Operation;
+import operations.SystemStorageOperation;
 import operations.TurtleOperation;
+import operations.home_operations.HomeCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,8 +54,6 @@ public abstract class ControlStructure {
         myOuterStructure=OuterStructure;
         myAnimal=animal;
         myStage=stage;
-        if (myOuterStructure==null) System.out.println("null");
-        System.out.println("yeet");
     }
 
     protected void resetSimplification(List<String> savedLine){
@@ -106,6 +106,7 @@ public abstract class ControlStructure {
             currentEntry = simplifiableLine.get(startingIndex);
             String currentEntrySymbol = myParser.getSymbol(currentEntry);
             if (myParser.isControl(currentEntrySymbol)) parseNestedControl(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
+            else if (currentEntry.equals("(")) parseParenthesis(startingIndex, simplifiableLine, activeAnimal);
             else if (!(currentEntrySymbol.equals("Variable") || currentEntrySymbol.equals("Constant"))){
                 parseOperation(currentEntrySymbol, startingIndex, simplifiableLine, activeAnimal);
             }
@@ -124,7 +125,6 @@ public abstract class ControlStructure {
         String operationSymbol = myParser.getSymbol(operationName);
         Operation repeatableOperation;
             while (true) {
-                printTest(startingIndex, simplifiableLine);
                 repeatableOperation = parseOperation(operationSymbol, startingIndex, simplifiableLine, activeAnimal);
                 if (!argumentsStillLeft(startingIndex, simplifiableLine, repeatableOperation, repeatableOperation.hasUnlimitedArgs())) break;
                 if (!repeatableOperation.hasUnlimitedArgs()) { // if operation takes unlimited arguments, don't remove the return value; incorporate it into the next operation
@@ -132,7 +132,6 @@ public abstract class ControlStructure {
                 }
                 simplifiableLine.add(startingIndex, operationSymbol); // replaces return value with operation name so that it can be performed on next set of arguments
             }
-            System.out.println("STOP");
         simplifiableLine.remove(startingIndex+1); //removes outer parentheses
         printTest(startingIndex, simplifiableLine);
         return simplifiableLine;
@@ -168,22 +167,21 @@ public abstract class ControlStructure {
             builder = builderStack.peek();
             currentIndex = builder.getStartingIndex();
             if (builder.getMyNumOfArgsFilled() == builder.getMyNumOfArgsNeeded()) {
-                parsedOperation=builder.createOperation();
-                double returnVal=evaluateOrExecute(parsedOperation, activeAnimal);
+                parsedOperation = builder.createOperation();
+                double returnVal = evaluateOrExecute(parsedOperation, activeAnimal);
                 replaceOperationWithReturnValue(parsedOperation, currentIndex, returnVal, simplifiableLine);
                 builderStack.pop();
             } else builder.continueBuildingOperation(this, simplifiableLine, activeAnimal);
         }
-        System.out.println("STACkEND");
         printTest(currentIndex, simplifiableLine);
         return parsedOperation;
     }
 
     public double evaluateOrExecute(Operation parsedOperation, Animal activeAnimal) {
-        double returnVal = parsedOperation.evaluate();
-        if (parsedOperation instanceof TurtleOperation && myStage.equals("execute")) {
+        if (parsedOperation instanceof TurtleOperation || parsedOperation instanceof SystemStorageOperation) {
             ((TurtleOperation) parsedOperation).setAnimal(activeAnimal);
         }
+        double returnVal = parsedOperation.evaluate();
         if (parsedOperation instanceof Command && myStage.equals("execute")) {
             ((Command) parsedOperation).execute();
             myStorage.addToHistory((Command) parsedOperation);
@@ -282,7 +280,6 @@ public abstract class ControlStructure {
         printTest(currentIndex, simplifiableLine);
         int i=1;
         if(unlimitedArgs) i=0;
-        System.out.println("IUEHDUYHDEUDG");
         int argsNeeded=operation.getNumArgs();
         for(int k=0; k<argsNeeded; k++){
            if(simplifiableLine.get(currentIndex+k+i).equals(")")) return false;

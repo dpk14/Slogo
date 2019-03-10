@@ -80,7 +80,7 @@ public class  Main extends Application {
         myErrorMessage=new ErrorMessage();
         mySystemStorage = new SystemStorage(myErrorMessage);
         myAnimalInterpreter=new AnimalInterpreter(mySystemStorage);
-        myDisplayInterpreter=new DisplayInterpreter(mySystemStorage);
+        myDisplayInterpreter=new DisplayInterpreter(animal_screen.getAnimalPane(), mySystemStorage, myErrorMessage, HEIGHT_OF_OPTIONS, myAnimalInterpreter);
         animal_screen = new AnimalScreen(mySystemStorage, myAnimalInterpreter, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         myParser = new ProgramParser(mySystemStorage);
         myParser.addPatterns("resources/languages/" + language);
@@ -104,12 +104,10 @@ public class  Main extends Application {
     }
 
     private Scene createScene() {
-        var main_pane = new BorderPane();
-
-        var options = new ScreenOptions(animal_screen.getAnimalPane(), mySystemStorage, myErrorMessage, HEIGHT_OF_OPTIONS);
+        var main_pane = new BorderPane();;
 
         main_pane.setCenter(animal_screen.getAnimalPane());
-        main_pane.setTop(options.getOptions());
+        main_pane.setTop(myDisplayInterpreter.getOptions());
         main_pane.setBottom(myConsole.getConsoleArea());
 
         var scene = new Scene(main_pane, WIDTH_OF_SCENE, HEIGHT_OF_SCENE);
