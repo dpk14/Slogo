@@ -7,6 +7,7 @@ public class RemainderOperation extends Operation {
     public RemainderOperation(){
         super();
         setNumArgs(REMAINDER_NUM_ARGS);
+        setUnlimitedArgs();
     }
     @Override
     public double evaluate() {

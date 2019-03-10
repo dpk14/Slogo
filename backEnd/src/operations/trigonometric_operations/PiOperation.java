@@ -3,7 +3,7 @@ package operations.trigonometric_operations;
 import operations.Operation;
 
 public class PiOperation extends Operation {
-    private final int PI_NUM_ARGS = 1;
+    private final int PI_NUM_ARGS = 0;
 
     public PiOperation(){
         super();

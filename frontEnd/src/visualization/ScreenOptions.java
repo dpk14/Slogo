@@ -3,7 +3,6 @@ package visualization;
 import general.DisplayModel;
 import general.ErrorMessage;
 import javafx.scene.control.*;
-import mainpackage.Main;
 import javafx.scene.layout.Pane;
 import general.Animal;
 import general.SystemStorage;
@@ -19,47 +18,51 @@ public class ScreenOptions {
     private ResourceBundle menuResource;
     private ResourceBundle errorMessageResource;
     private DisplayModel myDisplayModel;
+    private Menu backgroundMenu;
+    private Menu animalMenu;
     private ErrorMessage errorMessage;
-    private String color;
 
-    public ScreenOptions(Pane canvas, ErrorMessage error, SystemStorage storage, double height_of_options) {
+    public ScreenOptions(Pane canvas, SystemStorage storage, ErrorMessage error, double height_of_options) {
         mySystemStorage = storage;
         centerScreen = canvas;
         menuResource = ResourceBundle.getBundle("resources/menu_names/MenuNames");
-        errorMessage=error;
+        errorMessage = error;
         myDisplayModel = storage.getDisplay();
         errorMessageResource = ResourceBundle.getBundle("ErrorMessages");
-        Menu backGroundColor = BackgroundMenu();
-        Menu chooseAnimal = chooseAnimalMenu();
+        makeBackgroundMenu();
+        makeAnimalMenu();
         options = new MenuBar();
-        options.getMenus().addAll(backGroundColor, chooseAnimal);
+        options.getMenus().addAll(backgroundMenu, animalMenu);
         options.setPrefHeight(height_of_options);
     }
 
-    private Menu BackgroundMenu() {
-        Menu temp = new Menu(menuResource.getString("ChooseColor"));
+    public void updateDisplay(){
+        makeBackgroundMenu();
+        setErrorDisplay();
+    }
+
+    private void makeBackgroundMenu() {
+        backgroundMenu = new Menu(menuResource.getString("ChooseColor"));
         ToggleGroup group = new ToggleGroup();
         for (String listColor: myDisplayModel.getColorsList()){
             RadioMenuItem color = new RadioMenuItem(listColor);
             color.setOnAction(e->setBackground(listColor));
             color.setToggleGroup(group);
             color.setSelected(true);
-            temp.getItems().add(color);
+            backgroundMenu.getItems().add(color);
         }
-        return temp;
     }
 
-    private Menu chooseAnimalMenu(){
-        Menu temp = new Menu(menuResource.getString("ChooseAnimalType"));
+    private void makeAnimalMenu(){
+        animalMenu = new Menu(menuResource.getString("ChooseAnimalType"));
         ToggleGroup group = new ToggleGroup();
         for (String imageFile: myDisplayModel.getAnimalShapesList()){
             RadioMenuItem shape = new RadioMenuItem(imageFile);
             shape.setOnAction(e->setAnimal(imageFile));
             shape.setToggleGroup(group);
             shape.setSelected(true);
-            temp.getItems().add(shape);
+            animalMenu.getItems().add(shape);
         }
-        return temp;
     }
 
     private void setAnimal(String animal) {
@@ -76,7 +79,7 @@ public class ScreenOptions {
     }
 
 
-    public void setErrorDisplay(){
+    private void setErrorDisplay(){
         if (errorMessage.getErrorsList().size() > 0){
             for (String error: errorMessage.getErrorsList()){
                 String message = errorMessageResource.getString(error);

@@ -11,11 +11,11 @@ public class DisplayModel {
     private ErrorMessage errorMessage;
     private List<String> animalShapesList;
 
-    public DisplayModel(){
+    public DisplayModel(ErrorMessage error){
         makeColorsList();
         makeAnimalShapesList();
         setDefaultBackgroundColor();
-        //errorMessage = error;
+        errorMessage = error;
     }
 
     public List<String> getColorsList(){
@@ -50,16 +50,12 @@ public class DisplayModel {
         backgroundColor = colorsList.get(0);
     }
 
-    public String getBackgroundColor(){
-        return backgroundColor;
-    }
-
     public void setBackgroundColor (int index) throws NullPointerException{
         if (index < colorsList.size()){
             backgroundColor = colorsList.get(index);
         }
         else {
-            //errorMessage.addError("IndexOutOfBounds");
+            errorMessage.addError("IndexOutOfBounds");
         }
     }
 

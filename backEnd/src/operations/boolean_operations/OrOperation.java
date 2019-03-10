@@ -4,6 +4,7 @@ public class OrOperation extends BooleanOperation {
 
     public OrOperation(){
         super();
+        setUnlimitedArgs();
     }
     @Override
     public double evaluate() {

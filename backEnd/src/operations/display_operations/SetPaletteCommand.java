@@ -15,6 +15,7 @@ public class SetPaletteCommand extends SystemStorageOperation implements Command
 
     public SetPaletteCommand(){
         super();
+        setNumArgs(PALETTE_COMMAND_NUM_ARGS);
     }
 
     @Override
