@@ -7,6 +7,7 @@ import general.Animal;
 import general.ProgramParser;
 
 import interpreters.AnimalInterpreter;
+import interpreters.DisplayInterpreter;
 import javafx.animation.Timeline;
 import javafx.scene.layout.Pane;
 import visualization.AnimalScreen;
@@ -40,6 +41,7 @@ public class  Main extends Application {
     public SystemStorage mySystemStorage;
     private AnimalScreen animal_screen;
     private AnimalInterpreter myAnimalInterpreter;
+    private DisplayInterpreter myDisplayInterpreter;
     private ErrorMessage myErrorMessage;
 
     @Override
@@ -78,6 +80,7 @@ public class  Main extends Application {
         myErrorMessage=new ErrorMessage();
         mySystemStorage = new SystemStorage(myErrorMessage);
         myAnimalInterpreter=new AnimalInterpreter(mySystemStorage);
+        myDisplayInterpreter=new DisplayInterpreter(mySystemStorage);
         animal_screen = new AnimalScreen(mySystemStorage, myAnimalInterpreter, HEIGHT_OF_ANIMAL_SCREEN, WIDTH_OF_ANIMAL_SCREEN);
         myParser = new ProgramParser(mySystemStorage);
         myParser.addPatterns("data/resources/languages/" + language);
@@ -86,6 +89,7 @@ public class  Main extends Application {
         myConsole = new Console(mySystemStorage, HEIGHT_OF_CONSOLE_AREA);
 
         myAnimalInterpreter.updateAnimals();
+        myDisplayInterpreter.updateDisplay();
 
         Button myRun = myConsole.getButton();
         myRun.setOnAction(e->sendText());
@@ -132,6 +136,7 @@ public class  Main extends Application {
                 processCode(stage, userInputList);
             }
         myAnimalInterpreter.updateAnimals();
+        myDisplayInterpreter.updateDisplay();
     }
 
     public void processCode(String stage, ArrayList<String> userInputList) {
@@ -150,7 +155,6 @@ public class  Main extends Application {
                 currentControlStructure.initializeStructure(currentIndex, simplifiableInput, null, currentAnimal, stage);
                 double returnValue = currentControlStructure.executeCode();
 
-                //simplifiableInput=currentControlStructure.getMySimplifiableLine();
                 System.out.println("\n");
                 for (String s : simplifiableInput) {
                     System.out.printf("%s ", s);
