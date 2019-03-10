@@ -23,7 +23,7 @@ public class SystemStorage {
         myCustomCommands = new HashMap<>();
         myCommandLog = new ArrayList<>();
         myActiveAnimals = new ArrayList<>();
-        myDisplayModel=new DisplayModel();
+        myDisplayModel=new DisplayModel(error);
     }
 
     public void setScreenParameters(double height, double width){
