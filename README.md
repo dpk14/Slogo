@@ -1,12 +1,11 @@
-# slogo
-
-A user-friendly, graphically-driven IDE allowing juvenile coders to develop programs in SLogo: a simplified version of the Logo language. Users can dynamically code a turtle to draw complex geometrical patterns by using existing control structures or developing their own.  
-
-Documentation
+Design Review
+===
 Author: Daniel Kingsbury
 
+## Summary
+A user-friendly, graphically-driven IDE allowing juvenile coders to develop programs in SLogo: a simplified version of the Logo language. Users can dynamically code a turtle to draw complex geometrical patterns by using existing control structures or developing their own.  
 
-General Structure:
+## General Structure:
 
 The front end is dominated by the Main class, which initializes and holds instances of all the other visualization elements (such as the root), recognizing user interaction with these elements, updating them as necessary, primarily when the user runs the code he or she has written.
 
@@ -18,7 +17,7 @@ The back end breaks apart code into a combination of nested or separated Control
 it the simplified arguments. The code then performs .evaluate or .execute (according to whether the code is in compilation or execution stage) on the newly initialized Operation, which modifies the corresponding turtle model by performing its unique action using
 its arguments.
 
-Dependencies:
+## Dependencies:
 
 The back end API is very concise. The Main controller only interacts with the back end by instantiating a starting Control Structure to evaluate the code, then calls a single public .executeCode method to simplify this control structure. The Control Structure recursively parses the rest of the code internally.
 
@@ -30,21 +29,21 @@ you just have to ask yourself what objects the operations will be manipulating, 
 
 The implementation of Operations can be easily changed, because Operations are practically only accessible to Control Structures (which simplify them by very general criteria) and to the ProgramParser, which contains a map of default Operations that the Control Structure can use to find out what Operation the code is referring to. Operations don't have access to very many variables at all, and are more tools than manipulable objects, hence their strong encapsulation.
 
-ProgramParser:
+## ProgramParser:
 
 The ProgramParser has methods to read a text file and reflectively produce maps of default operations and control structures. These defaults can be copied over and their arguments can be filled from the surroundings. 
 
-Main:
+## Main:
 
 The main class initializes the ProgramParser's definition maps, then initializes and owns instances of other Visualization components. When the user runs the code, the code is sent to the method evaluateInput, which compiles and executes it by identifying the outer Control Structure type, executing it, then moving to the next one, etc. 
 
 
-ControlStructures:
+## ControlStructures:
 
 ControlStructures have many subclasses containing the rules defining how the surrounding code should be visited and interpreted. ControlStructures use the large number of superclass parsing methods to visit surrounding code, and recursively simplify code and replace it with return values where necessary. In the process of evaluating lines, Operations and nested ControlStructures are parsed from the text and initialized appropriately. parseOperation finds the appropriate operation and adds it to a stack of operationBuilders, which simplify the following arguments until the expected number is found, at which time the operation is initialized with the arguments and evaluated or executed and then replaced with a return value. Loops store saved copies of unsimplified code to be restated every new iteration of the loop.
 
 
-Operations: 
+## Operations: 
 
 Operations in code modify turtle models and display models, which are JavaFX-less back end representations of visual elements.
 Once Main processes user input, it uses Interpreters to reflect the changes in the models on corresponding front end elements.
@@ -53,7 +52,7 @@ Interpreters use the instance variables of each model object to set the correspo
 Depending on the Operation type, it may require a display model or active turtle model to manipulate, or various classes for math operations. It is extremely independent, and requires almost no resources. It is simply a translation of the actual actions in the code, containing corresponding Java actions. Everything is encapsulated, and extensibility is maximized because of the large variety in the subgroupings of Operations, and because hardly any Operation superclass methods need to be overridden. Operations have arguments given to them by the Builder, and simply manipulate them directly or model javafx actions by changing the instance variables of the active model turtle. .Evaluate just calculates the return value, and .execute performs actual necessary actions.
 
 
-OperationBuilders:
+## OperationBuilders:
 
 OperationBuilders model the recursive behavior of code simulation through the use of readable stack loops, filling arguments of nest Operations by simplifying and replacing with return values. They contain methods which determine whether an Operation's arguments have been found, after which the Operation is constructed with its arguments, after which the Operation is ready to be popped from the stack and evaluated or executed. This prevents unformed, incomplete Operation objects from floating around visibly. Operations are created only when nested operations in their arguments have been found by the Builder.
 
@@ -63,7 +62,7 @@ and used by outer Control Structures the modify code and generate instructions f
 its contents or functionality are not dependent on the surrounding code that called it.
 
 
-Extensibility: 
+## Extensibility: 
 
 The code is structured in such a way that it is easy to add new commands to the language.
 
@@ -76,9 +75,8 @@ to the reflection files so that the Program Parser can make a default instance o
 The .evaluate and .execute methods of Operations simply have to be overridden with usually short code storing appropriate arguments in appropriate instance variables and acting on the appropriate model. ControlStructure subclasses usually just need to override one method, which interprets and uses the contents of the reduced format of the following code to
 define and use the instance variables of the ControlStructure.
 
-Alternative Designs: 
 
-ControlStructures:
+## ControlStructures:
 
 We were originally debating having ControlStructures as a subclass of Operations, as they both have some number and variety of
 expected arguments, and both have one or two main overridden methods that simplify code and produce return values, and would both be
@@ -90,7 +88,8 @@ commands that deal with logic, math, or manipulating the screen (Operations) are
 the code is better off as it is, with ControlStructures as a separate entity. It is important not over-implement one class so much
 that extensibility is stifled.
 
-Main:
+## Main:
+
 Originally we planned on storing important Maps and states of various models in Main. Instead, we ended up preferring
 a straightforward and minimally cluttered main, storing all such variables in SystemStorage. I think it would have been a much
 better idea to take out SystemStorage and put these variables in Main. SystemStorage is a passive, holder class, which
@@ -101,7 +100,7 @@ Alternatively, Main could just store all the SystemStorage variables directly an
 of any classes it creates. This way, a passive class with usually superfluous data is not passed around aimlessly from class to class.
 
 
-Conclusions:
+## Conclusions:
 
 I think the best feature of the code's design are the maps in the ProgramParser, namely the Operation Maps. Using a
 properties file, methods within the Parser reflectively create Maps with default operations/Control Structures and their associated
