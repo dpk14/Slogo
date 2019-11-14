@@ -1,6 +1,6 @@
 # slogo
 
-A user-friendly, graphically-driven IDE allowing juvenile coders to develop programs in SLogo: a simplified version of the Logo language. Users can dynamically code a turtle to draw complex geometrical patterns. Users can develop their own control structures or build using existing syntax.  
+A user-friendly, graphically-driven IDE allowing juvenile coders to develop programs in SLogo: a simplified version of the Logo language. Users can dynamically code a turtle to draw complex geometrical patterns by using existing control structures or developing their own.  
 
 Documentation
 Author: Daniel Kingsbury
